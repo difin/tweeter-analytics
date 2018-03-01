@@ -2,6 +2,8 @@ package controllers;
 
 import javax.inject.*;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import play.mvc.*;
 import play.libs.ws.*;
 import play.libs.ws.WSBodyReadables;
@@ -10,8 +12,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Base64;
 import java.util.concurrent.CompletionStage;
-
-import scala.concurrent.ExecutionContextExecutor;
 
 @Singleton
 public class UserProfileController extends Controller {
@@ -29,6 +29,13 @@ public class UserProfileController extends Controller {
     public CompletionStage<Result> userProfile(String userName) {
     	
     	return
+    			getBearerCode(userName)
+                .thenCompose(r -> getUserProfile(r, userName))
+                .thenApply(r -> ok(r));
+    }
+    
+    private CompletionStage<String> getBearerCode(String userName){
+    	return
     			ws
     			.url("https://api.twitter.com/oauth2/token")
                 .addHeader("User-Agent", "SOEN-6441")
@@ -36,11 +43,10 @@ public class UserProfileController extends Controller {
                 .addHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
                 .addHeader("Content-Length", "29")
                 .post("grant_type=client_credentials")
-                .thenApply(r -> r.getBody(WSBodyReadables.instance.json()).get("access_token").asText())
-                .thenCompose(r -> getUserProfile(r, userName));
+                .thenApply(r -> r.getBody(WSBodyReadables.instance.json()).get("access_token").asText());
     }
     
-    private CompletionStage<Result> getUserProfile(String accessToken, String userName){
+    private CompletionStage<JsonNode> getUserProfile(String accessToken, String userName){
 			
 		return 
 				ws
@@ -48,7 +54,7 @@ public class UserProfileController extends Controller {
 		        .addHeader("Authorization", "Bearer " + accessToken)
 		        .addQueryParameter("screen_name", userName)
 		        .get()
-		        .thenApply(r -> ok(r.getBody(WSBodyReadables.instance.json())));
+		        .thenApply(r -> r.getBody(WSBodyReadables.instance.json()));
     }
     
 	private static String encodeKeys(String consumerKey, String consumerSecret) {
