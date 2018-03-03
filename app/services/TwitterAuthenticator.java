@@ -24,7 +24,7 @@ public class TwitterAuthenticator {
       this.wsClient = wsClient;
     }
 	
-    public CompletionStage<String> getAccessToken(String userName){
+    public CompletionStage<String> getAccessToken(){
     	return
     			wsClient
     			.url("https://api.twitter.com/oauth2/token")

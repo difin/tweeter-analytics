@@ -3,9 +3,14 @@ package controllers;
 import javax.inject.*;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import models.UserProfile;
 import services.TwitterAuthenticator;
 
 import play.mvc.*;
+import play.twirl.api.Content;
+import play.libs.Json;
 import play.libs.ws.*;
 import play.libs.ws.WSBodyReadables;
 
@@ -24,11 +29,12 @@ public class UserProfileController extends Controller {
     }
 
     public CompletionStage<Result> userProfile(String userName) {
-    	
+    	    	
     	return
-    			twitterAuth.getAccessToken(userName)
+    			twitterAuth.getAccessToken()
                 .thenCompose(r -> getUserProfile(r, userName))
-                .thenApply(r -> ok(r));
+                .thenApply(r -> Json.fromJson(r, UserProfile.class))
+                .thenApply(r -> ok(r.toString()));
     }
     
     private CompletionStage<JsonNode> getUserProfile(String accessToken, String userName){
