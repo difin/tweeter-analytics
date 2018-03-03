@@ -2,19 +2,20 @@ package controllers;
 
 import javax.inject.*;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import models.UserProfile;
+import models.UserProfileAndTweets;
+import models.Tweet;
 import services.TwitterAuthenticator;
 
 import play.mvc.*;
-import play.twirl.api.Content;
 import play.libs.Json;
 import play.libs.ws.*;
 import play.libs.ws.WSBodyReadables;
 
+import java.util.List;
 import java.util.concurrent.CompletionStage;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Singleton
 public class UserProfileController extends Controller {
@@ -29,22 +30,47 @@ public class UserProfileController extends Controller {
     }
 
     public CompletionStage<Result> userProfile(String userName) {
-    	    	
-    	return
-    			twitterAuth.getAccessToken()
-                .thenCompose(r -> getUserProfile(r, userName))
-                .thenApply(r -> Json.fromJson(r, UserProfile.class))
-                .thenApply(r -> ok(r.toString()));
+    	
+    	CompletionStage<String> tokenFuture = twitterAuth.getAccessToken();
+    	
+    	CompletionStage<UserProfile> userProfileFuture =     			
+    			tokenFuture
+                .thenCompose(token -> getUserProfile(token, userName));
+    	
+    	CompletionStage<List<Tweet>> userLastTenTweetsFuture =     			
+    			tokenFuture
+                .thenCompose(token -> getUserLastTenTweets(token, userName));
+    	
+    	CompletionStage<UserProfileAndTweets> userProfileAndTweetsFuture = 
+    			userProfileFuture.thenCombine(userLastTenTweetsFuture, 
+    					(prof, tweets) -> new UserProfileAndTweets(prof,tweets));
+    	    	    	
+    	return userProfileAndTweetsFuture.thenApply(r -> ok(r.toString()));
     }
     
-    private CompletionStage<JsonNode> getUserProfile(String accessToken, String userName){
+    private CompletionStage<UserProfile> getUserProfile(String accessToken, String userName){
 			
-		return 
-				wsClient
+		return wsClient
 				.url("https://api.twitter.com/1.1/users/show.json")
 		        .addHeader("Authorization", "Bearer " + accessToken)
 		        .addQueryParameter("screen_name", userName)
 		        .get()
-		        .thenApply(r -> r.getBody(WSBodyReadables.instance.json()));
+		        .thenApply(r -> r.getBody(WSBodyReadables.instance.json()))
+		        .thenApply(r -> Json.fromJson(r, UserProfile.class));
+    }
+    
+    private CompletionStage<List<Tweet>> getUserLastTenTweets(String accessToken, String userName){
+		
+		return wsClient
+				.url("https://api.twitter.com/1.1/statuses/user_timeline.json")
+		        .addHeader("Authorization", "Bearer " + accessToken)
+		        .addQueryParameter("screen_name", userName)
+		        .addQueryParameter("trim_user", "1")
+		        .addQueryParameter("count", "10")
+		        .get()
+		        .thenApply(r -> r.getBody(WSBodyReadables.instance.json()))
+                .thenApply(r -> StreamSupport.stream(r.spliterator(), false)
+						.map(x -> Json.fromJson(x, Tweet.class))
+						.collect(Collectors.toList()));
     }
 }
