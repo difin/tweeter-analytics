@@ -1,0 +1,72 @@
+@(userProfileAndTweets: UserProfileAndTweets)
+
+@main("Profile") {
+	<div class="container">
+   		<div class="media bg-success-light border border-success rounded">
+			<img class="mr-3" src="@userProfileAndTweets.getUserProfile.getProfile_image_url" alt="Generic placeholder image">
+ 			<div class="media-body">
+ 				<div class="row">
+ 					<div class="col">
+ 						<div class="display-4">@userProfileAndTweets.getUserProfile.getName</div>
+ 					</div>
+ 				</div>
+ 				<div class="row">
+ 					<div class="col">
+ 						<h5>@@ @userProfileAndTweets.getUserProfile.getScreen_name</h5>
+ 					</div>
+ 					<div class="col">
+ 						<h5>@userProfileAndTweets.getUserProfile.getCreated_at</h5>
+ 					</div>
+ 				</div>
+ 				<div class="row">
+ 					<div class="col">
+	 					<h3>@userProfileAndTweets.getUserProfile.getDescription</h3>
+	 				</div>
+ 				</div>
+ 				<div class="row ">
+ 					<div class="col text-center">
+ 						<h5>Tweets</h5>
+ 					</div>
+ 					<div class="col text-center">
+ 						<h5>Following</h5>
+ 					</div>
+ 					<div class="col text-center">
+ 						<h5>Followers</h5>
+ 					</div>
+ 					<div class="col text-center">
+ 						<h5>Likes</h5>
+ 					</div>
+ 				</div>
+ 				<div class="row">
+ 					<div class="col text-center">
+ 						<h5>@userProfileAndTweets.getUserProfile.getStatuses_count</h5>
+ 					</div>
+ 					<div class="col text-center">
+ 						<h5>@userProfileAndTweets.getUserProfile.getFriends_count</h5>
+ 					</div>
+ 					<div class="col text-center">
+ 						<h5>@userProfileAndTweets.getUserProfile.getFollowers_count</h5>
+ 					</div>
+ 					<div class="col text-center">
+ 						<h5>@userProfileAndTweets.getUserProfile.getFavourites_count</h5>
+ 					</div>
+ 				</div>
+			</div>
+		</div>
+	</div>
+
+<!-- <p>@userProfileAndTweets.getUserProfile.getProfile_image_url</p> -->
+
+   	<div class="container">
+   		<ul class="list-unstyled">
+		@for(tweet <- userProfileAndTweets.getTweets){
+			<li class="media bg-light border border-primary rounded p-3 mt-3 mb-3">
+    			<div class="media-body">
+   					<small class="text-muted"><h6>@tweet.getCreated_at</h6></small>
+   					<h4>@tweet.getText</h4>
+   				</div>
+   			</li>
+		}
+		</ul>
+   	</div>
+}

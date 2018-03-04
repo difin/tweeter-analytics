@@ -14,6 +14,8 @@ public class UserProfile{
 	private String time_zone;
 	private String statuses_count;
 	private List<Tweet> tweets;
+	private String profile_image_url;
+	private String profile_image_url_https;
 	
 	public String getName() {
 		return name;
@@ -93,6 +95,22 @@ public class UserProfile{
 
 	public void setTweets(List<Tweet> tweets) {
 		this.tweets = tweets;
+	}
+		
+	public String getProfile_image_url() {
+		return profile_image_url;
+	}
+
+	public void setProfile_image_url(String profile_image_url) {
+		this.profile_image_url = profile_image_url;
+	}
+
+	public String getProfile_image_url_https() {
+		return profile_image_url_https;
+	}
+
+	public void setProfile_image_url_https(String profile_image_url_https) {
+		this.profile_image_url_https = profile_image_url_https;
 	}
 
 	public String toString(){

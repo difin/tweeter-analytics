@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.concurrent.CompletionStage;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import views.html.*;
 
 @Singleton
 public class UserProfileController extends Controller {
@@ -29,7 +30,7 @@ public class UserProfileController extends Controller {
       this.twitterAuth = twitterAuth;
     }
 
-    public CompletionStage<Result> userProfile(String userName) {
+    public CompletionStage<UserProfileAndTweets> userProfle(String userName) {
     	
     	CompletionStage<String> tokenFuture = twitterAuth.getAccessToken();
     	
@@ -45,7 +46,7 @@ public class UserProfileController extends Controller {
     			userProfileFuture.thenCombine(userLastTenTweetsFuture, 
     					(prof, tweets) -> new UserProfileAndTweets(prof,tweets));
     	    	    	
-    	return userProfileAndTweetsFuture.thenApply(r -> ok(r.toString()));
+    	return userProfileAndTweetsFuture; //.toCompletableFuture().get(); //.thenApply(r -> ok(userProfile.render(r)));
     }
     
     private CompletionStage<UserProfile> getUserProfile(String accessToken, String userName){
