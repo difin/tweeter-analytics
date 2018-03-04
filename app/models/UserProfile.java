@@ -15,7 +15,7 @@ public class UserProfile{
 	private String statuses_count;
 	private List<Tweet> tweets;
 	private String profile_image_url;
-	private String profile_image_url_https;
+	private String profile_image_url_400x400;
 	
 	public String getName() {
 		return name;
@@ -103,14 +103,15 @@ public class UserProfile{
 
 	public void setProfile_image_url(String profile_image_url) {
 		this.profile_image_url = profile_image_url;
+		setProfile_image_url_400x400(profile_image_url.replace("normal", "400x400"));
 	}
 
-	public String getProfile_image_url_https() {
-		return profile_image_url_https;
+	public String getProfile_image_url_400x400() {
+		return profile_image_url_400x400;
 	}
 
-	public void setProfile_image_url_https(String profile_image_url_https) {
-		this.profile_image_url_https = profile_image_url_https;
+	public void setProfile_image_url_400x400(String profile_image_url_400x400) {
+		this.profile_image_url_400x400 = profile_image_url_400x400;
 	}
 
 	public String toString(){
