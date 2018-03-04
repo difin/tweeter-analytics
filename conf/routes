@@ -3,6 +3,8 @@
 # ~~~~
 # SOEN 6441 Twitter App Routes
 GET 	/							controllers.ApplicationController.index()
++ nocsrf
+POST	/							controllers.ApplicationController.search()
 GET 	/profile/:userName			controllers.ApplicationController.userProfile(userName: String)
 
 # Map static resources from the /public folder to the /assets URL path

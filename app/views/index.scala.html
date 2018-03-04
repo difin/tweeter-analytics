@@ -1,8 +1,33 @@
-@(message: String)
+@(searchForm: Form[String])(tweetsForWord: Map[String, List[Tweet]])
 
 @main("Home") {
    <div class="container">
-     <p>@message</p>
-     
-   </div>
+		<form action="@routes.ApplicationController.index()" method="POST">
+	   		<div class="input-group mt-3 mb-3">
+  					<input type="text" name="searchString" class="form-control border border-success" placeholder="Key words" aria-describedby="basic-addon2">
+  					<div class="input-group-append">
+    					<input class="btn btn-outline-success" type="submit" value="Submit">
+  					</div>
+			</div>
+		</form>
+   	</div>
+
+	<div class="container">
+		@for( (word, tweets) <- tweetsForWord ){
+		<hr>
+		<div class="row">
+     		<H3>@word<H3>
+		</div>
+	   		<ul class="list-unstyled">
+			@for(tweet <- tweets){
+				<li class="media bg-light border border-primary rounded p-3 mt-3 mb-3 mr-5 ml-5">
+	    			<div class="media-body">
+	   					<small class="text-muted"><h6>@tweet.getCreated_at</h6></small>
+	   					<h4>@tweet.getText</h4>
+	   				</div>
+	   			</li>
+			}
+			</ul>
+		}
+   	</div>
 }
