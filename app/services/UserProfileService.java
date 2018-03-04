@@ -1,31 +1,27 @@
-package controllers;
-
-import javax.inject.*;
-
-import models.UserProfile;
-import models.UserProfileAndTweets;
-import models.Tweet;
-import services.TwitterAuthenticator;
-
-import play.mvc.*;
-import play.libs.Json;
-import play.libs.ws.*;
-import play.libs.ws.WSBodyReadables;
+package services;
 
 import java.util.List;
 import java.util.concurrent.CompletionStage;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import views.html.*;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import models.Tweet;
+import models.UserProfile;
+import models.UserProfileAndTweets;
+import play.libs.Json;
+import play.libs.ws.WSBodyReadables;
+import play.libs.ws.WSClient;
 
 @Singleton
-public class UserProfileController extends Controller {
-	
+public class UserProfileService {
     private final WSClient wsClient;
     private final TwitterAuthenticator twitterAuth;
     
     @Inject
-    public UserProfileController(WSClient wsClient, TwitterAuthenticator twitterAuth) {
+    public UserProfileService(WSClient wsClient, TwitterAuthenticator twitterAuth) {
       this.wsClient = wsClient;
       this.twitterAuth = twitterAuth;
     }

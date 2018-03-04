@@ -5,6 +5,7 @@ import javax.inject.Singleton;
 
 import play.mvc.Controller;
 import play.mvc.Result;
+import services.UserProfileService;
 import views.html.*;
 
 /**
@@ -14,7 +15,7 @@ import views.html.*;
 public class ApplicationController extends Controller {
 	
 	@Inject
-	UserProfileController userProfileController;
+	UserProfileService userProfileService;
 		
 	/**
 	 * Returns the home page. 
@@ -29,7 +30,7 @@ public class ApplicationController extends Controller {
 	 */
 	public Result userProfile(String userProfileId)  {
 		try{
-			return ok(userProfile.render(userProfileController.userProfle(userProfileId).toCompletableFuture().get()));
+			return ok(userProfile.render(userProfileService.userProfle(userProfileId).toCompletableFuture().get()));
 		}
 		catch (Exception e){
 			System.out.println(e);
