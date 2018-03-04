@@ -2,7 +2,7 @@
 
 @main("Profile") {
 	<div class="container mt-3">
-   		<div class="media bg-success-light border border-success rounded">
+   		<div class="media bg-success-light  rounded">
 			<img class="mr-3" src="@userProfileAndTweets.getUserProfile.getProfile_image_url_400x400" alt="Generic placeholder image">
  			<div class="media-body">
  				<div class="row">
@@ -10,22 +10,20 @@
  						<div class="display-4">@userProfileAndTweets.getUserProfile.getName</div>
  					</div>
  				</div>
- 				<div class="row">
+ 				<div class="row p-2">
  					<div class="col">
  						<h5>@@ @userProfileAndTweets.getUserProfile.getScreen_name</h5>
  					</div>
- 					<div class="col">
- 						<div class="row">
-	 						<h5>Created: &nbsp; &nbsp; @userProfileAndTweets.getUserProfile.getCreated_at</h5>
- 						</div>
+ 					<div class="col-auto">
+ 						<h5>Created: &nbsp; &nbsp; @userProfileAndTweets.getUserProfile.getCreated_at</h5>
  					</div>
  				</div>
- 				<div class="row">
+ 				<div class="row p-2">
  					<div class="col">
 	 					<h3>@userProfileAndTweets.getUserProfile.getDescription</h3>
 	 				</div>
  				</div>
- 				<div class="row ">
+ 				<div class="row mt-3">
  					<div class="col text-center">
  						<h5>Tweets</h5>
  					</div>
@@ -39,7 +37,7 @@
  						<h5>Likes</h5>
  					</div>
  				</div>
- 				<div class="row">
+ 				<div class="row mb-1">
  					<div class="col text-center">
  						<h5>@userProfileAndTweets.getUserProfile.getStatuses_count</h5>
  					</div>
