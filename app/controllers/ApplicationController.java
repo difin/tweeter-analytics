@@ -1,10 +1,15 @@
 package controllers;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import models.Tweet;
 import play.data.Form;
 import play.data.FormFactory;
 import play.mvc.Controller;
@@ -31,17 +36,23 @@ public class ApplicationController extends Controller {
 	/**
 	 * Returns the home page. 
 	 * @return The resulting home page. 
+	 * @throws ExecutionException 
+	 * @throws InterruptedException 
 	 */
-	public Result index() {
+	public Result index() throws InterruptedException, ExecutionException {
 		Form<String> searchForm = formFactory.form(String.class);
 		
-		return ok(index.render(searchForm, tenTweetsForKeywordService.getTenTweetsForKeyword("Initial Text")));
+		return ok(index.render(searchForm, tenTweetsForKeywordService
+				.getTenTweetsForKeyword("Initial Text")
+				.toCompletableFuture().get()));
 	}
 	
-	public Result search() {
+	public Result search() throws InterruptedException, ExecutionException {
 		Form<String> searchForm = formFactory.form(String.class).bindFromRequest();
 		String searchString = searchForm.field("searchString").getValue().orElse("empty Parameter");
-		return ok(index.render(searchForm, tenTweetsForKeywordService.getTenTweetsForKeyword(searchString)));
+		return ok(index.render(searchForm, tenTweetsForKeywordService
+				.getTenTweetsForKeyword(searchString)
+				.toCompletableFuture().get()));
 	}
 	
 	/**
