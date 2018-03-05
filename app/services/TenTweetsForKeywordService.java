@@ -20,9 +20,11 @@ public class TenTweetsForKeywordService {
 			Tweet t1 = new Tweet();
 			t1.setCreated_at("Some Date for Word \""+ word +"\" tweet 1 like 2018 03 03");
 			t1.setText("Some text for Word \""+ word +"\" tweet 1");
+			t1.setAccount("JustinTrudeau");
 			Tweet t2 = new Tweet();
 			t2.setCreated_at("Some Date for Word \""+ word +"\" tweet 2 like 2018 03 03");
 			t2.setText("Some text for Word \""+ word +"\" tweet 2");
+			t2.setAccount("realDonaldTrump");
 			result.put(word, Arrays.asList(new Tweet[] { t1, t2 }));
 		}
 		return result;

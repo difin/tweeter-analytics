@@ -22,8 +22,21 @@
 			@for(tweet <- tweets){
 				<li class="media bg-light border border-primary rounded p-3 mt-3 mb-3 mr-5 ml-5">
 	    			<div class="media-body">
-	   					<small class="text-muted"><h6>@tweet.getCreated_at</h6></small>
-	   					<h4>@tweet.getText</h4>
+	    				<div class="row ">
+	    					<div class="col align-self-center">
+	    						<h2>
+	    							<a href="@routes.ApplicationController.userProfile(tweet.getAccount())" class="btn btn-link" role="button" >@tweet.getAccount</a>
+	    						</h2>
+	    					</div>
+	    					<div class="col-auto align-self-start">
+	    						<small class="text-muted">@tweet.getCreated_at</small>
+	    					</div>
+	    				</div>
+	    				<div class="row p-2">
+	    					<div class="col">
+	    						<h4>@tweet.getText</h4>
+	    					</div>
+	    				</div>
 	   				</div>
 	   			</li>
 			}
