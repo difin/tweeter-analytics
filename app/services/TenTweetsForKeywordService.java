@@ -56,10 +56,6 @@ public class TenTweetsForKeywordService {
 		        .thenApply(r -> r.getBody(WSBodyReadables.instance.json()).get("statuses"))
                 .thenApply(r -> StreamSupport.stream(r.spliterator(), false)
 						.map(x -> Json.fromJson(x, Tweet.class))
-						.map(x -> new Tweet(
-								x.getCreated_at(), 
-								x.getText(), 
-								x.getUser().getScreen_name()))
 						.collect(Collectors.toList()))
                 .thenApply(r -> {Map<String, List<Tweet>> m = new HashMap<>();
                 					m.put(searchString, r);
