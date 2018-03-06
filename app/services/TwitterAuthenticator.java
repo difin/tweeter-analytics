@@ -33,7 +33,7 @@ public class TwitterAuthenticator {
                 .addHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
                 .addHeader("Content-Length", "29")
                 .post("grant_type=client_credentials")
-                .thenApply(r -> r.getBody(WSBodyReadables.instance.json()).get("access_token").asText());
+                .thenApply((r) -> r.getBody(WSBodyReadables.instance.json()).get("access_token").asText());
     }
     
 	private String encodeKeys(String consumerKey, String consumerSecret) {
