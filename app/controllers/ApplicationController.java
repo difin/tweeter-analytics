@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
@@ -32,29 +34,40 @@ public class ApplicationController extends Controller {
 	 * Returns the home page. 
 	 * @return The resulting home page. 
 	 */
-	public Result index() throws InterruptedException, ExecutionException {
+	public CompletionStage<Result> index() throws InterruptedException, ExecutionException {
 		Form<String> searchForm = formFactory.form(String.class);
 		
-		return ok(index.render(searchForm, tenTweetsForKeywordService.getTenTweetsForKeyword("Initial Text").toCompletableFuture().get()));
+		return tenTweetsForKeywordService
+			.getTenTweetsForKeyword("Initial Text")
+			.thenApplyAsync(r -> {
+					return ok(index.render(searchForm, r));
+			});
 	}
 	
-	public Result search() throws InterruptedException, ExecutionException {
+	public CompletionStage<Result> search() throws InterruptedException, ExecutionException {
 		Form<String> searchForm = formFactory.form(String.class).bindFromRequest();
 		String searchString = searchForm.field("searchString").getValue().orElse("empty Parameter");
-		return ok(index.render(searchForm, tenTweetsForKeywordService.getTenTweetsForKeyword(searchString).toCompletableFuture().get()));
+		
+		if (searchString == null || searchString.isEmpty())
+			searchString = "empty Parameter";
+		
+		return tenTweetsForKeywordService
+				.getTenTweetsForKeyword(searchString)
+				.thenApplyAsync(r -> {
+					return ok(index.render(searchForm, r));
+				});
 	}
 	
 	/**
 	 * Returns page1, a simple example of a second page to illustrate navigation.
 	 * @return The Page1.
 	 */
-	public Result userProfile(String userProfileId)  {
-		try{
-			return ok(userProfile.render(userProfileService.userProfle(userProfileId).toCompletableFuture().get()));
-		}
-		catch (Exception e){
-			System.out.println(e);
-			return ok();
-		}
+	public CompletionStage<Result> userProfile(String userProfileId)  {
+		
+		return userProfileService
+			.userProfle(userProfileId)
+			.thenApplyAsync(r -> {
+				return ok(userProfile.render(r));
+			});			
 	}
 }

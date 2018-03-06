@@ -22,8 +22,6 @@ public class TenTweetsForKeywordService {
 	private final WSClient wsClient;
     private final TwitterAuthenticator twitterAuth;
 	
-	// authentication part
-	// constructor.
     @Inject
     TenTweetsForKeywordService(WSClient wsClient, TwitterAuthenticator twitterAuth){
     	this.wsClient=wsClient;
@@ -31,9 +29,9 @@ public class TenTweetsForKeywordService {
     }
     
 	public CompletionStage<Map<String, List<Tweet>>> getTenTweetsForKeyword(String searchString) {
-	    // Let receive access token first.
+	    
 		CompletionStage<String> tokenFuture = twitterAuth.getAccessToken();
-		//Map<String, List<Tweet>> result = new HashMap<>();
+		
 		CompletionStage<Map<String, List<Tweet>>> result = null;
 		for (String word : searchString.split(" ")) {
 			CompletionStage<Map<String, List<Tweet>>> tweetsForWordMap = tokenFuture.thenCompose(token -> queryTenTweets(token, word));
@@ -47,9 +45,8 @@ public class TenTweetsForKeywordService {
 		return result;
 	}
 	
-	// Let query tweets based on the keywords.
 	private CompletionStage<Map<String, List<Tweet>>> queryTenTweets(String token, String searchString) {
-		// TODO Auto-generated method stub
+
 		return wsClient
 				.url("https://api.twitter.com/1.1/search/tweets.json")
 		        .addHeader("Authorization", "Bearer " + token)
