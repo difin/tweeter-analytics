@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -44,19 +45,21 @@ public class TenTweetsForKeywordService {
 	
 	private CompletionStage<Map<String, List<Tweet>>> queryTenTweets(String token, String searchString) {
 
-		return wsClient
+		return 
+			CompletableFuture.supplyAsync(() -> 
+				wsClient
 				.url("https://api.twitter.com/1.1/search/tweets.json")
 		        .addHeader("Authorization", "Bearer " + token)
 		        .addQueryParameter("q", searchString)
-		        .addQueryParameter("count", "10")
-		        .get()
-		        .thenApply(r -> r.getBody(WSBodyReadables.instance.json()).get("statuses"))
-                .thenApply(r -> StreamSupport.stream(r.spliterator(), false)
-						.map(x -> Json.fromJson(x, Tweet.class))
-						.collect(Collectors.toList()))
-                .thenApply(r -> {Map<String, List<Tweet>> m = new HashMap<>();
-                					m.put(searchString, r);
-                					return m;
-            					});
+		        .addQueryParameter("count", "10"))
+	        .thenCompose(r -> r.get())
+	        .thenApply(r -> r.getBody(WSBodyReadables.instance.json()).get("statuses"))
+            .thenApply(r -> StreamSupport.stream(r.spliterator(), false)
+					.map(x -> Json.fromJson(x, Tweet.class))
+					.collect(Collectors.toList()))
+            .thenApply(r -> {Map<String, List<Tweet>> m = new HashMap<>();
+            					m.put(searchString, r);
+            					return m;
+        					});
 	}
 }
