@@ -42,7 +42,7 @@ public class UserProfileService {
     			userProfileFuture.thenCombine(userLastTenTweetsFuture, 
     					(prof, tweets) -> new UserProfileAndTweets(prof,tweets));
     	    	    	
-    	return userProfileAndTweetsFuture; //.toCompletableFuture().get(); //.thenApply(r -> ok(userProfile.render(r)));
+    	return userProfileAndTweetsFuture;
     }
     
     private CompletionStage<UserProfile> getUserProfile(String accessToken, String userName){

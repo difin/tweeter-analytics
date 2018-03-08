@@ -1,5 +1,6 @@
 package services;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,17 +33,11 @@ public class TenTweetsForKeywordService {
 	    
 		CompletionStage<String> tokenFuture = twitterAuth.getAccessToken();
 		
-		CompletionStage<Map<String, List<Tweet>>> result = null;
-		for (String word : searchString.split(" ")) {
-			CompletionStage<Map<String, List<Tweet>>> tweetsForWordMap = tokenFuture.thenCompose(token -> queryTenTweets(token, word));
-			if (result == null){
-				result = tweetsForWordMap;
-			}
-			else{
-				result.thenCombine(tweetsForWordMap, (a,b) -> {a.putAll(b); return a;});
-			}
-		}
-		return result;
+		return (Arrays.asList(searchString.split(" "))
+			.stream()
+			.map(word -> tokenFuture.thenCompose(token -> queryTenTweets(token, word)))
+			.reduce((a,b) -> a.thenCombine(b, (x,y) -> {x.putAll(y); return x;})))
+				.get();
 	}
 	
 	private CompletionStage<Map<String, List<Tweet>>> queryTenTweets(String token, String searchString) {
