@@ -36,13 +36,13 @@ public class TwitterAuthenticator {
                 .thenApply((r) -> r.getBody(WSBodyReadables.instance.json()).get("access_token").asText());
     }
     
-	private String encodeKeys(String consumerKey, String consumerSecret) {
+	private String encodeKeys(String key, String secret) {
 	    try {
-	        String encodedConsumerKey = URLEncoder.encode(consumerKey, "UTF-8");
-	        String encodedConsumerSecret = URLEncoder.encode(consumerSecret, "UTF-8");
-	        String fullKey = encodedConsumerKey + ":" + encodedConsumerSecret;
-	        byte[] encodedBytes = Base64.getEncoder().encode(fullKey.getBytes());
-	        return new String(encodedBytes);  
+	        String encodedKey = URLEncoder.encode(key, "UTF-8");
+	        String encodedSecret = URLEncoder.encode(secret, "UTF-8");
+	        String fullEncodedKey = encodedKey + ":" + encodedSecret;
+	        byte[] fullEncodedKeyBytes = Base64.getEncoder().encode(fullEncodedKey.getBytes());
+	        return new String(fullEncodedKeyBytes);  
 	    }
 	    catch (UnsupportedEncodingException e) {
 	        return new String();
