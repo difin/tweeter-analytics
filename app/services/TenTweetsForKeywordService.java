@@ -33,11 +33,13 @@ public class TenTweetsForKeywordService {
 	    
 		CompletionStage<String> tokenFuture = twitterAuth.getAccessToken();
 		
-		return (Arrays.asList(searchString.split(" "))
+		return Arrays.asList(searchString.split(" "))
 			.stream()
 			.map(word -> tokenFuture.thenCompose(token -> queryTenTweets(token, word)))
-			.reduce((a,b) -> a.thenCombine(b, (x,y) -> {x.putAll(y); return x;})))
-				.get();
+			.reduce((a,b) -> a.thenCombine(b, (x,y) -> {
+				x.putAll(y); return x;
+			}))
+			.get();
 	}
 	
 	private CompletionStage<Map<String, List<Tweet>>> queryTenTweets(String token, String searchString) {
