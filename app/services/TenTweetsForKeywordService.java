@@ -47,10 +47,14 @@ public class TenTweetsForKeywordService {
 
 		return CompletableFuture
 				.supplyAsync(() -> wsClient.url("https://api.twitter.com/1.1/search/tweets.json")
-						.addHeader("Authorization", "Bearer " + token).addQueryParameter("q", searchString)
+						.addHeader("Authorization", "Bearer " + token)
+						.addQueryParameter("tweet_mode", "extended")
+						.addQueryParameter("q", searchString + "-filter:retweets")
 						.addQueryParameter("count", "10"))
-				.thenCompose(r -> r.get()).thenApply(r -> r.getBody(WSBodyReadables.instance.json()).get("statuses"))
-				.thenApply(r -> StreamSupport.stream(r.spliterator(), false).map(x -> Json.fromJson(x, Tweet.class))
+				.thenCompose(r -> r.get())
+				.thenApply(r -> r.getBody(WSBodyReadables.instance.json()).get("statuses"))
+				.thenApply(r -> StreamSupport.stream(r.spliterator(), false)
+						.map(x -> Json.fromJson(x, Tweet.class))
 						.collect(Collectors.toList()))
 				.thenApply(r -> {
 					Map<String, List<Tweet>> m = new LinkedHashMap<>();

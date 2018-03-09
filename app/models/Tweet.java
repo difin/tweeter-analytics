@@ -3,16 +3,16 @@ package models;
 public class Tweet {
 	
 	private String created_at;
-	private String text;
+	private String full_text;
 	private UserProfile user;
 	
 	public Tweet(){
 		
 	}
 			
-	public Tweet(String created_at, String text, String account){
+	public Tweet(String created_at, String full_text, String account){
 		this.created_at = created_at;
-		this.text = text;
+		this.full_text = full_text;
 	}
 	
 	public String getCreated_at() {
@@ -23,12 +23,12 @@ public class Tweet {
 		this.created_at = created_at;
 	}
 
-	public String getText() {
-		return text;
+	public String getFull_text() {
+		return full_text;
 	}
 
-	public void setText(String text) {
-		this.text = text;
+	public void setFull_text(String full_text) {
+		this.full_text = full_text;
 	}
 
 	public UserProfile getUser() {
@@ -41,7 +41,7 @@ public class Tweet {
 	
 	public String toString(){
 		return "created_at: " + created_at + ";\t" +
-				"text: " + text + ";\t" +
+				"extended_text: " + full_text + ";\t" +
 				"screen_name: " + user.getScreen_name();
 	}
 }
