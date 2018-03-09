@@ -1,7 +1,5 @@
 package services;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +16,6 @@ import models.Tweet;
 import play.libs.Json;
 import play.libs.ws.WSBodyReadables;
 import play.libs.ws.WSClient;
-import play.mvc.Result;
 
 @Singleton
 public class TenTweetsForKeywordService {
@@ -36,7 +33,9 @@ public class TenTweetsForKeywordService {
 
 		CompletionStage<String> tokenFuture = twitterAuth.getAccessToken();
 
-		return searchStrings.stream().map(word -> tokenFuture.thenCompose(token -> queryTenTweets(token, word)))
+		return searchStrings
+				.stream()
+				.map(word -> tokenFuture.thenCompose(token -> queryTenTweets(token, word)))
 				.reduce((a, b) -> a.thenCombine(b, (x, y) -> {
 					x.putAll(y);
 					return x;
@@ -49,7 +48,7 @@ public class TenTweetsForKeywordService {
 				.supplyAsync(() -> wsClient.url("https://api.twitter.com/1.1/search/tweets.json")
 						.addHeader("Authorization", "Bearer " + token)
 						.addQueryParameter("tweet_mode", "extended")
-						.addQueryParameter("q", searchString + "-filter:retweets")
+						.addQueryParameter("q", searchString + " -filter:retweets")
 						.addQueryParameter("count", "10"))
 				.thenCompose(r -> r.get())
 				.thenApply(r -> r.getBody(WSBodyReadables.instance.json()).get("statuses"))
