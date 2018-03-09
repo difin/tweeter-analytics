@@ -1,46 +1,59 @@
 @(searchForm: Form[String])(tweetsForWord: Map[String, List[Tweet]])
 
 @main("Home") {
-   <div class="container">
-		<form action="@routes.ApplicationController.index()" method="POST">
-	   		<div class="input-group mt-3 mb-3">
-  					<input type="text" name="searchString" class="form-control border border-success" placeholder="Key words" aria-describedby="basic-addon2">
-  					<div class="input-group-append">
-    					<input class="btn btn-outline-success" type="submit" value="Submit">
-  					</div>
+<div class="container">
+	<form action="@routes.ApplicationController.index()" method="POST">
+		<div class="input-group mt-3 mb-3">
+			<input type="text" name="searchString"
+				class="form-control border border-success"
+				placeholder="Enter a Key word phrase (ex. Canadian Nature)"
+				aria-describedby="basic-addon2">
+			<div class="input-group-append">
+				<input class="btn btn-outline-success" type="submit" value="Submit">
 			</div>
-		</form>
-   	</div>
-
-	<div class="container">
-		@for( (word, tweets) <- tweetsForWord ){
-		<hr>
-		<div class="row">
-     		<H3>@word<H3>
 		</div>
-	   		<ul class="list-unstyled">
+	</form>
+</div>
+
+@if(tweetsForWord != null){
+<div class="container">
+	@for( (word, tweets) <- tweetsForWord ){
+	<hr>
+	<button class="btn btn-outline-primary" type="button"
+		data-toggle="collapse" data-target="#collapse-@word"
+		aria-expanded="true" aria-controls="collapse-@word">@word</button>
+	<div class="collapse @if(tweetsForWord.size < 2){
+	show}
+	"
+		id="collapse-@word">
+		<ul class="list-unstyled">
 			@for(tweet <- tweets){
-				<li class="media bg-light border border-primary rounded p-3 mt-3 mb-3 mr-5 ml-5">
-	    			<div class="media-body">
-	    				<div class="row ">
-	    					<div class="col align-self-center">
-	    						<h2>
-	    							<a href="@routes.ApplicationController.userProfile(tweet.getUser.getScreen_name)" class="btn btn-link" role="button" >@tweet.getUser.getScreen_name</a>
-	    						</h2>
-	    					</div>
-	    					<div class="col-auto align-self-start">
-	    						<small class="text-muted">@tweet.getCreated_at</small>
-	    					</div>
-	    				</div>
-	    				<div class="row p-2">
-	    					<div class="col">
-	    						<h4>@tweet.getText</h4>
-	    					</div>
-	    				</div>
-	   				</div>
-	   			</li>
-			}
-			</ul>
-		}
-   	</div>
-}
+			<li
+				class="media bg-light border border-primary rounded p-2 mt-2 mb-2 mr-5 ml-5">
+				<img class="mr-3" src="@tweet.getUser.getProfile_image_url"
+				alt="Generic placeholder image">
+				<div class="media-body">
+					<div class="row ">
+						<div class="col align-self-center">
+							<h2>
+								<a
+									href="@routes.ApplicationController.userProfile(tweet.getUser.getScreen_name)"
+									class="btn btn-link" role="button">@tweet.getUser.getScreen_name</a>
+							</h2>
+						</div>
+						<div class="col-auto align-self-start">
+							<small class="text-muted">@tweet.getCreated_at</small>
+						</div>
+					</div>
+					<div class="row p-2">
+						<div class="col">
+							<h5>@tweet.getText</h5>
+						</div>
+					</div>
+				</div>
+			</li> }
+		</ul>
+	</div>
+	}
+</div>
+} }

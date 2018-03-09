@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class FunctionalTest extends WithApplication {
 
-    @Test
+/*    @Test
     public void renderTemplate() {
         // If you are calling out to Assets, then you must instantiate an application
         // because it makes use of assets metadata that is configured from
@@ -20,5 +20,5 @@ public class FunctionalTest extends WithApplication {
         Content html = views.html.index.render("Your new application is ready.");
         assertThat("text/html").isEqualTo(html.contentType());
         assertThat(html.body()).contains("Your new application is ready.");
-    }
+    }*/
 }
