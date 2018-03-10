@@ -21,22 +21,29 @@ import views.html.index;
 import views.html.userProfile;
 
 /**
- * Main Controller
+ * ApplicationController implements the logic that maps incoming request with particular page.
+ * @author Dimitry Fingerman
+ * @version 1.0.0
+ *
  */
 @Singleton
 public class ApplicationController extends Controller {
 	
 	/**
-	 * List of the parameters.
-	 * @param userProfileService - UserProfileService class object.
-	 * @param tenTweetsForKeywordService - TenTweetsForKeywordService class object.
-	 * @param formFactory - FormFactory class object.
-	 * @param memory - ArrayList object.
+	 * {@literal userProfileService UserProfileService class object.}
 	 */
-
 	private UserProfileService userProfileService;
+	/**
+	 * {@literal tenTweetsForKeywordService TenTweetsForKeywordService class object.}
+	 */
 	private TenTweetsForKeywordService tenTweetsForKeywordService;
+	/**
+	 * {@literal formFactory FormFactory class object.}
+	 */
 	private FormFactory formFactory;
+	/**
+	 * {@literal ec HttpExecutionContext class object.}
+	 */
 	private HttpExecutionContext ec;
 
 	private List<String> memory = new ArrayList<>();
@@ -55,7 +62,7 @@ public class ApplicationController extends Controller {
 	}
 
 	/**
-	 * index() - this method redirects incoming request to the homepage.
+	 * Method redirects incoming request to homepage.
 	 * @return The resulting home page.
 	 */
 	public CompletionStage<Result> index() {
@@ -68,8 +75,7 @@ public class ApplicationController extends Controller {
 	}
 	
 	/**
-	 * search() - this method is part of search function, that is located on homepage.
-	 * so once the response will be received, this method redirects towards homepage with result.  
+	 * Method handles tweet search process based on keyword.
 	 * @return search result (if available) - CompletionStage object.
 	 * @throws InterruptedException
 	 * @throws ExecutionException
@@ -106,7 +112,7 @@ public class ApplicationController extends Controller {
 	}
 
 	/**
-	 * userProfile - redirect the request to the page where user profile will be displayed.
+	 * Method redirect to User Profile Page.
 	 * @param userProfileId
 	 * @return The User Profile Page.
 	 */

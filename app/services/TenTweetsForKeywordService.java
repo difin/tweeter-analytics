@@ -18,8 +18,9 @@ import play.libs.ws.WSBodyReadables;
 import play.libs.ws.WSClient;
 /**
  * 
- * This class provides facility of fetching ten tweets based on the given keyword.
- *
+ * TenTweetsForKeywordService class implements functionality of fetching 10 tweets based on keyword.
+ * @author Mayank Acharya
+ * @version 1.0.0
  */
 
 @Singleton
@@ -36,9 +37,9 @@ public class TenTweetsForKeywordService {
 	}
 	
 	/**
-	 * 
-	 * @param searchStrings - this method will be called by controller class, when user request for 10 tweets. 
-	 * @return Map[Word , tweets] - this will return Map which has word as a key and list of tweets as a value.
+	 * Returns tweets based on input. 
+	 * @param searchStrings list of keywords to retrieve tweets. 
+	 * @return map of tweets with input keyword.
 	 */
 
 	public CompletionStage<Map<String, List<Tweet>>> getTenTweetsForKeyword(List<String> searchStrings) {
@@ -59,10 +60,10 @@ public class TenTweetsForKeywordService {
 	}
 	
 	/**
-	 * This method will be called, once the authentication has been done.
-	 * @param token
-	 * @param searchString
-	 * @return Map of word and tweets in the form of CompletionStage.
+	 * Query Ten tweets with twitter api.
+	 * @param token accesstoken
+	 * @param searchString search keyword.
+	 * @return map keyword with list of tweet.
 	 */
 	private CompletionStage<Map<String, List<Tweet>>> queryTenTweets(String token, String searchString) {
 
