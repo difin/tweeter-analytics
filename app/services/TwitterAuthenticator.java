@@ -5,7 +5,6 @@ import java.net.URLEncoder;
 import java.util.Base64;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
-import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -38,7 +37,8 @@ public class TwitterAuthenticator {
 
 	public CompletionStage<String> getAccessToken() {
 		return CompletableFuture
-				.supplyAsync(() -> wsClient.url(baseUrl + "/oauth2/token").addHeader("User-Agent", "SOEN-6441")
+				.supplyAsync(() -> wsClient.url(baseUrl + "/oauth2/token")
+						.addHeader("User-Agent", "SOEN-6441")
 						.addHeader("Authorization",	"Basic " + encodeKeys(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET))
 						.addHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
 						.addHeader("Content-Length", "29"))
