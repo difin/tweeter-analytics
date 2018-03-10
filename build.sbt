@@ -31,5 +31,7 @@ EclipseKeys.createSrc := EclipseCreateSrc.ValueSet(EclipseCreateSrc.ManagedClass
 
 // Added by Nikita
 libraryDependencies += filters
+
 //Mockito
-libraryDependencies += "org.mockito" % "mockito-core" % "2.10.0" % "test"
+libraryDependencies += "org.mockito" % "mockito-core" % "2.10.0" % Test
+

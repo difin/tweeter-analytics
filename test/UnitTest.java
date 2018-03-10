@@ -138,10 +138,10 @@ public class UnitTest {
     	//System.out.println(up.toString());
     	CompletionStage<UserProfile> csup = CompletableFuture.completedFuture(up);
     	Tweet tweet1 = new Tweet();
-    	tweet1.setText("tweet1");
+    	tweet1.setFull_text("tweet1");
     	tweet1.setCreated_at("tw1createdAt");
     	Tweet tweet2 = new Tweet();
-    	tweet2.setText("tweet2");
+    	tweet2.setFull_text("tweet2");
     	tweet2.setCreated_at("tw2createdAt");
     	List<Tweet> tweets = new ArrayList<Tweet>();
     	tweets.add(tweet1);
@@ -183,10 +183,10 @@ public class UnitTest {
     	up.setTime_zone("zone");
     	up.setStatuses_count("sc");
     	Tweet tweet1 = new Tweet();
-    	tweet1.setText("tweet1");
+    	tweet1.setFull_text("tweet1");
     	tweet1.setCreated_at("tw1createdAt");
     	Tweet tweet2 = new Tweet();
-    	tweet2.setText("tweet2");
+    	tweet2.setFull_text("tweet2");
     	tweet2.setCreated_at("tw2createdAt");
     	List<Tweet> tweets = new ArrayList<Tweet>();
     	tweets.add(tweet1);
@@ -215,10 +215,10 @@ public class UnitTest {
     	up.setTime_zone("zone");
     	up.setStatuses_count("sc");
     	Tweet tweet1 = new Tweet();
-    	tweet1.setText("tweet1");
+    	tweet1.setFull_text("tweet1");
     	tweet1.setCreated_at("tw1createdAt");
     	Tweet tweet2 = new Tweet();
-    	tweet2.setText("tweet2");
+    	tweet2.setFull_text("tweet2");
     	tweet2.setCreated_at("tw2createdAt");
     	List<Tweet> tweets = new ArrayList<Tweet>();
     	tweets.add(tweet1);
