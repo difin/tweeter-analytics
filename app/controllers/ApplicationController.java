@@ -29,6 +29,14 @@ import views.html.userProfile;
  */
 @Singleton
 public class ApplicationController extends Controller {
+	
+	/**
+	 * List of the parameters.
+	 * @param userProfileService - UserProfileService class object.
+	 * @param tenTweetsForKeywordService - TenTweetsForKeywordService class object.
+	 * @param formFactory - FormFactory class object.
+	 * @param memory - ArrayList object.
+	 */
 
 	@Inject
 	UserProfileService userProfileService;
@@ -42,8 +50,7 @@ public class ApplicationController extends Controller {
 	List<String> memory = new ArrayList<>();
 
 	/**
-	 * Returns the home page.
-	 * 
+	 * index() - this method redirects incoming request to the homepage.
 	 * @return The resulting home page.
 	 */
 	public Result index() throws InterruptedException, ExecutionException {
@@ -51,6 +58,14 @@ public class ApplicationController extends Controller {
 		memory.clear();
 		return ok(index.render(searchForm, null));
 	}
+	
+	/**
+	 * search() - this method is part of search function, that is located on homepage.
+	 * so once the response will be received, this method redirects towards homepage with result.  
+	 * @return search result (if available) - CompletionStage object.
+	 * @throws InterruptedException
+	 * @throws ExecutionException
+	 */
 
 	public CompletionStage<Result> search() throws InterruptedException, ExecutionException {
 		Form<String> searchForm = formFactory.form(String.class).bindFromRequest();
@@ -70,10 +85,9 @@ public class ApplicationController extends Controller {
 	}
 
 	/**
-	 * Returns page1, a simple example of a second page to illustrate
-	 * navigation.
-	 * 
-	 * @return The Page1.
+	 * userProfile - redirect the request to the page where user profile will be displayed.
+	 * @param userProfileId
+	 * @return The User Profile Page.
 	 */
 	public CompletionStage<Result> userProfile(String userProfileId) {
 

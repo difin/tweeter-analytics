@@ -16,6 +16,11 @@ import models.Tweet;
 import play.libs.Json;
 import play.libs.ws.WSBodyReadables;
 import play.libs.ws.WSClient;
+/**
+ * 
+ * This class provides facility of fetching ten tweets based on the given keyword.
+ *
+ */
 
 @Singleton
 public class TenTweetsForKeywordService {
@@ -28,6 +33,12 @@ public class TenTweetsForKeywordService {
 		this.wsClient = wsClient;
 		this.twitterAuth = twitterAuth;
 	}
+	
+	/**
+	 * 
+	 * @param searchStrings - this method will be called by controller class, when user request for 10 tweets. 
+	 * @return Map[Word , tweets] - this will return Map which has word as a key and list of tweets as a value.
+	 */
 
 	public CompletionStage<Map<String, List<Tweet>>> getTenTweetsForKeyword(List<String> searchStrings) {
 
@@ -41,6 +52,13 @@ public class TenTweetsForKeywordService {
 					return x;
 				})).get();
 	}
+	
+	/**
+	 * This method will be called, once the authentication has been done.
+	 * @param token
+	 * @param searchString
+	 * @return Map of word and tweets in the form of CompletionStage.
+	 */
 
 	private CompletionStage<Map<String, List<Tweet>>> queryTenTweets(String token, String searchString) {
 
