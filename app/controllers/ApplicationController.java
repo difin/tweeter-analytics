@@ -1,19 +1,13 @@
 package controllers;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
-import java.util.concurrent.ExecutionException;
-import java.util.function.Supplier;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import play.data.Form;
 import play.data.FormFactory;
 import play.mvc.Controller;
@@ -21,7 +15,6 @@ import play.mvc.Result;
 import services.TenTweetsForKeywordService;
 import services.UserProfileService;
 import views.html.index;
-import views.html.main;
 import views.html.userProfile;
 
 /**
@@ -53,10 +46,13 @@ public class ApplicationController extends Controller {
 	 * index() - this method redirects incoming request to the homepage.
 	 * @return The resulting home page.
 	 */
-	public Result index() throws InterruptedException, ExecutionException {
-		Form<String> searchForm = formFactory.form(String.class);
-		memory.clear();
-		return ok(index.render(searchForm, null));
+	public CompletionStage<Result> index() {
+		
+		return CompletableFuture.supplyAsync(() -> {
+			Form<String> searchForm = formFactory.form(String.class);
+			memory.clear();
+			return ok(index.render(searchForm, null));
+		});
 	}
 	
 	/**
@@ -67,20 +63,22 @@ public class ApplicationController extends Controller {
 	 * @throws ExecutionException
 	 */
 
-	public CompletionStage<Result> search() throws InterruptedException, ExecutionException {
+	public CompletionStage<Result> search() {
+		
 		Form<String> searchForm = formFactory.form(String.class).bindFromRequest();
-		String searchString = searchForm.field("searchString").getValue().get();
-		if (!searchString.equals("")) {
+		String searchString = searchForm.field("searchString").getValue().get().trim();
+
+		if (!searchString.isEmpty()) {
 			memory.add(searchString);
 		}
 
 		if (!memory.isEmpty()) {
-			return tenTweetsForKeywordService.getTenTweetsForKeyword(memory).thenApplyAsync(r -> {
-				return ok(index.render(searchForm, r));
-			});
+			return tenTweetsForKeywordService
+					.getTenTweetsForKeyword(memory)
+					.thenApplyAsync(r -> ok(index.render(searchForm, r)));
 		} else {
 			return (CompletionStage<Result>) CompletableFuture
-					.supplyAsync((Supplier<Result>) () -> ok(index.render(searchForm, null)));
+					.supplyAsync(() -> ok(index.render(searchForm, null)));
 		}
 	}
 
@@ -91,8 +89,8 @@ public class ApplicationController extends Controller {
 	 */
 	public CompletionStage<Result> userProfile(String userProfileId) {
 
-		return userProfileService.userProfle(userProfileId).thenApplyAsync(r -> {
-			return ok(userProfile.render(r));
-		});
+		return userProfileService
+				.userProfle(userProfileId)
+				.thenApplyAsync(r -> ok(userProfile.render(r)));
 	}
 }

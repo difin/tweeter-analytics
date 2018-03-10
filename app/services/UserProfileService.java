@@ -20,19 +20,23 @@ import play.libs.ws.WSClient;
 public class UserProfileService {
     private final WSClient wsClient;
     private final TwitterAuthenticator twitterAuth;
+    private String baseUrl = "https://api.twitter.com";
     
     @Inject
     public UserProfileService(WSClient wsClient, TwitterAuthenticator twitterAuth) {
       this.wsClient = wsClient;
       this.twitterAuth = twitterAuth;
+      
     }
+    public void setBaseUrl(String url) {
+  		this.baseUrl = url;
+  	}
     
     /**
      * This method is an entry point for this class file.
      * @param userName
      * @return an instance of UserProfileAndTweets class in the form of completionstage.
      */
-
     public CompletionStage<UserProfileAndTweets> userProfle(String userName) {
     	
     	CompletionStage<String> tokenFuture = twitterAuth.getAccessToken();
@@ -66,7 +70,7 @@ public class UserProfileService {
 		return 
 			CompletableFuture.supplyAsync(() -> 
 				wsClient
-				.url("https://api.twitter.com/1.1/users/show.json")
+				.url(baseUrl+"/1.1/users/show.json")
 		        .addHeader("Authorization", "Bearer " + accessToken)
 		        .addQueryParameter("screen_name", userName))
 	        .thenCompose(r -> r.get())
@@ -87,7 +91,7 @@ public class UserProfileService {
 		return 
 			CompletableFuture.supplyAsync(() -> 
 				wsClient
-				.url("https://api.twitter.com/1.1/statuses/user_timeline.json")
+				.url(baseUrl+"/1.1/statuses/user_timeline.json")
 		        .addHeader("Authorization", "Bearer " + accessToken)
 		        .addQueryParameter("screen_name", userName)
 		        .addQueryParameter("trim_user", "1")

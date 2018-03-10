@@ -27,6 +27,7 @@ public class TenTweetsForKeywordService {
 
 	private final WSClient wsClient;
 	private final TwitterAuthenticator twitterAuth;
+	private String baseUrl = "https://api.twitter.com";
 
 	@Inject
 	TenTweetsForKeywordService(WSClient wsClient, TwitterAuthenticator twitterAuth) {
@@ -53,17 +54,20 @@ public class TenTweetsForKeywordService {
 				})).get();
 	}
 	
+	public void setBaseUrl(String url) {
+		this.baseUrl = url;
+	}
+	
 	/**
 	 * This method will be called, once the authentication has been done.
 	 * @param token
 	 * @param searchString
 	 * @return Map of word and tweets in the form of CompletionStage.
 	 */
-
 	private CompletionStage<Map<String, List<Tweet>>> queryTenTweets(String token, String searchString) {
 
 		return CompletableFuture
-				.supplyAsync(() -> wsClient.url("https://api.twitter.com/1.1/search/tweets.json")
+				.supplyAsync(() -> wsClient.url(baseUrl+"/1.1/search/tweets.json")
 						.addHeader("Authorization", "Bearer " + token)
 						.addQueryParameter("tweet_mode", "extended")
 						.addQueryParameter("q", searchString + " -filter:retweets")
