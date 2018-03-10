@@ -26,6 +26,12 @@ public class UserProfileService {
       this.wsClient = wsClient;
       this.twitterAuth = twitterAuth;
     }
+    
+    /**
+     * This method is an entry point for this class file.
+     * @param userName
+     * @return an instance of UserProfileAndTweets class in the form of completionstage.
+     */
 
     public CompletionStage<UserProfileAndTweets> userProfle(String userName) {
     	
@@ -46,6 +52,15 @@ public class UserProfileService {
     	return userProfileAndTweetsFuture;
     }
     
+    /**
+     * This method accepts username and accesstoken as a parameter and based on the username it will retrieve
+     * profile details with api call in JSON format and we are extracting necessary details through it.
+     * Finally we are creating UserProfile class object and passing it.
+     * @param accessToken
+     * @param userName
+     * @return an instance of UserProfile class in the form of completionstage.
+     */
+    
     private CompletionStage<UserProfile> getUserProfile(String accessToken, String userName){
 			
 		return 
@@ -59,6 +74,14 @@ public class UserProfileService {
 	        .thenApply(r -> Json.fromJson(r, UserProfile.class));
     }
     
+    /**
+     * This method accepts username and accesstoken as a parameter and based on the username it will retrieve
+     * last 10 tweets of the User with api call in JSON format and we are extracting necessary details through it.
+     * Finally we are creating Tweet class object, storing data on it and passing it.
+     * @param accessToken
+     * @param userName
+     * @return list of tweets in completionstage format.
+     */
     private CompletionStage<List<Tweet>> getUserLastTenTweets(String accessToken, String userName){
 		
 		return 
