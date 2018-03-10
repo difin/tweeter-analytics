@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
-import java.util.function.Supplier;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -40,26 +39,31 @@ public class ApplicationController extends Controller {
 	 * 
 	 * @return The resulting home page.
 	 */
-	public Result index() {
-		Form<String> searchForm = formFactory.form(String.class);
-		memory.clear();
-		return ok(index.render(searchForm, null));
+	public CompletionStage<Result> index() {
+		
+		return CompletableFuture.supplyAsync(() -> {
+			Form<String> searchForm = formFactory.form(String.class);
+			memory.clear();
+			return ok(index.render(searchForm, null));
+		});
 	}
 
 	public CompletionStage<Result> search() {
+		
 		Form<String> searchForm = formFactory.form(String.class).bindFromRequest();
-		String searchString = searchForm.field("searchString").getValue().get();
-		if (!searchString.equals("")) {
+		String searchString = searchForm.field("searchString").getValue().get().trim();
+
+		if (!searchString.isEmpty()) {
 			memory.add(searchString);
 		}
 
 		if (!memory.isEmpty()) {
-			return tenTweetsForKeywordService.getTenTweetsForKeyword(memory).thenApplyAsync(r -> {
-				return ok(index.render(searchForm, r));
-			});
+			return tenTweetsForKeywordService
+					.getTenTweetsForKeyword(memory)
+					.thenApplyAsync(r -> ok(index.render(searchForm, r)));
 		} else {
 			return (CompletionStage<Result>) CompletableFuture
-					.supplyAsync((Supplier<Result>) () -> ok(index.render(searchForm, null)));
+					.supplyAsync(() -> ok(index.render(searchForm, null)));
 		}
 	}
 
@@ -71,8 +75,8 @@ public class ApplicationController extends Controller {
 	 */
 	public CompletionStage<Result> userProfile(String userProfileId) {
 
-		return userProfileService.userProfle(userProfileId).thenApplyAsync(r -> {
-			return ok(userProfile.render(r));
-		});
+		return userProfileService
+				.userProfle(userProfileId)
+				.thenApplyAsync(r -> ok(userProfile.render(r)));
 	}
 }
