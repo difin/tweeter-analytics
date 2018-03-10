@@ -2,14 +2,17 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import models.Tweet;
 import play.data.Form;
 import play.data.FormFactory;
+import play.libs.concurrent.HttpExecutionContext;
 import play.mvc.Controller;
 import play.mvc.Result;
 import services.TenTweetsForKeywordService;
@@ -31,16 +34,25 @@ public class ApplicationController extends Controller {
 	 * @param memory - ArrayList object.
 	 */
 
-	@Inject
-	UserProfileService userProfileService;
+	private UserProfileService userProfileService;
+	private TenTweetsForKeywordService tenTweetsForKeywordService;
+	private FormFactory formFactory;
+	private HttpExecutionContext ec;
 
+	private List<String> memory = new ArrayList<>();
+	
 	@Inject
-	TenTweetsForKeywordService tenTweetsForKeywordService;
-
-	@Inject
-	FormFactory formFactory;
-
-	List<String> memory = new ArrayList<>();
+	public ApplicationController(
+			UserProfileService userProfileService,
+			TenTweetsForKeywordService tenTweetsForKeywordService,
+			FormFactory formFactory,
+			HttpExecutionContext ec){
+		
+		this.userProfileService = userProfileService;
+		this.tenTweetsForKeywordService = tenTweetsForKeywordService;
+		this.formFactory = formFactory;
+		this.ec = ec;
+	}
 
 	/**
 	 * index() - this method redirects incoming request to the homepage.
@@ -64,22 +76,33 @@ public class ApplicationController extends Controller {
 	 */
 
 	public CompletionStage<Result> search() {
+				
+		CompletionStage<Form<String>> searchFormFuture = 
+			CompletableFuture.supplyAsync(() -> {
+				
+				Form<String> searchForm = formFactory.form(String.class).bindFromRequest();
+				String searchString = searchForm.field("searchString").getValue().get().trim();
 		
-		Form<String> searchForm = formFactory.form(String.class).bindFromRequest();
-		String searchString = searchForm.field("searchString").getValue().get().trim();
-
-		if (!searchString.isEmpty()) {
-			memory.add(searchString);
-		}
-
-		if (!memory.isEmpty()) {
-			return tenTweetsForKeywordService
-					.getTenTweetsForKeyword(memory)
-					.thenApplyAsync(r -> ok(index.render(searchForm, r)));
-		} else {
-			return (CompletionStage<Result>) CompletableFuture
-					.supplyAsync(() -> ok(index.render(searchForm, null)));
-		}
+				if (!searchString.isEmpty()) {
+					memory.add(searchString);
+				}
+				
+				return searchForm;
+			}, ec.current());
+		
+		CompletionStage<Map<String, List<Tweet>>> mapFuture = 
+			searchFormFuture.thenCompose(r -> {
+			
+				if (!memory.isEmpty()) {
+					return tenTweetsForKeywordService.getTenTweetsForKeyword(memory);
+				}
+				return
+					CompletableFuture.supplyAsync(() -> {
+						return null;
+					});
+			});
+		
+		return searchFormFuture.thenCombine(mapFuture, (form, map) -> ok(index.render(form, map)));
 	}
 
 	/**
