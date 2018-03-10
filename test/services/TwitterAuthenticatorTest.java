@@ -1,8 +1,12 @@
+package services;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static play.mvc.Results.ok;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.concurrent.ExecutionException;
 
 import org.junit.After;
@@ -18,6 +22,7 @@ public class TwitterAuthenticatorTest {
     private TwitterAuthenticator twitterAuthenticator;
     private WSClient ws;
     private Server server;
+    
 
 	@Before
 	public void setup() {
@@ -25,7 +30,7 @@ public class TwitterAuthenticatorTest {
 				.POST("/oauth2/token").routeTo(() -> ok().sendResource("token.json")).build());
 		ws = play.test.WSTestClient.newClient(server.httpPort());
 		twitterAuthenticator = new TwitterAuthenticator(ws);
-		twitterAuthenticator.baseUrl = "";
+		twitterAuthenticator.setBaseUrl("");
 	}
 
 	@After
@@ -40,6 +45,13 @@ public class TwitterAuthenticatorTest {
 	@Test
 	public void getAccessToken_correctJson_success() throws InterruptedException, ExecutionException {
 		String token = twitterAuthenticator.getAccessToken().toCompletableFuture().get();
+		assertThat(token, equalTo("Test Key"));
+	}
+	
+	@Test //(expected = UnsupportedEncodingException.class)
+	public void testException() throws UnsupportedEncodingException, Exception, ExecutionException{ 
+		twitterAuthenticator.setEncoding("123123");
+		String token=twitterAuthenticator.getAccessToken().toCompletableFuture().get();
 		assertThat(token, equalTo("Test Key"));
 	}
 

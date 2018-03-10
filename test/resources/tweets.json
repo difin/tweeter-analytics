@@ -1,0 +1,10 @@
+[
+{
+	"created_at":"tweet1",
+	"full_text":"tw1createdAt"
+},
+{
+	"created_at":"tweet2",
+	"full_text":"tw2createdAt"
+}
+]

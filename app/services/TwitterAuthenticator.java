@@ -21,11 +21,19 @@ public class TwitterAuthenticator {
 
 	private final WSClient wsClient;
 
-	public String baseUrl = "https://api.twitter.com";
+	private String baseUrl = "https://api.twitter.com";
+	private String encoding = "UTF-8";
 
 	@Inject
 	public TwitterAuthenticator(WSClient wsClient) {
 		this.wsClient = wsClient;
+	}
+	
+	public void setBaseUrl(String url) {
+		this.baseUrl = url;
+	}
+	public void setEncoding(String encoding) {
+		this.encoding = encoding;
 	}
 
 	public CompletionStage<String> getAccessToken() {
@@ -40,8 +48,8 @@ public class TwitterAuthenticator {
 
 	private String encodeKeys(String key, String secret) {
 		try {
-			String encodedKey = URLEncoder.encode(key, "UTF-8");
-			String encodedSecret = URLEncoder.encode(secret, "UTF-8");
+			String encodedKey = URLEncoder.encode(key, encoding);
+			String encodedSecret = URLEncoder.encode(secret, encoding);
 			String fullEncodedKey = encodedKey + ":" + encodedSecret;
 			byte[] fullEncodedKeyBytes = Base64.getEncoder().encode(fullEncodedKey.getBytes());
 			return new String(fullEncodedKeyBytes);
