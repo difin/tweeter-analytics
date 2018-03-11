@@ -1,8 +1,8 @@
 package models;
 
 /**
- * Creates tweet object, in which it stores details of every single tweet like creation date,
- * text and User Profile detail from JSON response.
+ * Represents tweet object, in which it stores details of every single tweet like creation date,
+ * text and User Profile detail from JSON response of Twitter API.
  * @author Mayank Acharya
  * @version 1.0.0
  *
@@ -10,17 +10,17 @@ package models;
 
 public class Tweet {
 	/**
-	 * Stores creation date in string format.
+	 * Creation date in string format.
 	 */
 	private String created_at;
 	
 	/**
-	 * Receives full text from tweet in string format.
+	 * Full text from tweet in string format.
 	 */
 	private String full_text;
 	
 	/**
-	 * Stores user's data in User Profile Model.
+	 * User's data in User Profile Model.
 	 */
 	private UserProfile user;
 	
