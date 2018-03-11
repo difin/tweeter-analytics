@@ -18,7 +18,7 @@ import play.libs.ws.WSBodyReadables;
 import play.libs.ws.WSClient;
 /**
  * 
- * Implements functionality of fetching 10 tweets based on keyword.
+ * Implements functionality of fetching 10 tweets based on search phrase.
  * @author Mayank Acharya
  * @version 1.0.0
  */
@@ -27,25 +27,25 @@ import play.libs.ws.WSClient;
 public class TenTweetsForKeywordService {
 	
 	/**
-	 * {@literal wsClient WSClient object for auth and serialization.}
+	 * Web services client
 	 */
 
 	private final WSClient wsClient;
 	
 	/**
-	 * {@literal twitterAuth TwitterAuthenticator class object.}
+	 * Service for getting authentication token for Twitter API
 	 */
 	private final TwitterAuthenticator twitterAuth;
 	
 	/**
-	 * {@literal baseUrl store base URL.}
+	 * Base URL of Twitter API
 	 */
 	private String baseUrl = "https://api.twitter.com";
 	
 	/**
-	 * Parametarized Constructor for initialization.
-	 * @param wsClient
-	 * @param twitterAuth
+	 * Instantiates new instance of search service
+	 * @param wsClient Web Services client
+	 * @param twitterAuth Twitter Authentication service that provide auth token
 	 */
 
 	@Inject
@@ -55,9 +55,11 @@ public class TenTweetsForKeywordService {
 	}
 	
 	/**
-	 * Returns tweets based on input. 
-	 * @param searchStrings list of keywords to retrieve tweets. 
-	 * @return map of tweets with input keyword.
+	 * Retrieves 10 most recent tweets for each of search phrases provided as input
+	 * 
+	 * @param searchStrings list of phrases for which to retrieve 10 most recent tweets  
+	 * @return map where key is a search phrase and value is the associated 
+	 * list of 10 most recent tweets that contain the phrase
 	 */
 
 	public CompletionStage<Map<String, List<Tweet>>> getTenTweetsForKeyword(List<String> searchStrings) {
@@ -75,7 +77,7 @@ public class TenTweetsForKeywordService {
 	
 	/**
 	 * 
-	 * @param url sets base url.
+	 * @param url sets base url for Twitter API.
 	 */
 	
 	public void setBaseUrl(String url) {
@@ -83,10 +85,15 @@ public class TenTweetsForKeywordService {
 	}
 	
 	/**
-	 * Query Ten tweets with twitter api.
-	 * @param token accesstoken
-	 * @param searchString search keyword.
-	 * @return map keyword with list of tweet.
+	 * 
+	 * Retrieves ten most recent tweets with twitter api.
+	 * 
+	 * @param token access token for authenticating with Twitter API
+	 * @param searchString search phrase for which to retrieve ten most recent tweets, may contain spaces.
+	 * 
+	 * @return map with 1 key/value pair where key is the <code>searchString</code> 
+	 * and value is the associated list of ten most recent tweets that contain the 
+	 * <code>searchString</code>
 	 */
 	private CompletionStage<Map<String, List<Tweet>>> queryTenTweets(String token, String searchString) {
 
