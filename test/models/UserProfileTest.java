@@ -5,12 +5,15 @@ import java.util.List;
 
 import org.junit.Test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.equalTo;
+
 public class UserProfileTest {
-	UserProfile up = new UserProfile();
 
 	@Test
-
 	public void testUserProfileModel() {
+		UserProfile up = new UserProfile();
 		up.setName("testName");
 		up.setScreen_name("testSname");
 		up.setCreated_at("createdAt");
@@ -32,7 +35,6 @@ public class UserProfileTest {
 
 		up.setTweets(tweets);
 
-		assert(up.getTweets()==tweets);
+		assertThat(up.getTweets(), is(equalTo(tweets)));
 	}
-
 }
