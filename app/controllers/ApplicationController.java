@@ -77,8 +77,6 @@ public class ApplicationController extends Controller {
 	/**
 	 * Method handles tweet search process based on keyword.
 	 * @return search result (if available) - CompletionStage object.
-	 * @throws InterruptedException
-	 * @throws ExecutionException
 	 */
 
 	public CompletionStage<Result> search() {
