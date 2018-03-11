@@ -18,7 +18,7 @@ import play.libs.ws.WSBodyReadables;
 import play.libs.ws.WSClient;
 /**
  * 
- * TenTweetsForKeywordService class implements functionality of fetching 10 tweets based on keyword.
+ * Implements functionality of fetching 10 tweets based on keyword.
  * @author Mayank Acharya
  * @version 1.0.0
  */
@@ -54,6 +54,11 @@ public class TenTweetsForKeywordService {
 					return x;
 				})).get();
 	}
+	
+	/**
+	 * 
+	 * @param url sets base url.
+	 */
 	
 	public void setBaseUrl(String url) {
 		this.baseUrl = url;

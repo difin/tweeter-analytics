@@ -21,7 +21,7 @@ import views.html.index;
 import views.html.userProfile;
 
 /**
- * ApplicationController implements the logic that maps incoming request with particular page.
+ * Implements the logic that maps incoming request with particular page.
  * @author Dimitry Fingerman
  * @version 1.0.0
  *
@@ -62,7 +62,7 @@ public class ApplicationController extends Controller {
 	}
 
 	/**
-	 * Method redirects incoming request to homepage.
+	 * Redirects incoming request to homepage.
 	 * @return The resulting home page.
 	 */
 	public CompletionStage<Result> index() {
@@ -75,7 +75,7 @@ public class ApplicationController extends Controller {
 	}
 	
 	/**
-	 * Method handles tweet search process based on keyword.
+	 * Handles tweet search process based on keyword.
 	 * @return search result (if available) - CompletionStage object.
 	 * @throws InterruptedException
 	 * @throws ExecutionException
@@ -112,7 +112,7 @@ public class ApplicationController extends Controller {
 	}
 
 	/**
-	 * Method redirect to User Profile Page.
+	 * Redirect to User Profile Page.
 	 * @param userProfileId
 	 * @return The User Profile Page.
 	 */

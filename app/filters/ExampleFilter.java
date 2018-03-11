@@ -8,7 +8,7 @@ import javax.inject.Singleton;
 import java.util.concurrent.Executor;
 
 /**
- * This is a simple filter that adds a header to all requests.
+ * Simple filter that adds a header to all requests.
  */
 @Singleton
 public class ExampleFilter extends EssentialFilter {

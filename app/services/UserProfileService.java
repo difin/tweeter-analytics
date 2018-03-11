@@ -16,6 +16,12 @@ import play.libs.Json;
 import play.libs.ws.WSBodyReadables;
 import play.libs.ws.WSClient;
 
+/**
+ * 
+ * @author Dimitry Fingerman
+ * @version 1.0.0
+ * Implements the functionality to fetch user profile.
+ */
 @Singleton
 public class UserProfileService {
     private final WSClient wsClient;
@@ -33,7 +39,7 @@ public class UserProfileService {
   	}
     
     /**
-     * This method is an entry point for this class file.
+     * Entry point for this class file and returns user profile to controller.
      * @param userName
      * @return an instance of UserProfileAndTweets class in the form of completionstage.
      */
@@ -57,9 +63,7 @@ public class UserProfileService {
     }
     
     /**
-     * This method accepts username and accesstoken as a parameter and based on the username it will retrieve
-     * profile details with api call in JSON format and we are extracting necessary details through it.
-     * Finally we are creating UserProfile class object and passing it.
+     * Interacts with twitter api to fetch user profile.
      * @param accessToken
      * @param userName
      * @return an instance of UserProfile class in the form of completionstage.
@@ -79,9 +83,7 @@ public class UserProfileService {
     }
     
     /**
-     * This method accepts username and accesstoken as a parameter and based on the username it will retrieve
-     * last 10 tweets of the User with api call in JSON format and we are extracting necessary details through it.
-     * Finally we are creating Tweet class object, storing data on it and passing it.
+     * Interacts with twitter api to fetch 10 tweets based on given username.
      * @param accessToken
      * @param userName
      * @return list of tweets in completionstage format.

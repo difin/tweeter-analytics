@@ -1,7 +1,7 @@
 package models;
 
 /**
- * Tweet class implements functionality of adding every tweet as object from JSON response.
+ * Implements functionality of adding every tweet as object from JSON response.
  * @author Mayank Acharya
  * @version 1.0.0
  *

@@ -14,21 +14,21 @@ import play.libs.ws.WSClient;
 
 /**
  * 
- * This class implements the functionality of authentication with twitter.
+ * Implements the functionality of authentication with twitter.
  *
  */
 
 @Singleton
 public class TwitterAuthenticator {
 	
-	/**
-	 * List of variables.
-	 * TWITTER_CONSUMER_KEY - contains twitter consumer key.
-	 * TWITTER_CONSUMER_SECRET - contains twitter consumer secret.
-	 */
 	
-
+	/**
+	 * {@literal TWITTER_CONSUMER_KEY contains twitter consumer key.}
+	 */
 	private static final String TWITTER_CONSUMER_KEY = "2uiozTAH7aMj7zf3BfrXvajw0";
+	/**
+	 * {@literal TWITTER_CONSUMER_SECRET contains twitter consumer secret. }
+	 */
 	private static final String TWITTER_CONSUMER_SECRET = "8yeB9yu6bGG18CZu5fK23dQK6FgK2H2OJyA0uoY0Mv4LiTTnhP";
 
 	private final WSClient wsClient;
@@ -49,7 +49,7 @@ public class TwitterAuthenticator {
    
 	
 	/** 
-     * In this method, we are encoding access key and secret with Base64 encoding scheme. 
+     * Receives access token.
      * @param key
      * @param secret
      * @return encoded key.
@@ -64,6 +64,13 @@ public class TwitterAuthenticator {
 				.thenCompose(r -> r.post("grant_type=client_credentials"))
 				.thenApply((r) -> r.getBody(WSBodyReadables.instance.json()).get("access_token").asText());
 	}
+	
+	/**
+	 * Encoding access key and secret with Base64 encoding scheme.
+	 * @param key
+	 * @param secret
+	 * @return
+	 */
 
 	private String encodeKeys(String key, String secret) {
 		try {

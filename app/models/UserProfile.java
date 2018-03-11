@@ -3,7 +3,7 @@ package models;
 import java.util.List;
 
 /**
- * 
+ * Implements functionality to generate user profile object from JSON object.
  * @author Dimitry Fingerman
  * @version 1.0.0
  */

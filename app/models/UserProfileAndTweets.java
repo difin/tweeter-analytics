@@ -3,7 +3,7 @@ package models;
 import java.util.List;
 
 /**
- * UserProfileAndTweets class combine the data of Tweet and UserProfile object into single one.
+ * Combines the data of Tweet and UserProfile object into single one.
  * @author Dimitry Fingerman
  * @version 1.0.0
  *
