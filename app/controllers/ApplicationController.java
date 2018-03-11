@@ -45,8 +45,19 @@ public class ApplicationController extends Controller {
 	 * {@literal ec HttpExecutionContext class object.}
 	 */
 	private HttpExecutionContext ec;
-
+	
+	/**
+	 * {@literal memory List of strings.}
+	 */
 	private List<String> memory = new ArrayList<>();
+	
+	/**
+	 * Parametarized constructor.
+	 * @param userProfileService
+	 * @param tenTweetsForKeywordService
+	 * @param formFactory
+	 * @param ec
+	 */
 	
 	@Inject
 	public ApplicationController(

@@ -24,12 +24,28 @@ import play.routing.RoutingDsl;
 import play.server.Server;
 import services.TwitterAuthenticator;
 
+/**
+ * Implements JUnit test cases for UserProfileService functionality.
+ * @author Tumer Horloev
+ * @version 1.0.0
+ */
 public class UserProfileServiceTest {
+	/**
+	 * {@literal twitterAuthenticator TwitterAuthenticator class object.}
+	 */
 	private TwitterAuthenticator twitterAuthenticator;
+	/**
+	 * {@literal ws WSClient object for auth and serialization.}
+	 */
     private WSClient ws;
+    /**
+	 * {@literal server Server class instance.}
+	 */
     private Server server;
     
-
+    /**
+	 * Initialize dummy testing data.
+	 */
 	@Before
 	public void setup() {
 		
@@ -43,6 +59,11 @@ public class UserProfileServiceTest {
 		twitterAuthenticator.setBaseUrl("");
 		
 	}
+	
+	/**
+	 * Destroys testing setup.
+	 * @throws IOException
+	 */
 
 	@After
 	public void tearDown() throws IOException {
@@ -52,7 +73,9 @@ public class UserProfileServiceTest {
 			server.stop();
 		}
 	}
-
+	/**
+	 * Testing various operation with dummy data.
+	 */
 	@Test
 	public void testUserProfile() throws InterruptedException, ExecutionException {
     	UserProfile up = new UserProfile();

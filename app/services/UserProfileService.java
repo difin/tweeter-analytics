@@ -17,16 +17,30 @@ import play.libs.ws.WSBodyReadables;
 import play.libs.ws.WSClient;
 
 /**
- * 
+ * Implements the functionality to fetch user profile.
  * @author Dimitry Fingerman
  * @version 1.0.0
- * Implements the functionality to fetch user profile.
  */
 @Singleton
 public class UserProfileService {
+	/**
+	 * {@literal wsClient WSClient object for auth and serialization.}
+	 */
     private final WSClient wsClient;
+    /**
+	 * {@literal twitterAuth TwitterAuthenticator class object.}
+	 */
     private final TwitterAuthenticator twitterAuth;
+    /**
+	 * {@literal baseUrl store base URL.}
+	 */
     private String baseUrl = "https://api.twitter.com";
+   
+    /**
+     * Parametarized constructor.
+     * @param wsClient
+     * @param twitterAuth
+     */
     
     @Inject
     public UserProfileService(WSClient wsClient, TwitterAuthenticator twitterAuth) {
@@ -34,6 +48,11 @@ public class UserProfileService {
       this.twitterAuth = twitterAuth;
       
     }
+    
+    /**
+     * Sets base URL.
+     * @param url
+     */
     public void setBaseUrl(String url) {
   		this.baseUrl = url;
   	}

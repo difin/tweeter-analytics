@@ -16,7 +16,16 @@ import models.UserProfile;
 import models.UserProfileAndTweets;
 import play.twirl.api.Content;
 
+/**
+ * Implements JUnit test cases for user profile page.
+ * @author Tumer Horloev
+ * @version 1.0.0
+ */
 public class userProfileTest {
+	
+	/**
+	 * Testing various operation with dummy data.
+	 */
 	
 	@Test
 	public void render_validProfile_success(){

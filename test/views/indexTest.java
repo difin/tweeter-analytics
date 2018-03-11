@@ -22,12 +22,29 @@ import play.data.FormFactory;
 import play.test.Helpers;
 import play.twirl.api.Content;
 
+/**
+ * Implements JUnit test cases for index .
+ * @author Tumer Horloev
+ * @version 1.0.0
+ */
 public class indexTest {
+	
+	/**
+	 * {@literal application Fakeapplication creation.}
+	 */
 
 	Application application = Helpers.fakeApplication();
 	
+	/**
+	 * {@literal formfactory object.}
+	 */
+	
 	@Inject
 	private FormFactory formFactory;
+	
+	/**
+	 * Testing various operation with dummy data.
+	 */
 
 	@Test
 	public void render_correctForm_NullMap() {
@@ -39,6 +56,10 @@ public class indexTest {
 		assertThat("text/html", is(equalTo(html.contentType())));
 		stringContainsInOrder(Arrays.asList("<form","</form>"));
 	}
+	
+	/**
+	 * Testing various operation with dummy data.
+	 */
 	
 	@Test
 	public void render_correctForm_correctMap() {
@@ -67,6 +88,10 @@ public class indexTest {
 		assertThat("text/html", is(equalTo(html.contentType())));
 		stringContainsInOrder(Arrays.asList("testSname","tweet1"));
 	}
+	
+	/**
+	 * Testing various operation with dummy data.
+	 */
 
 	@Test
 	public void render_nullForm_nullMap() {

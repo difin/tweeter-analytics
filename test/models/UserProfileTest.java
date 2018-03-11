@@ -9,8 +9,15 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.equalTo;
 
+/**
+ * Implements JUnit test cases for UserProfile functionality.
+ * @author Tumer Horloev
+ * @version 1.0.0
+ */
 public class UserProfileTest {
-
+	/**
+	 * Initialize dummy testing data and Test functionality.
+	 */
 	@Test
 	public void testUserProfileModel() {
 		UserProfile up = new UserProfile();

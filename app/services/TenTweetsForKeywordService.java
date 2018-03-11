@@ -25,10 +25,28 @@ import play.libs.ws.WSClient;
 
 @Singleton
 public class TenTweetsForKeywordService {
+	
+	/**
+	 * {@literal wsClient WSClient object for auth and serialization.}
+	 */
 
 	private final WSClient wsClient;
+	
+	/**
+	 * {@literal twitterAuth TwitterAuthenticator class object.}
+	 */
 	private final TwitterAuthenticator twitterAuth;
+	
+	/**
+	 * {@literal baseUrl store base URL.}
+	 */
 	private String baseUrl = "https://api.twitter.com";
+	
+	/**
+	 * Parametarized Constructor for initialization.
+	 * @param wsClient
+	 * @param twitterAuth
+	 */
 
 	@Inject
 	TenTweetsForKeywordService(WSClient wsClient, TwitterAuthenticator twitterAuth) {

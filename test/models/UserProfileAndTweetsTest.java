@@ -8,11 +8,26 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Implements JUnit test cases for UserProfileandTweets functionality.
+ * @author Tumer Horloev
+ * @version 1.0.0
+ */
 public class UserProfileAndTweetsTest {
+	
+	/**
+	 * {@literal up creating UserProfile object.}
+	 */
 	private UserProfile up = new UserProfile();
+	/**
+	 * {@literal tweets creating dummy list to store tweets. }
+	 */
 	private List<Tweet> tweets = new ArrayList<Tweet>();
 	
 	
+	/**
+	 * Initialize dummy testing data.
+	 */
 	@Before
 	public void setup() {
 		
@@ -36,6 +51,10 @@ public class UserProfileAndTweetsTest {
 		tweets.add(tweet2);
 		
 	}
+	
+	/**
+	 * Testing various operation with dummy data.
+	 */
 
 	@Test
 	public void testUserProfileAndTweetsModel() {
@@ -47,6 +66,10 @@ public class UserProfileAndTweetsTest {
 		assert(upat.getTweets()==tweets);
 
 	}
+	
+	/**
+	 * Testing various operation with dummy data.
+	 */
 	
 	@Test
 	public void testUserProfileAndTweetsModelToString() {

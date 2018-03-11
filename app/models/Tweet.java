@@ -8,9 +8,19 @@ package models;
  */
 
 public class Tweet {
-	
+	/**
+	 * {@literal created_at stores creation date.}
+	 */
 	private String created_at;
+	
+	/**
+	 * {@literal full_text stores full text info.}
+	 */
 	private String full_text;
+	
+	/**
+	 * {@literal user stores UserProfile object.}
+	 */
 	private UserProfile user;
 	
 	/**
@@ -84,6 +94,10 @@ public class Tweet {
 	public void setUser(UserProfile user) {
 		this.user = user;
 	}
+	
+	/**
+	 * @return string representation of Object's properties.
+	 */
 	
 	
 	public String toString(){

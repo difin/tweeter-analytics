@@ -26,12 +26,28 @@ import play.routing.RoutingDsl;
 import play.server.Server;
 import services.TwitterAuthenticator;
 
+/**
+ * Implements JUnit test cases for 10 Tweets retrieval functionality.
+ * @author Tumer Horloev
+ * @version 1.0.0
+ */
 public class TenTweetsForKeywordServiceTest {
+	/**
+	 * {@literal twitterAuthenticator TwitterAuthenticator class object.}
+	 */
 	private TwitterAuthenticator twitterAuthenticator;
+	/**
+	 * {@literal ws WSClient object for auth and serialization.}
+	 */
     private WSClient ws;
+    /**
+	 * {@literal server Server class instance.}
+	 */
     private Server server;
     
-
+    /**
+	 * Initialize dummy testing data.
+	 */
 	@Before
 	public void setup() {
 		
@@ -44,6 +60,11 @@ public class TenTweetsForKeywordServiceTest {
 		twitterAuthenticator.setBaseUrl("");
 		
 	}
+	
+	/**
+	 * Destroys testing setup.
+	 * @throws IOException
+	 */
 
 	@After
 	public void tearDown() throws IOException {
@@ -53,6 +74,11 @@ public class TenTweetsForKeywordServiceTest {
 			server.stop();
 		}
 	}
+	
+	
+	/**
+	 * Testing various operation with dummy data.
+	 */
 
 	@Test
 	public void testGetTenTweetsForKeyword() throws InterruptedException, ExecutionException {

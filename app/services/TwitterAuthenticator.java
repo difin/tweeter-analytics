@@ -15,6 +15,8 @@ import play.libs.ws.WSClient;
 /**
  * 
  * Implements the functionality of authentication with twitter.
+ * @author Dimitry Fingerman
+ * @version 1.0.0
  *
  */
 
@@ -30,19 +32,41 @@ public class TwitterAuthenticator {
 	 * {@literal TWITTER_CONSUMER_SECRET contains twitter consumer secret. }
 	 */
 	private static final String TWITTER_CONSUMER_SECRET = "8yeB9yu6bGG18CZu5fK23dQK6FgK2H2OJyA0uoY0Mv4LiTTnhP";
-
+	/**
+	 * {@literal wsClient WSClient object for auth and serialization.}
+	 */
 	private final WSClient wsClient;
-
+	/**
+	 * {@literal baseUrl store base URL.}
+	 */
 	private String baseUrl = "https://api.twitter.com";
+	/**
+	 * {@literal encoding store encoding scheme.}
+	 */
 	private String encoding = "UTF-8";
+	
+	/**
+	 * Sets WSClient object.
+	 * @param wsClient
+	 */
 
 	@Inject
 	public TwitterAuthenticator(WSClient wsClient) {
 		this.wsClient = wsClient;
 	}
+	
+	/**
+	 * Sets base URL.
+	 * @param url
+	 */
 	public void setBaseUrl(String url) {
 		this.baseUrl = url;
 	}
+	
+	/**
+	 * Sets encoding scheme.
+	 * @param encoding
+	 */
 	public void setEncoding(String encoding) {
 		this.encoding = encoding;
 	}

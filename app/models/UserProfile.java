@@ -9,18 +9,54 @@ import java.util.List;
  */
 
 public class UserProfile{
-
+	
+	/**
+	 * {@literal name store name.}
+	 */
 	private String name;
+	/**
+	 * {@literal screen_name store screen name.}
+	 */
 	private String screen_name;
+	/**
+	 * {@literal description store description.}
+	 */
 	private String description;
+	/**
+	 * {@literal followers_count store follower counts.}
+	 */
 	private long followers_count;
+	/**
+	 * {@literal friends_count store friend counts.}
+	 */
 	private long friends_count;
+	/**
+	 * {@literal favourites_count store favorite count.}
+	 */
 	private long favourites_count;
+	/**
+	 * {@literal created_at store creation date.}
+	 */
 	private String created_at;
+	/**
+	 * {@literal time_zone store time zone.}
+	 */
 	private String time_zone;
+	/**
+	 * {@literal statuses store status info.}
+	 */
 	private String statuses_count;
+	/**
+	 * {@literal tweets store list of tweets.}
+	 */
 	private List<Tweet> tweets;
+	/**
+	 * {@literal profile_image_url store image url.}
+	 */
 	private String profile_image_url;
+	/**
+	 * {@literal profile_image_url_400x400 store image url of 400*400 size.}
+	 */
 	private String profile_image_url_400x400;
 	
 	/**
@@ -235,7 +271,10 @@ public class UserProfile{
 	public void setProfile_image_url_400x400(String profile_image_url_400x400) {
 		this.profile_image_url_400x400 = profile_image_url_400x400;
 	}
-
+	
+	/**
+	 * @return string representation of Object's properties.
+	 */
 	public String toString(){
 		return "name: " + name + "\n" +
 				"screen_name: " + screen_name + "\n" +

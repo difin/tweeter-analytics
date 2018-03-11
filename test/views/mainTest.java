@@ -11,7 +11,16 @@ import org.junit.Test;
 
 import play.twirl.api.Content;
 
+/**
+ * Implements JUnit test cases for main page.
+ * @author Tumer Horloev
+ * @version 1.0.0
+ */
 public class mainTest {
+	
+	/**
+	 * Testing various operation with dummy data.
+	 */
 
 	@Test
 	public void render_null_null() {

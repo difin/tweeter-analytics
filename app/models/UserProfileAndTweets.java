@@ -11,7 +11,13 @@ import java.util.List;
 
 public class UserProfileAndTweets {
 	
+	/**
+	 * {@literal userProfile store UserProfile object.}
+	 */
 	private UserProfile userProfile;
+	/**
+	 * {@literal tweets store list of tweets.}
+	 */
 	private List<Tweet> tweets;
 	
 	/**
@@ -55,6 +61,10 @@ public class UserProfileAndTweets {
 		this.tweets = tweets;
 	}
 	
+	
+	/**
+	 * @return string representation of Object's properties.
+	 */
 	public String toString(){
 		
 		String tweetsAsString = tweets.stream()
