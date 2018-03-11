@@ -1,7 +1,8 @@
 package models;
 
 /**
- * Implements functionality of adding every tweet as object from JSON response.
+ * Creates tweet object, in which it stores details of every single tweet like creation date,
+ * text and User Profile detail from JSON response.
  * @author Mayank Acharya
  * @version 1.0.0
  *
@@ -9,17 +10,17 @@ package models;
 
 public class Tweet {
 	/**
-	 * {@literal created_at stores creation date.}
+	 * Stores creation date in string format.
 	 */
 	private String created_at;
 	
 	/**
-	 * {@literal full_text stores full text info.}
+	 * Receives full text from tweet in string format.
 	 */
 	private String full_text;
 	
 	/**
-	 * {@literal user stores UserProfile object.}
+	 * Stores user's data in User Profile Model.
 	 */
 	private UserProfile user;
 	
@@ -32,10 +33,10 @@ public class Tweet {
 	}
 	
 	/**
-	 * Parametarized constructor.
-	 * @param created_at
-	 * @param full_text
-	 * @param account
+	 * Creates new tweet object based on input parameters.
+	 * @param created_at     Creation Date.
+	 * @param full_text      Full Tweet text.
+	 * @param account        Twitter Account Information.
 	 */
 			
 	public Tweet(String created_at, String full_text, String account){
@@ -44,8 +45,8 @@ public class Tweet {
 	}
 	
 	/**
-	 * 
-	 * @return created_at Creation Date.
+	 * Returns creation date of tweet.
+	 * @return creation date of tweet.
 	 */
 	
 	public String getCreated_at() {
@@ -53,8 +54,8 @@ public class Tweet {
 	}
 	
 	/**
-	 * 
-	 * @param created_at set creation date.
+	 * Sets creation date of tweet.
+	 * @param created_at     Creation date of tweet.
 	 */
 
 	public void setCreated_at(String created_at) {
@@ -62,8 +63,8 @@ public class Tweet {
 	}
 	
 	/**
-	 * 
-	 * @return full_text receive full text.
+	 * Returns tweet's full text in string format.
+	 * @return Tweet's text in string representation.
 	 */
 
 	public String getFull_text() {
@@ -71,8 +72,8 @@ public class Tweet {
 	}
 	
 	/**
-	 * 
-	 * @param full_text set tweet text.
+	 * Sets tweet text in string representation form.
+	 * @param full_text     Tweet's text.
  	 */
 
 	public void setFull_text(String full_text) {
@@ -80,23 +81,23 @@ public class Tweet {
 	}
 
 	/**
-	 * 
-	 * @return user return profile object. 
+	 * Returns User Profile class's object.
+	 * @return user UserProfile associated with present tweet.
 	 */
 	public UserProfile getUser() {
 		return user;
 	}
 
 	/**
-	 * 
-	 * @param user set userprofile object.
+	 * Sets User Profile associated with given tweet.
+	 * @param user     Creates user profile object and store it with attached tweet.
 	 */
 	public void setUser(UserProfile user) {
 		this.user = user;
 	}
 	
 	/**
-	 * @return string representation of Object's properties.
+	 * @return String representation of every information that tweet object contains.
 	 */
 	
 	
