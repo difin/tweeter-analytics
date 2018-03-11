@@ -21,8 +21,10 @@ import views.html.index;
 import views.html.userProfile;
 
 /**
- * Implements the logic that maps incoming request with particular page.
- * @author Dimitry Fingerman
+ * Implements controller that handles requests for searching tweets according to keywords
+ * and displaying Tweeter's user profiles.
+ *  
+ * @author Dmitriy Fingerman
  * @version 1.0.0
  *
  */
@@ -30,33 +32,33 @@ import views.html.userProfile;
 public class ApplicationController extends Controller {
 	
 	/**
-	 * {@literal userProfileService UserProfileService class object.}
+	 * User Profile retrieval service
 	 */
 	private UserProfileService userProfileService;
 	/**
-	 * {@literal tenTweetsForKeywordService TenTweetsForKeywordService class object.}
+	 * Tweets search service
 	 */
 	private TenTweetsForKeywordService tenTweetsForKeywordService;
 	/**
-	 * {@literal formFactory FormFactory class object.}
+	 * Form Factory for managing UI forms
 	 */
 	private FormFactory formFactory;
 	/**
-	 * {@literal ec HttpExecutionContext class object.}
+	 * Execution context that wraps execution pool
 	 */
 	private HttpExecutionContext ec;
 	
 	/**
-	 * {@literal memory List of strings.}
+	 * History of searches.
 	 */
 	private List<String> memory = new ArrayList<>();
 	
 	/**
-	 * Parametarized constructor.
-	 * @param userProfileService
-	 * @param tenTweetsForKeywordService
-	 * @param formFactory
-	 * @param ec
+	 * Creates new application controller with injected parameters
+	 * @param userProfileService         User profile retrieval service
+	 * @param tenTweetsForKeywordService Tweets search service
+	 * @param formFactory                Form Factory
+	 * @param ec                         Execution context
 	 */
 	
 	@Inject
@@ -73,8 +75,8 @@ public class ApplicationController extends Controller {
 	}
 
 	/**
-	 * Redirects incoming request to homepage.
-	 * @return The resulting home page.
+	 * Renders home page
+	 * @return promise of a result with a rendered home page.
 	 */
 	public CompletionStage<Result> index() {
 		
@@ -86,8 +88,15 @@ public class ApplicationController extends Controller {
 	}
 	
 	/**
-	 * Handles tweet search process based on keyword.
-	 * @return search result (if available) - CompletionStage object.
+	 * Handles tweet search based on keywords.
+	 * 
+	 * Retrieves a search phrase from a UI form. 
+	 * Then, if the phrase is not empty, updates the list of searches with this new phrase 
+	 * and calls tweet search service with the full history of previous and current search phrases.
+	 * 
+	 * Then renders a view with the result of all search phrases.
+	 * 
+	 * @return promise of a result with a rendered view of tweet searches.
 	 */
 
 	public CompletionStage<Result> search() {
@@ -121,9 +130,11 @@ public class ApplicationController extends Controller {
 	}
 
 	/**
-	 * Redirect to User Profile Page.
-	 * @param userProfileId
-	 * @return The User Profile Page.
+	 * Retrieves user profile info and user's last 10 tweets 
+	 * and renders a view with this info.
+	 * 
+	 * @param userProfileId Twitter account ID
+	 * @return promise of a result with a rendered view of user profile info
 	 */
 	public CompletionStage<Result> userProfile(String userProfileId) {
 
