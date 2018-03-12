@@ -24,7 +24,8 @@ import play.twirl.api.Content;
 public class userProfileTest {
 	
 	/**
-	 * Testing various operation with dummy data.
+	 * Test the rendering of the form with dummy UserProfile and tweet data and verify that
+	 * whether it generated correct output or not by asserting input keyword with page data.
 	 */
 	
 	@Test

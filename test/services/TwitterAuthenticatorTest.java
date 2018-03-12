@@ -25,20 +25,21 @@ import services.TwitterAuthenticator;
  */
 public class TwitterAuthenticatorTest {
 	/**
-	 * {@literal twitterAuthenticator TwitterAuthenticator class object.}
+	 * Twitter Authentication object.
 	 */
     private TwitterAuthenticator twitterAuthenticator;
     /**
-	 * {@literal ws WSClient object for auth and serialization.}
+	 * WSClient to play with RESTAPI Calls.
 	 */
     private WSClient ws;
     /**
-	 * {@literal server Server class instance.}
+	 * Server class instance.
 	 */
     private Server server;
     
     /**
-	 * Initialize dummy testing data.
+	 * Initializing test environment.
+	 * 1. Authenticating with twitter server to get access token.
 	 */
 
 	@Before
@@ -65,7 +66,7 @@ public class TwitterAuthenticatorTest {
 	}
 	
 	/**
-	 * Testing various operation with dummy data.
+	 * Verifying access token with given input parameter.
 	 */
 	@Test
 	public void getAccessToken_correctJson_success() throws InterruptedException, ExecutionException {
@@ -74,7 +75,7 @@ public class TwitterAuthenticatorTest {
 	}
 	
 	/**
-	 * Testing various operation with dummy data.
+	 * Verifying Enconding scheme, that we are using in our application.
 	 */
 	
 	@Test //(expected = UnsupportedEncodingException.class)

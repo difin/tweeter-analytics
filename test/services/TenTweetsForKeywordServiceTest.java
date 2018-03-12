@@ -33,20 +33,21 @@ import services.TwitterAuthenticator;
  */
 public class TenTweetsForKeywordServiceTest {
 	/**
-	 * {@literal twitterAuthenticator TwitterAuthenticator class object.}
+	 * Twitter Authentication object for authentication purpose.
 	 */
 	private TwitterAuthenticator twitterAuthenticator;
 	/**
-	 * {@literal ws WSClient object for auth and serialization.}
+	 * WS Client object to interact with REST-API Calls.
 	 */
     private WSClient ws;
     /**
-	 * {@literal server Server class instance.}
+	 * Server object.
 	 */
     private Server server;
     
     /**
-	 * Initialize dummy testing data.
+	 * Initializing test environment.
+	 * 1. Authenticating with twitter server to get access token.
 	 */
 	@Before
 	public void setup() {
@@ -77,7 +78,7 @@ public class TenTweetsForKeywordServiceTest {
 	
 	
 	/**
-	 * Testing various operation with dummy data.
+	 * Once Authentication is done, inserting dummy data as a keyword and searching 10 tweets based on it.
 	 */
 
 	@Test

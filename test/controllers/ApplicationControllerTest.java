@@ -34,6 +34,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.equalTo;
 
+/**
+ * Test the functionality of Application Controller.
+ * @author Deepika Dembla
+ * @version 1.0.0
+ *
+ */
 public class ApplicationControllerTest {
 	
 	private UserProfileService userProfileService = mock(UserProfileService.class);

@@ -19,7 +19,7 @@ import play.twirl.api.Content;
 public class mainTest {
 	
 	/**
-	 * Testing various operation with dummy data.
+	 * Test the homepage of website and asserts whether it contains the given keyword or not on Page.
 	 */
 
 	@Test

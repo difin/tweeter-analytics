@@ -23,27 +23,29 @@ import play.test.Helpers;
 import play.twirl.api.Content;
 
 /**
- * Implements JUnit test cases for index .
+ * Implements JUnit test cases for index function.
  * @author Tumer Horloev
  * @version 1.0.0
  */
 public class indexTest {
 	
 	/**
-	 * {@literal application Fakeapplication creation.}
+	 * Object of Helper class's fakeapplication.
+	 * FakeApplication limits play application for testing purpose.
+	 * It sets fake http request, session for testing purpose.
 	 */
 
 	Application application = Helpers.fakeApplication();
 	
 	/**
-	 * {@literal formfactory object.}
+	 * Form Factory object to play with form using various Models.
 	 */
 	
 	@Inject
 	private FormFactory formFactory;
 	
 	/**
-	 * Testing various operation with dummy data.
+	 * Test empty form with help of Form Factory object.
 	 */
 
 	@Test
@@ -58,7 +60,7 @@ public class indexTest {
 	}
 	
 	/**
-	 * Testing various operation with dummy data.
+	 * Test form with dummy userprofile and tweet data and to verify whether it accepts those data or not.
 	 */
 	
 	@Test
@@ -90,7 +92,7 @@ public class indexTest {
 	}
 	
 	/**
-	 * Testing various operation with dummy data.
+	 * Test to render null parameter form.
 	 */
 
 	@Test

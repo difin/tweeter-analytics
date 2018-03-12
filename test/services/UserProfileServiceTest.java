@@ -31,20 +31,21 @@ import services.TwitterAuthenticator;
  */
 public class UserProfileServiceTest {
 	/**
-	 * {@literal twitterAuthenticator TwitterAuthenticator class object.}
+	 * Twitter Authentication object for authentication purpose.
 	 */
 	private TwitterAuthenticator twitterAuthenticator;
 	/**
-	 * {@literal ws WSClient object for auth and serialization.}
+	 * WSClient to play with RESTAPI Calls.
 	 */
     private WSClient ws;
     /**
-	 * {@literal server Server class instance.}
+	 * Server class instance.
 	 */
     private Server server;
     
     /**
-	 * Initialize dummy testing data.
+	 * Initializing test environment.
+	 * 1. Authenticating with twitter server to get access token.
 	 */
 	@Before
 	public void setup() {
@@ -74,7 +75,10 @@ public class UserProfileServiceTest {
 		}
 	}
 	/**
-	 * Testing various operation with dummy data.
+	 * Test User Profile service with dummy data.
+	 * 1. Set the fake userprofile.
+	 * 2. Set fake tweets.
+	 * Passing this data to UserProfileService class and verify result.
 	 */
 	@Test
 	public void testUserProfile() throws InterruptedException, ExecutionException {

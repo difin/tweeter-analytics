@@ -16,7 +16,8 @@ import static org.hamcrest.Matchers.equalTo;
  */
 public class UserProfileTest {
 	/**
-	 * Initialize dummy testing data and Test functionality.
+	 * Initialize dummy User Profile and entering dummy properties inside it.
+	 * Once the test is done, we are verifying all properties.
 	 */
 	@Test
 	public void testUserProfileModel() {

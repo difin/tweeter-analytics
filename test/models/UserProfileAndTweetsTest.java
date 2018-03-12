@@ -16,17 +16,17 @@ import org.junit.Test;
 public class UserProfileAndTweetsTest {
 	
 	/**
-	 * {@literal up creating UserProfile object.}
+	 * User Profile Object for testing purpose.
 	 */
 	private UserProfile up = new UserProfile();
 	/**
-	 * {@literal tweets creating dummy list to store tweets. }
+	 * List to store dummy tweet object.
 	 */
 	private List<Tweet> tweets = new ArrayList<Tweet>();
 	
 	
 	/**
-	 * Initialize dummy testing data.
+	 * Initialize dummy User Profile and tweets data for testing purpose.
 	 */
 	@Before
 	public void setup() {
@@ -53,7 +53,8 @@ public class UserProfileAndTweetsTest {
 	}
 	
 	/**
-	 * Testing various operation with dummy data.
+	 * Test UserProfileAndTweets Model with dummy testing data.
+	 * Once the testing is done, we are verifying the result with the help of assert.
 	 */
 
 	@Test
@@ -68,7 +69,7 @@ public class UserProfileAndTweetsTest {
 	}
 	
 	/**
-	 * Testing various operation with dummy data.
+	 * Test UserProfileAndTweets Model's string conversion functionality and asserting the results.
 	 */
 	
 	@Test
