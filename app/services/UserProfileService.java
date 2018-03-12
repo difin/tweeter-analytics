@@ -17,29 +17,33 @@ import play.libs.ws.WSBodyReadables;
 import play.libs.ws.WSClient;
 
 /**
- * Implements the functionality to fetch user profile.
- * @author Dimitry Fingerman
+ * Implements the functionality to fetch user profile info and user's last ten tweets using Twitter API.
+ * @author Dmitriy Fingerman
  * @version 1.0.0
  */
 @Singleton
 public class UserProfileService {
+	
 	/**
-	 * {@literal wsClient WSClient object for auth and serialization.}
+	 * Web services client
 	 */
     private final WSClient wsClient;
+    
     /**
-	 * {@literal twitterAuth TwitterAuthenticator class object.}
+	 * Service that provides authentication token required to use Twitter API
 	 */
     private final TwitterAuthenticator twitterAuth;
+    
     /**
-	 * {@literal baseUrl store base URL.}
+	 * Base url of Twitter API
 	 */
     private String baseUrl = "https://api.twitter.com";
    
     /**
-     * Parametarized constructor.
-     * @param wsClient
-     * @param twitterAuth
+     * Instantiates new user profile service with the supplied parameters
+     * 
+     * @param wsClient Web service client
+     * @param twitterAuth Service that provides authentication token required to use Twitter API
      */
     
     @Inject
@@ -50,7 +54,7 @@ public class UserProfileService {
     }
     
     /**
-     * Sets base URL.
+     * Sets base URL for Twitter API
      * @param url
      */
     public void setBaseUrl(String url) {
@@ -58,9 +62,15 @@ public class UserProfileService {
   	}
     
     /**
-     * Entry point for this class file and returns user profile to controller.
-     * @param userName
-     * @return an instance of UserProfileAndTweets class in the form of completionstage.
+     * Retrieves user profile info and last ten tweets for a given <code>userName</code>.
+     * First, the service retrieves a token for Twitter API. 
+     * Then it gets user's profile info and user's ten last tweets and constructs a model 
+     * object with the two and returns it as output. All this operations are done asynchronously.
+     * 
+     * @param userName Twitter User ID
+     * 
+     * @return a promise of UserProfileAndTweets which is the model that combines user profile info
+     * and user's ten last tweets
      */
     public CompletionStage<UserProfileAndTweets> userProfle(String userName) {
     	
@@ -82,10 +92,11 @@ public class UserProfileService {
     }
     
     /**
-     * Interacts with twitter api to fetch user profile.
-     * @param accessToken
-     * @param userName
-     * @return an instance of UserProfile class in the form of completionstage.
+     * Retrieves user profile info via Twitter API
+     * 
+     * @param accessToken token used to authorize Twitter API requests
+     * @param userName Twitter User ID
+     * @return a promise of UserProfile model
      */
     
     private CompletionStage<UserProfile> getUserProfile(String accessToken, String userName){
@@ -102,10 +113,11 @@ public class UserProfileService {
     }
     
     /**
-     * Interacts with twitter api to fetch 10 tweets based on given username.
-     * @param accessToken
-     * @param userName
-     * @return list of tweets in completionstage format.
+     * Interacts with twitter api to fetch 10 last tweets based on given <code>userName</code>.
+     * 
+     * @param accessToken token used to authorize Twitter API requests
+     * @param userName Twitter User ID
+     * @return promise of last ten tweets as a list
      */
     private CompletionStage<List<Tweet>> getUserLastTenTweets(String accessToken, String userName){
 		
