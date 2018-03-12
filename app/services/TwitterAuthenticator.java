@@ -13,59 +13,57 @@ import play.libs.ws.WSBodyReadables;
 import play.libs.ws.WSClient;
 
 /**
- * 
- * Implements the functionality of authentication with twitter.
- * @author Dimitry Fingerman
- * @version 1.0.0
- *
+ * Service for retrieving a security token required for authentication when using Twitter API
  */
 
 @Singleton
 public class TwitterAuthenticator {
-	
-	
+
 	/**
-	 * {@literal TWITTER_CONSUMER_KEY contains twitter consumer key.}
+	 * Consumer key of a registered Twitter application
 	 */
 	private static final String TWITTER_CONSUMER_KEY = "2uiozTAH7aMj7zf3BfrXvajw0";
-	/**
-	 * {@literal TWITTER_CONSUMER_SECRET contains twitter consumer secret. }
-	 */
-	private static final String TWITTER_CONSUMER_SECRET = "8yeB9yu6bGG18CZu5fK23dQK6FgK2H2OJyA0uoY0Mv4LiTTnhP";
-	/**
-	 * {@literal wsClient WSClient object for auth and serialization.}
-	 */
-	private final WSClient wsClient;
-	/**
-	 * {@literal baseUrl store base URL.}
-	 */
-	private String baseUrl = "https://api.twitter.com";
-	/**
-	 * {@literal encoding store encoding scheme.}
-	 */
-	private String encoding = "UTF-8";
 	
 	/**
-	 * Sets WSClient object.
-	 * @param wsClient
+	 * Consumer secret of a registered Twitter application
 	 */
+	private static final String TWITTER_CONSUMER_SECRET = "8yeB9yu6bGG18CZu5fK23dQK6FgK2H2OJyA0uoY0Mv4LiTTnhP";
+	
+	/**
+	 * Web services client
+	 */
+	private final WSClient wsClient;
 
+	/**
+	 * The base url of Twitter API
+	 */
+	private String baseUrl = "https://api.twitter.com";
+	
+	/**
+	 * Encoding scheme for Twitter API requests
+	 */
+	private String encoding = "UTF-8";
+
+	/**
+	 * Instantiates the service
+	 * @param wsClient Web Services client
+	 */
 	@Inject
 	public TwitterAuthenticator(WSClient wsClient) {
 		this.wsClient = wsClient;
 	}
 	
 	/**
-	 * Sets base URL.
-	 * @param url
+	 * Sets a base url for Twitter API
+	 * @param url Twitter API base url
 	 */
 	public void setBaseUrl(String url) {
 		this.baseUrl = url;
 	}
 	
 	/**
-	 * Sets encoding scheme.
-	 * @param encoding
+	 * Sets encoding for Twitter API requests
+	 * @param encoding Encoding to be used in Twitter Api requests
 	 */
 	public void setEncoding(String encoding) {
 		this.encoding = encoding;
@@ -73,11 +71,10 @@ public class TwitterAuthenticator {
    
 	
 	/** 
-     * Receives access token.
-     * @param key
-     * @param secret
-     * @return encoded key.
-     */
+     * Retrieves authentication token for Twitter API requests
+     *  
+	 * @return promise with the authentication token
+	 */
 	public CompletionStage<String> getAccessToken() {
 		return CompletableFuture
 				.supplyAsync(() -> wsClient.url(baseUrl + "/oauth2/token")
@@ -88,14 +85,14 @@ public class TwitterAuthenticator {
 				.thenCompose(r -> r.post("grant_type=client_credentials"))
 				.thenApply((r) -> r.getBody(WSBodyReadables.instance.json()).get("access_token").asText());
 	}
-	
-	/**
-	 * Encoding access key and secret with Base64 encoding scheme.
-	 * @param key
-	 * @param secret
-	 * @return
-	 */
 
+	/**
+	 * Generates a base64 encoded key using <code>key</code> and <code>secret</code>
+	 * 
+	 * @param key consumer key
+	 * @param secret consumer secret
+	 * @return base64 encoded key using <code>key</code> and <code>secret</code>
+	 */
 	private String encodeKeys(String key, String secret) {
 		try {
 			String encodedKey = URLEncoder.encode(key, encoding);
