@@ -2,27 +2,67 @@
 
 # TweetAnalytics
 
-This is a web application, which developed on the top of play framework and follows Model - View - Controller
-(MVC) architecture style.
+This web application is developed with Play Framework.
+It enables searching for the most recent tweets for a given search phrase using Twitter API and viewing Twitter profile info together with user's latest tweets.
 
-## Running
-1. Build Project to support Eclipse.
-   run `sbt eclipse` in project directory.
+## Group Members
 
-2. We can run project with help of `sbt run`. It will compile project first and then run it.
-   Default URL will be `localhost:9000` . 
+     Name           | Student ID
+----------------- | ---------
+Deepika Dembla    | 40036900    
+Dmitry Fingerman  | 26436579    
+Nikita Baranov    | 40012854    
+Mayank H. Acharya | 40036106    
+Tumer Horloev     | 40019108   
+
+
+## Division of Work
+
+Deepika Dembla: 
+
+* test.controllers.ApplicationControllerTest.java
+
+Dmitriy Fingerman: 
+
+* conf.routes
+* controllers.ApplicationController.java
+* services.TwitterAuthenticator.java
+* services.UserProfileService.java
+* models.UserProfile.java
+* models.UserProfileAndTweet.java
+
+Nikita Baranov:
+	
+* controllers.ApplicationController.java
+* views.index.scala.html
+* views.main.scala.html
+* views.userProfile.html
+* test.views.IntexTest.java
+* test.views.mainTest.java
+* test.views.userProfileTest.java
+
+Mayank H. Acharya:
+
+* models.Tweet.java
+* services.TenTweetsForKeywordService.java
+* Javadoc
+* README
+	
+Tumer Horloev:
+
+* test.models.UserProfileAndTweetTest.java
+* test.models.UserProfileTest.java
+* test.services.TenTweetsForKeywordServiceTest.java
+* test.services.TwitterAuthenticatorTest.java
+* test.services.UserProfileServiceTest.java
+
+## How to Build
+* To build the project with Eclipse support:
+  execute `sbt clean compile eclipse` in project directory.
    
-3. Run test with JaCoCo using `sbt test` .
+* To run tests:
+  execute `sbt test`.
 
-## About Team and division of work.
-|      **Name**      |      **Student ID**    |                    **Work**                                |                      
-|--------------------|------------------------|------------------------------------------------------------|
-|Deepika Dembla      |        40036900        |            Controller Test                                 |
-|--------------------|------------------------|------------------------------------------------------------|
-|Dmitry Fingerman    |        26436579        | Search Tweet Facility, Model Design                        |
-|--------------------|------------------------|------------------------------------------------------------|
-|Nikita Baranov      |        40012854        | Application Controller, User Interface and Views design    |
-|--------------------|------------------------|------------------------------------------------------------|
-|Mayank H. Acharya   |        40036106        | Ten Tweets search, JavaDoc and Readme.                     |
-|--------------------|------------------------|------------------------------------------------------------|
-|Tumer Horloev       |        40019108        |Test cases/coverage for models, services, views.            |
+## How to Run
+* To run project, execute `sbt run`.
+  The application can be accessed at `localhost:9000`. 

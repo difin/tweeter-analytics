@@ -35,32 +35,34 @@ public class ApplicationController extends Controller {
 	 * User Profile retrieval service
 	 */
 	private UserProfileService userProfileService;
+	
 	/**
 	 * Tweets search service
 	 */
 	private TenTweetsForKeywordService tenTweetsForKeywordService;
+	
 	/**
 	 * Form Factory for managing UI forms
 	 */
 	private FormFactory formFactory;
+	
 	/**
 	 * Execution context that wraps execution pool
 	 */
 	private HttpExecutionContext ec;
 	
 	/**
-	 * History of searches.
+	 * A list of searches entered by user
 	 */
 	private List<String> memory = new ArrayList<>();
 	
 	/**
-	 * Creates new application controller with injected parameters
+	 * Creates a new application controller
 	 * @param userProfileService         User profile retrieval service
 	 * @param tenTweetsForKeywordService Tweets search service
 	 * @param formFactory                Form Factory
 	 * @param ec                         Execution context
 	 */
-	
 	@Inject
 	public ApplicationController(
 			UserProfileService userProfileService,
@@ -98,7 +100,6 @@ public class ApplicationController extends Controller {
 	 * 
 	 * @return promise of a result with a rendered view of tweet searches.
 	 */
-
 	public CompletionStage<Result> search() {
 				
 		CompletionStage<Form<String>> searchFormFuture = 
