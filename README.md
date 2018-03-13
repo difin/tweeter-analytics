@@ -19,9 +19,9 @@ This is a web application, which developed on the top of play framework and foll
 |--------------------|------------------------|------------------------------------------------------------|
 |Deepika Dembla      |        40036900        |            Controller Test                                 |
 |--------------------|------------------------|------------------------------------------------------------|
-|Dmitry Fingerman    |        26436579        | Application Controller,Search Tweet Facility, Model Design |                                             
+|Dmitry Fingerman    |        26436579        | Search Tweet Facility, Model Design                        |
 |--------------------|------------------------|------------------------------------------------------------|
-|Nikita Baranov      |        40012854        | User Interface and Views design                            |
+|Nikita Baranov      |        40012854        | Application Controller, User Interface and Views design    |
 |--------------------|------------------------|------------------------------------------------------------|
 |Mayank H. Acharya   |        40036106        | Ten Tweets search, JavaDoc and Readme.                     |
 |--------------------|------------------------|------------------------------------------------------------|

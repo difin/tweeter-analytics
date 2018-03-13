@@ -24,7 +24,7 @@ import views.html.userProfile;
  * Implements controller that handles requests for searching tweets according to keywords
  * and displaying Tweeter's user profiles.
  *  
- * @author Dmitriy Fingerman
+ * @author Nikita Baranov
  * @version 1.0.0
  *
  */
