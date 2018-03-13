@@ -25,4 +25,4 @@ This is a web application, which developed on the top of play framework and foll
 |--------------------|------------------------|------------------------------------------------------------|
 |Mayank H. Acharya   |        40036106        | Ten Tweets search, JavaDoc and Readme.                     |
 |--------------------|------------------------|------------------------------------------------------------|
-|Tumer Horloev       |                        |Test cases/coverage for models, services, views.            |
+|Tumer Horloev       |        40019108        |Test cases/coverage for models, services, views.            |
