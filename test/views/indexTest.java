@@ -23,8 +23,8 @@ import play.test.Helpers;
 import play.twirl.api.Content;
 
 /**
- * Implements JUnit test cases for index function.
- * @author Tumer Horloev
+ * Implements JUnit test cases for index page.
+ * @author Nikita Baranov
  * @version 1.0.0
  */
 public class indexTest {
@@ -45,7 +45,7 @@ public class indexTest {
 	private FormFactory formFactory;
 	
 	/**
-	 * Test empty form with help of Form Factory object.
+	 * Correct form rendering with empty Form and without User Profile and Tweets.
 	 */
 
 	@Test
@@ -60,7 +60,7 @@ public class indexTest {
 	}
 	
 	/**
-	 * Test form with dummy userprofile and tweet data and to verify whether it accepts those data or not.
+	 * Correct form rendering with User Profile and Tweets. 
 	 */
 	
 	@Test
@@ -92,7 +92,7 @@ public class indexTest {
 	}
 	
 	/**
-	 * Test to render null parameter form.
+	 * Correct form rendering without Form User Profile and Tweets.  
 	 */
 
 	@Test

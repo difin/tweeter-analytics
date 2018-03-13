@@ -18,14 +18,13 @@ import play.twirl.api.Content;
 
 /**
  * Implements JUnit test cases for user profile page.
- * @author Tumer Horloev
+ * @author Nikita Baranov
  * @version 1.0.0
  */
 public class userProfileTest {
 	
 	/**
-	 * Test the rendering of the form with dummy UserProfile and tweet data and verify that
-	 * whether it generated correct output or not by asserting input keyword with page data.
+	 * Rendering of the form with UserProfile and tweet data
 	 */
 	
 	@Test

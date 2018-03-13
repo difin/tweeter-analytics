@@ -13,13 +13,13 @@ import play.twirl.api.Content;
 
 /**
  * Implements JUnit test cases for main page.
- * @author Tumer Horloev
+ * @author Nikita Baranov
  * @version 1.0.0
  */
 public class mainTest {
 	
 	/**
-	 * Test the homepage of website and asserts whether it contains the given keyword or not on Page.
+	 * Correct rendering of menu.
 	 */
 
 	@Test
