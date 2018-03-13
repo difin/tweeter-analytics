@@ -5,50 +5,50 @@ import java.util.List;
 /**
  * Represents User Profile object, in which we are storing user's data like name,
  * username , description , followers list etc. from incoming JSON response.
- * @author Dimitry Fingerman
+ * @author Dmitriy Fingerman
  * @version 1.0.0
  */
 
 public class UserProfile{
 	
 	/**
-	 * Name is string format.
+	 * User name
 	 */
 	private String name;
 	/**
-	 * Screen Name is string name.
+	 * User ID
 	 */
 	private String screen_name;
 	/**
-	 * Description details.
+	 * Profile description
 	 */
 	private String description;
 	/**
-	 * Number of the followers in long datatype.
+	 * Number of the followers
 	 */
 	private long followers_count;
 	/**
-	 * {@literal friends_count store friend counts.}
+	 * Number of friends
 	 */
 	private long friends_count;
 	/**
-	 * Number of friends in long datatype.
+	 * Number of favourites
 	 */
 	private long favourites_count;
 	/**
-	 * Number of favorites.
+	 * reation date
 	 */
 	private String created_at;
 	/**
-	 * Time zone details in string format.
+	 * Time zone details
 	 */
 	private String time_zone;
 	/**
-	 * Status is string representation.
+	 * Number of statuses
 	 */
 	private String statuses_count;
 	/**
-	 * List to store tweets in Tweet object format.
+	 * Tweets of this user
 	 */
 	private List<Tweet> tweets;
 	/**
@@ -61,8 +61,8 @@ public class UserProfile{
 	private String profile_image_url_400x400;
 	
 	/**
-	 * Returns name of the user.
-	 * @return Name of the Twitter User.
+	 * Returns name of the user
+	 * @return name of the user
 	 */
 	
 	public String getName() {
@@ -70,8 +70,8 @@ public class UserProfile{
 	}
 	
 	/**
-	 * Sets user name is string format.
-	 * @param name     set user name.
+	 * Sets user name
+	 * @param name set user name
 	 */
 
 	public void setName(String name) {
@@ -79,8 +79,8 @@ public class UserProfile{
 	}
 	
 	/**
-	 * Returns screen name of the user.
-	 * @return user's screen name.
+	 * Returns screen name of the user
+	 * @return user's screen name
 	 */
 
 	public String getScreen_name() {
@@ -88,8 +88,8 @@ public class UserProfile{
 	}
 	
 	/**
-	 * Sets user's screen name in string format.
-	 * @param screen_name     Twitter User Screen Name.
+	 * Sets user's screen name
+	 * @param screen_name Twitter User Screen Name
 	 */
 
 	public void setScreen_name(String screen_name) {
@@ -97,8 +97,8 @@ public class UserProfile{
 	}
 	
 	/**
-	 * Returns description of Twitter user.
-	 * @return description of user.
+	 * Returns description of user
+	 * @return description of user
 	 */
 
 	public String getDescription() {
@@ -106,8 +106,8 @@ public class UserProfile{
 	}
 	
 	/**
-	 * Sets User's description.
-	 * @param description     Setting up user description.
+	 * Sets User's description
+	 * @param description Sets user description
 	 */
 
 	public void setDescription(String description) {
@@ -115,8 +115,8 @@ public class UserProfile{
 	}
 	
 	/**
-	 * Returns number of follower of particular User.
-	 * @return receiving follower's count.
+	 * Returns number of follower of this user
+	 * @return receiving follower's count
 	 */
 
 	public long getFollowers_count() {
@@ -124,8 +124,8 @@ public class UserProfile{
 	}
 	
 	/**
-	 * Sets how many followers this twitter user has.
-	 * @param followers_count     Follower's figure.
+	 * Sets how many followers this twitter user has
+	 * @param followers_count follower's figure
 	 */
 
 	public void setFollowers_count(long followers_count) {
@@ -133,8 +133,8 @@ public class UserProfile{
 	}
 	
 	/**
-	 * Returns number of the friends this user have on twitter.
-	 * @return number of friends this user have.
+	 * Returns number of the friends of this user
+	 * @return number of friends this user has
 	 */
 
 	public long getFriends_count() {
@@ -142,16 +142,16 @@ public class UserProfile{
 	}
 	
 	/**
-	 * Sets the number of friends this twitter user has.
-	 * @param friends_count Setting up friends count for particular user.
+	 * Sets the number of friends this twitter user has
+	 * @param friends_count Setting up friends count for particular user
 	 */
 
 	public void setFriends_count(long friends_count) {
 		this.friends_count = friends_count;
 	}
 	/**
-	 * Returns number of favorite for given twitter user.
-	 * @return retrieve number of favorites.
+	 * Returns number of favorites for this twitter user
+	 * @return retrieve number of favorites
 	 */
 	public long getFavourites_count() {
 		return favourites_count;
@@ -167,8 +167,8 @@ public class UserProfile{
 	}
 	
 	/**
-	 * Returns creation date of given User Profile.
-	 * @return Creation date of User Profile.
+	 * Returns creation date of given User Profile
+	 * @return Creation date of User Profile
 	 */
 
 	public String getCreated_at() {
@@ -176,8 +176,8 @@ public class UserProfile{
 	}
 	
 	/**
-	 * Sets creation date of profile from JSON response.
-	 * @param created_at     set creation date of user profile.
+	 * Sets creation date of profile from JSON response
+	 * @param created_at set creation date of user profile
 	 */
 
 	public void setCreated_at(String created_at) {
@@ -185,8 +185,8 @@ public class UserProfile{
 	}
 	
 	/**
-	 * Returns time zone information of given user.
-	 * @return time zone information of any twitter user.
+	 * Returns time zone information of this user
+	 * @return time zone information of this twitter user
 	 */
 
 	public String getTime_zone() {
@@ -194,8 +194,8 @@ public class UserProfile{
 	}
 	
 	/**
-	 * Sets time zone information for given User Profile.
-	 * @param time_zone     TimeZone information for particular user.
+	 * Sets time zone information for this User Profile
+	 * @param time_zone TimeZone information for this user
 	 */
 
 	public void setTime_zone(String time_zone) {
@@ -203,24 +203,24 @@ public class UserProfile{
 	}
 
 	/**
-	 * Returns status count information for given Twitter User.
-	 * @return number of status for given user.
+	 * Returns status count information for given user
+	 * @return number of status for given user
 	 */
 	public String getStatuses_count() {
 		return statuses_count;
 	}
 	
 	/**
-	 * Sets how many status this User Profile has based on JSON response.
-	 * @param statuses_count     Status Count of any User Profile.
+	 * Sets how many statuses this user has
+	 * @param statuses_count status count of this user
 	 */
 	public void setStatuses_count(String statuses_count) {
 		this.statuses_count = statuses_count;
 	}
 	
 	/**
-	 * Returns associated list of 10 tweets for given user profile.
-	 * @return list of tweets.
+	 * Returns associated list of tweets for this user profile
+	 * @return list of tweets
 	 */
 
 	public List<Tweet> getTweets() {
@@ -228,9 +228,8 @@ public class UserProfile{
 	}
 	
 	/**
-	 * Sets latest 10 tweets for given user profile.
-	 * First creating Tweet object and then saving it into List.
-	 * @param tweets     List of 10 tweets.
+	 * Sets tweets for this user profile
+	 * @param tweets list of tweets
 	 */
 
 	public void setTweets(List<Tweet> tweets) {
@@ -238,8 +237,8 @@ public class UserProfile{
 	}
 	
 	/**
-	 * Returns URL of Profile Picture for given user.
-	 * @return Profile Picture URL.
+	 * Returns url of profile picture for this user
+	 * @return url of profile picture for this user
 	 */
 		
 	public String getProfile_image_url() {
@@ -247,8 +246,8 @@ public class UserProfile{
 	}
 	
 	/**
-	 * Stores URL of Profile Picture of incoming twitter user.
-	 * @param profile_image_url     String formatted URL.
+	 * Stores URL of profile picture of incoming twitter user
+	 * @param profile_image_url url to image profile picture
 	 */
 
 	public void setProfile_image_url(String profile_image_url) {
@@ -257,8 +256,8 @@ public class UserProfile{
 	}
 	
 	/**
-	 * Returns URL of Enlarged Profile Picture size of 400*400.
-	 * @return URL of larged profile picture. 
+	 * Returns URL of enlarged profile picture of size 400*400
+	 * @return URL of enlarged profile picture
 	 */
 
 	public String getProfile_image_url_400x400() {
@@ -266,8 +265,8 @@ public class UserProfile{
 	}
 	
 	/**
-	 * Sets URL of Profile Picture where Photograph dimension is high 400*400.
-	 * @param profile_image_url_400x400     Enlarged Profile Picture URL.
+	 * Sets URL of profile picture where photograph dimension is 400*400.
+	 * @param profile_image_url_400x400 enlarged profile picture URL.
 	 */
 
 	public void setProfile_image_url_400x400(String profile_image_url_400x400) {
@@ -275,8 +274,8 @@ public class UserProfile{
 	}
 	
 	/**
-	 * Returns String representation of UserProfile class each and every data.
-	 * @return Object's properties in readable format.
+	 * Returns string representation of this data model
+	 * @return string representation of this data model
 	 */
 	public String toString(){
 		return "name: " + name + "\n" +

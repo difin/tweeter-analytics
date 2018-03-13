@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * Combines the data of User Profile and Tweets related to that User into single object.
- * @author Dimitry Fingerman
+ * @author Dmitriy Fingerman
  * @version 1.0.0
  *
  */
@@ -12,18 +12,18 @@ import java.util.List;
 public class UserProfileAndTweets {
 	
 	/**
-	 * User Profile Object
+	 * User Profile object
 	 */
 	private UserProfile userProfile;
 	/**
-	 * List to store tweet object.
+	 * List to of tweet objects
 	 */
 	private List<Tweet> tweets;
 	
 	/**
-	 * Initialize object based on given parameters.
-	 * @param userProfile     User Profile Object.
-	 * @param tweets          List of tweet object.
+	 * Creates new object based on given parameters
+	 * @param userProfile     User Profile
+	 * @param tweets          List of tweets
 	 */
 	
 	public UserProfileAndTweets(UserProfile userProfile, List<Tweet> tweets){
@@ -31,40 +31,39 @@ public class UserProfileAndTweets {
 		this.tweets = tweets;
 	}
 	/**
-	 * Returns Saved User Profile Object.
-	 * @return gives user profile object.
+	 * Returns User Profile object
+	 * @return user profile object
 	 */
 	public UserProfile getUserProfile() {
 		return userProfile;
 	}
 	
 	/**
-	 * Sets User Profile object based on the given user details.
-	 * @param userProfile     User Profile Object.
+	 * Sets user profile object based
+	 * @param userProfile user profile object.
 	 */
 
 	public void setUserProfile(UserProfile userProfile) {
 		this.userProfile = userProfile;
 	}
 	/**
-	 * Returns list of tweet's that associated with given user.
-	 * @return List of tweet object.
+	 * Returns list of tweets associated with this user
+	 * @return list of tweets
 	 */
 	public List<Tweet> getTweets() {
 		return tweets;
 	}
 	/**
-	 * Store Tweet in List object for given user for further processing.
-	 * @param tweets     Store Tweets with given user in List Object.
+	 * Sets list of tweets
+	 * @param tweets list of tweets
 	 */
 	public void setTweets(List<Tweet> tweets) {
 		this.tweets = tweets;
 	}
 	
-	
 	/**
-	 * Returns string representation of Object's all the data.
-	 * @return String representation of object's property.
+	 * Returns string representation of this model
+	 * @return string representation of this model
 	 */
 	public String toString(){
 		

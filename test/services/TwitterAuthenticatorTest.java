@@ -6,7 +6,6 @@ import static play.mvc.Results.ok;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.concurrent.ExecutionException;
 
 import org.junit.After;
@@ -24,22 +23,25 @@ import services.TwitterAuthenticator;
  * @version 1.0.0
  */
 public class TwitterAuthenticatorTest {
+	
 	/**
 	 * Twitter Authentication object.
 	 */
     private TwitterAuthenticator twitterAuthenticator;
+    
     /**
 	 * WSClient to play with RESTAPI Calls.
 	 */
     private WSClient ws;
+    
     /**
 	 * Server class instance.
 	 */
     private Server server;
     
     /**
-	 * Initializing test environment.
-	 * 1. Authenticating with twitter server to get access token.
+	 * Initializes test environment.
+	 * Setups mocks and the responses they should return.
 	 */
 
 	@Before
@@ -66,7 +68,7 @@ public class TwitterAuthenticatorTest {
 	}
 	
 	/**
-	 * Verifying access token with given input parameter.
+	 * Verifies access token with expected result from mock
 	 */
 	@Test
 	public void getAccessToken_correctJson_success() throws InterruptedException, ExecutionException {
@@ -75,7 +77,7 @@ public class TwitterAuthenticatorTest {
 	}
 	
 	/**
-	 * Verifying Enconding scheme, that we are using in our application.
+	 * Verifies correctness of enconding scheme with expected result from mock
 	 */
 	
 	@Test //(expected = UnsupportedEncodingException.class)

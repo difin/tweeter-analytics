@@ -1,17 +1,12 @@
 package services;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
 import static play.mvc.Results.ok;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 
 import org.junit.After;
@@ -19,8 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import models.Tweet;
-import models.UserProfile;
-import models.UserProfileAndTweets;
 import play.libs.ws.WSClient;
 import play.routing.RoutingDsl;
 import play.server.Server;
@@ -32,22 +25,25 @@ import services.TwitterAuthenticator;
  * @version 1.0.0
  */
 public class TenTweetsForKeywordServiceTest {
+	
 	/**
 	 * Twitter Authentication object for authentication purpose.
 	 */
 	private TwitterAuthenticator twitterAuthenticator;
+	
 	/**
 	 * WS Client object to interact with REST-API Calls.
 	 */
     private WSClient ws;
+    
     /**
 	 * Server object.
 	 */
     private Server server;
     
     /**
-	 * Initializing test environment.
-	 * 1. Authenticating with twitter server to get access token.
+	 * Initializes test environment.
+	 * Setups mocks and the response they should return.
 	 */
 	@Before
 	public void setup() {
@@ -78,7 +74,8 @@ public class TenTweetsForKeywordServiceTest {
 	
 	
 	/**
-	 * Once Authentication is done, inserting dummy data as a keyword and searching 10 tweets based on it.
+	 * Prepares 2 tweets expected to be returned for a search, executes a tweets search method 
+	 * and verifies that the result is as expected.
 	 */
 
 	@Test
@@ -109,8 +106,5 @@ public class TenTweetsForKeywordServiceTest {
     	Map<String,List<Tweet>> tenTweets = ttfks.getTenTweetsForKeyword(searchList).toCompletableFuture().get();   
     	
     	assert(result.equals(tenTweets));
-    	
-    	
 	}
-
 }

@@ -26,7 +26,7 @@ public class UserProfileAndTweetsTest {
 	
 	
 	/**
-	 * Initialize dummy User Profile and tweets data for testing purpose.
+	 * Initializes dummy User Profile and tweets data for testing purpose.
 	 */
 	@Before
 	public void setup() {
@@ -53,7 +53,7 @@ public class UserProfileAndTweetsTest {
 	}
 	
 	/**
-	 * Test UserProfileAndTweets Model with dummy testing data.
+	 * Tests UserProfileAndTweets Model with dummy testing data.
 	 * Once the testing is done, we are verifying the result with the help of assert.
 	 */
 
@@ -69,7 +69,7 @@ public class UserProfileAndTweetsTest {
 	}
 	
 	/**
-	 * Test UserProfileAndTweets Model's string conversion functionality and asserting the results.
+	 * Tests UserProfileAndTweets Model's string conversion functionality and asserting the results.
 	 */
 	
 	@Test

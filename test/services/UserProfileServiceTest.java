@@ -1,15 +1,8 @@
 package services;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
 import static play.mvc.Results.ok;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 
 import org.junit.After;
@@ -30,22 +23,26 @@ import services.TwitterAuthenticator;
  * @version 1.0.0
  */
 public class UserProfileServiceTest {
+	
 	/**
 	 * Twitter Authentication object for authentication purpose.
 	 */
 	private TwitterAuthenticator twitterAuthenticator;
+	
 	/**
 	 * WSClient to play with RESTAPI Calls.
 	 */
+	
     private WSClient ws;
+    
     /**
 	 * Server class instance.
 	 */
     private Server server;
     
     /**
-	 * Initializing test environment.
-	 * 1. Authenticating with twitter server to get access token.
+	 * Initializes test environment.
+	 * Setups mocks and the responses they should return.
 	 */
 	@Before
 	public void setup() {
@@ -74,11 +71,12 @@ public class UserProfileServiceTest {
 			server.stop();
 		}
 	}
+	
 	/**
-	 * Test User Profile service with dummy data.
-	 * 1. Set the fake userprofile.
-	 * 2. Set fake tweets.
-	 * Passing this data to UserProfileService class and verify result.
+	 * Tests User Profile service with dummy data.
+	 * Sets a fake user profile and sets fake tweets that should be returned from mocks, 
+	 * calls user profile service to retrieve a user profile data and verifies that the result
+	 * is equal to the mock data.
 	 */
 	@Test
 	public void testUserProfile() throws InterruptedException, ExecutionException {
