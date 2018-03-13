@@ -63,6 +63,9 @@ Tumer Horloev:
 * To run tests:
   execute `sbt test`.
 
+* To run tests with Jacoco test coverage report:
+  execute `sbt jacoco`.
+
 ## How to Run
 * To run project, execute `sbt run`.
   The application can be accessed at `localhost:9000`. 
