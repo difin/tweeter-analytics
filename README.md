@@ -68,4 +68,4 @@ Tumer Horloev:
 
 ## How to Run
 * To run project, execute `sbt run`.
-  The application can be accessed at `localhost:9000`. 
+* After starting up, the application can be accessed using web browser at `localhost:9000`. 
