@@ -43,13 +43,12 @@ public class TenTweetsForKeywordService {
 	private String baseUrl = "https://api.twitter.com";
 	
 	/**
-	 * Instantiates new instance of search service
+	 * Creates this service
 	 * @param wsClient Web Services client
 	 * @param twitterAuth Twitter Authentication service that provide auth token
 	 */
-
 	@Inject
-	TenTweetsForKeywordService(WSClient wsClient, TwitterAuthenticator twitterAuth) {
+	public TenTweetsForKeywordService(WSClient wsClient, TwitterAuthenticator twitterAuth) {
 		this.wsClient = wsClient;
 		this.twitterAuth = twitterAuth;
 	}
@@ -76,8 +75,8 @@ public class TenTweetsForKeywordService {
 	}
 	
 	/**
-	 * 
-	 * @param url sets base url for Twitter API.
+	 * Sets base url of Twitter API
+	 * @param url sets base url for Twitter API
 	 */
 	
 	public void setBaseUrl(String url) {

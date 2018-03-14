@@ -45,7 +45,7 @@ public class TwitterAuthenticator {
 	private String encoding = "UTF-8";
 
 	/**
-	 * Instantiates the service
+	 * Creates this service
 	 * @param wsClient Web Services client
 	 */
 	@Inject

@@ -40,12 +40,11 @@ public class UserProfileService {
     private String baseUrl = "https://api.twitter.com";
    
     /**
-     * Instantiates new user profile service with the supplied parameters
+     * Creates this service
      * 
      * @param wsClient Web service client
      * @param twitterAuth Service that provides authentication token required to use Twitter API
      */
-    
     @Inject
     public UserProfileService(WSClient wsClient, TwitterAuthenticator twitterAuth) {
       this.wsClient = wsClient;
