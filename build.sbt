@@ -1,4 +1,4 @@
-name := """play-java-starter-example"""
+name := """soen-641-project"""
 
 version := "1.0-SNAPSHOT"
 
