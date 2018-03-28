@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.webjars.play.WebJarsUtil;
 import play.Logger;
 import play.libs.F.Either;
+import play.libs.concurrent.HttpExecutionContext;
 import play.libs.streams.ActorFlow;
 import play.mvc.*;
 import services.TenTweetsForKeywordService;
@@ -26,7 +27,7 @@ import java.util.concurrent.CompletionStage;
  * Implements controller that handles requests for searching tweets according to keywords
  * and displaying Tweeter's user profiles.
  *  
- * @author Nikita Baranov
+ * @author Dmitriy Fingerman
  * @version 1.0.0
  *
  */
@@ -46,6 +47,7 @@ public class ResponsiveApplicationController extends Controller {
     private final ActorSystem actorSystem;
     private final Materializer materializer;
 	private final WebJarsUtil webJarsUtil;
+	private HttpExecutionContext ec;
     
     private final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger("controllers.ResponsiveApplicationController");
 	
@@ -60,25 +62,29 @@ public class ResponsiveApplicationController extends Controller {
 			TenTweetsForKeywordService tenTweetsForKeywordService,
 			ActorSystem actorSystem,
 			Materializer materializer,
-			WebJarsUtil webJarsUtil) {
+			WebJarsUtil webJarsUtil,
+			HttpExecutionContext ec) {
 		
 		this.userProfileService = userProfileService;
 		this.tenTweetsForKeywordService = tenTweetsForKeywordService;
         this.actorSystem = actorSystem;
         this.materializer = materializer;
 		this.webJarsUtil = webJarsUtil;
+		this.ec = ec;
 	}
 
 	/**
 	 * Renders home page
 	 * @return promise of a result with a rendered home page.
 	 */
-	public Result index() {
+	public CompletionStage<Result> index() {
 
-		Http.Request request = request();
-		String url = routes.ResponsiveApplicationController.websocket().webSocketURL(request);
-		String profileUrl = routes.ResponsiveApplicationController.userProfile("").url();
-		return ok(responsiveTweets.render(url, profileUrl, webJarsUtil));
+		return CompletableFuture.supplyAsync(() -> {
+			Http.Request request = request();
+			String url = routes.ResponsiveApplicationController.websocket().webSocketURL(request);
+			String profileUrl = routes.ResponsiveApplicationController.userProfile("").url();
+			return ok(responsiveTweets.render(url, profileUrl, webJarsUtil));
+		}, ec.current());
 	}
 	
 	/**
