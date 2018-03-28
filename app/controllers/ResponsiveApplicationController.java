@@ -1,42 +1,26 @@
 package controllers;
 
+import actors.TwitterSearchActor;
+import akka.NotUsed;
 import akka.actor.ActorSystem;
 import akka.stream.Materializer;
 import akka.stream.javadsl.Flow;
-import akka.NotUsed;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
-import actors.TwitterSearchActor;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionStage;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import models.Tweet;
-
+import org.webjars.play.WebJarsUtil;
 import play.Logger;
 import play.libs.F.Either;
 import play.libs.streams.ActorFlow;
-import play.mvc.Http;
-import play.mvc.Result;
-import play.mvc.Results;
-import play.mvc.WebSocket;
-import play.data.Form;
-import play.data.FormFactory;
-import play.libs.concurrent.HttpExecutionContext;
-import play.mvc.Controller;
+import play.mvc.*;
 import services.TenTweetsForKeywordService;
 import services.UserProfileService;
-import views.html.index;
+import views.html.responsiveTweets;
 import views.html.userProfile;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 
 /**
  * Implements controller that handles requests for searching tweets according to keywords
@@ -59,23 +43,9 @@ public class ResponsiveApplicationController extends Controller {
 	 */
 	private TenTweetsForKeywordService tenTweetsForKeywordService;
 	
-	/**
-	 * Form Factory for managing UI forms
-	 */
-	private FormFactory formFactory;
-	
-	/**
-	 * Execution context that wraps execution pool
-	 */
-	private HttpExecutionContext ec;
-	
-	/**
-	 * A list of searches entered by user
-	 */
-	private List<String> memory = new ArrayList<>();
-	
     private final ActorSystem actorSystem;
     private final Materializer materializer;
+	private final WebJarsUtil webJarsUtil;
     
     private final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger("controllers.ResponsiveApplicationController");
 	
@@ -83,80 +53,34 @@ public class ResponsiveApplicationController extends Controller {
 	 * Creates a new application controller
 	 * @param userProfileService         User profile retrieval service
 	 * @param tenTweetsForKeywordService Tweets search service
-	 * @param formFactory                Form Factory
-	 * @param ec                         Execution context
 	 */
 	@Inject
 	public ResponsiveApplicationController(
 			UserProfileService userProfileService,
 			TenTweetsForKeywordService tenTweetsForKeywordService,
-			FormFactory formFactory,
-			HttpExecutionContext ec,
-            ActorSystem actorSystem,
-            Materializer materializer){
+			ActorSystem actorSystem,
+			Materializer materializer,
+			WebJarsUtil webJarsUtil) {
 		
 		this.userProfileService = userProfileService;
 		this.tenTweetsForKeywordService = tenTweetsForKeywordService;
-		this.formFactory = formFactory;
-		this.ec = ec;
         this.actorSystem = actorSystem;
         this.materializer = materializer;
+		this.webJarsUtil = webJarsUtil;
 	}
 
 	/**
 	 * Renders home page
 	 * @return promise of a result with a rendered home page.
 	 */
-	public CompletionStage<Result> index() {
-		
-		return CompletableFuture.supplyAsync(() -> {
-			Form<String> searchForm = formFactory.form(String.class);
-			memory.clear();
-			return ok(index.render(searchForm, null));
-		});
+	public Result index() {
+
+		Http.Request request = request();
+		String url = routes.ResponsiveApplicationController.websocket().webSocketURL(request);
+		String profileUrl = routes.ResponsiveApplicationController.userProfile("").url();
+		return ok(responsiveTweets.render(url, profileUrl, webJarsUtil));
 	}
 	
-	/**
-	 * Handles tweet search based on keywords.
-	 * 
-	 * Retrieves a search phrase from a UI form. 
-	 * Then, if the phrase is not empty, updates the list of searches with this new phrase 
-	 * and calls tweet search service with the full history of previous and current search phrases.
-	 * 
-	 * Then renders a view with the result of all search phrases.
-	 * 
-	 * @return promise of a result with a rendered view of tweet searches.
-	 */
-	public CompletionStage<Result> search() {
-				
-		CompletionStage<Form<String>> searchFormFuture = 
-			CompletableFuture.supplyAsync(() -> {
-				
-				Form<String> searchForm = formFactory.form(String.class).bindFromRequest();
-				String searchString = searchForm.field("searchString").getValue().get().trim();
-		
-				if (!searchString.isEmpty()) {
-					memory.add(searchString);
-				}
-				
-				return searchForm;
-			}, ec.current());
-		
-		CompletionStage<Map<String, List<Tweet>>> mapFuture = 
-			searchFormFuture.thenCompose(r -> {
-			
-				if (!memory.isEmpty()) {
-					return tenTweetsForKeywordService.getTenTweetsForKeyword(memory);
-				}
-				return
-					CompletableFuture.supplyAsync(() -> {
-						return null;
-					});
-			});
-		
-		return searchFormFuture.thenCombine(mapFuture, (form, map) -> ok(index.render(form, map)));
-	}
-
 	/**
 	 * Retrieves user profile info and user's last 10 tweets 
 	 * and renders a view with this info.
@@ -180,8 +104,8 @@ public class ResponsiveApplicationController extends Controller {
 
             	final CompletionStage<Either<Result, Flow<JsonNode, JsonNode, ?>>> stage = 
 	            	CompletableFuture.supplyAsync(() -> {
-	            		
-	            		Object flowAsObject = ActorFlow.actorRef(TwitterSearchActor::props, actorSystem, materializer);
+
+						Object flowAsObject = ActorFlow.actorRef(out -> TwitterSearchActor.props(out, tenTweetsForKeywordService), actorSystem, materializer);
 	            		
 						@SuppressWarnings("unchecked")
 						Flow<JsonNode, JsonNode, NotUsed> flow = (Flow<JsonNode, JsonNode, NotUsed>) flowAsObject;

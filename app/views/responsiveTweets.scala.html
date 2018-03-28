@@ -1,0 +1,98 @@
+@(url: String, profileUrl: String, webJarsUtil: org.webjars.play.WebJarsUtil)
+<!-- Author Nikita Baranov -->
+
+    @main("ResponsiveTweetSearch") {
+        <div class="container">
+            <div class="input-group mt-3 mb-3">
+                <input id="searchKeyPhrase" type="text"
+                class="form-control border border-success"
+                placeholder="Enter a Key word phrase (ex. Canadian Nature)"
+                aria-describedby="basic-addon2"
+                autofocus>
+                <div class="input-group-append">
+                    <button id="send" class="btn btn-outline-success" type="submit">Send</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container" id="messages">
+                <!-- This container would be filled by script below -->
+        </div>
+
+        @Html(webJarsUtil.script("jquery.min.js"))
+
+        <script language="javascript">
+                // console.log('JS Beginning');
+                var $messages = $("#messages"),
+                        $send = $("#send"),
+                        $searchKeyPhrase = $("#searchKeyPhrase"),
+                        connection = new WebSocket("@url"),
+                        userProfileUrl = "@profileUrl";
+                // console.log('JS after var');
+
+                $send.prop("disabled", true);
+
+                var send = function () {
+                    var text = $searchKeyPhrase.val();
+                    $searchKeyPhrase.val("");
+                    // console.log('sent ', text);
+                    // console.log('sent as Json ', JSON.stringify({searchKey: text}));
+                    connection.send(JSON.stringify({searchKey: text}));
+                };
+
+                connection.onopen = function () {
+                    // console.log('WebSocket Start to Opened on @url');
+                    $send.prop("disabled", false);
+                    $send.on('click', send);
+                    $searchKeyPhrase.keypress(function (event) {
+                        var keycode = (event.keyCode ? event.keyCode : event.which);
+                        if (keycode == '13') {
+                            send();
+                        }
+                    });
+                    // console.log('WebSocket Opened on @url');
+                };
+                connection.onerror = function (error) {
+                    console.log('WebSocket Error ', error);
+                };
+                connection.onmessage = function (event) {
+                    var keyPhraseAndTweets = JSON.parse(event.data);
+                    var toAppend = '';
+                    console.log(Object.keys(keyPhraseAndTweets).length);
+                    var show = "show";
+                    if (Object.keys(keyPhraseAndTweets).length > 1) {
+                        show = "";
+                    }
+                    for (var keyPhrase in keyPhraseAndTweets) {
+                        toAppend = "<hr>";
+                        toAppend += "<button class='btn btn-outline-primary' type='button' data-toggle='collapse' data-target='#collapse-" + keyPhrase + "' aria-expanded='true' aria-controls='collapse-" + keyPhrase + "'>" + keyPhrase + "</button>";
+                        toAppend += "<div class='collapse " + show + "' id='collapse-" + keyPhrase + "'>";
+                        toAppend += "<ul class='list-unstyled'>";
+                        for (var el in keyPhraseAndTweets[keyPhrase]) {
+                            toAppend += "<li class='media bg-light border border-primary rounded p-2 mt-2 mb-2 mr-5 ml-5'>";
+                            toAppend += "<img class=\"mr-3\" src=\"" + keyPhraseAndTweets[keyPhrase][el].user.profile_image_url + "\" alt=\"Generic placeholder image\">";
+                            toAppend += "<div class=\"media-body\">";
+                            toAppend += "<div class=\"row \">";
+                            toAppend += "<div class=\"col align-self-center\">";
+                            toAppend += "<h2><a href=\"" + userProfileUrl + keyPhraseAndTweets[keyPhrase][el].user.screen_name + "\" class=\"btn btn-link\" role=\"button\">" + keyPhraseAndTweets[keyPhrase][el].user.screen_name + "</a></h2>";
+                            toAppend += "</div>";
+                            toAppend += "<div class=\"col-auto align-self-start\">";
+                            toAppend += "<small class=\"text-muted\">" + keyPhraseAndTweets[keyPhrase][el].created_at + "</small>";
+                            toAppend += "</div>";
+                            toAppend += "</div>";
+
+                            toAppend += "<div class=\"row p-2\">";
+                            toAppend += "<div class=\"col\">";
+                            toAppend += "<h5>" + keyPhraseAndTweets[keyPhrase][el].full_text + "</h5>";
+                            toAppend += "</div>";
+                            toAppend += "</div>";
+                            toAppend += "</div>";
+                            toAppend += "</li>";
+                        }
+                        toAppend += "</ul>";
+                        toAppend += "</div>";
+                    }
+                    $messages.prepend($(toAppend));
+                }
+        </script>
+    }

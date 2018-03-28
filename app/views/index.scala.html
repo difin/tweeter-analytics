@@ -1,7 +1,7 @@
 @(searchForm: Form[String])(tweetsForWord: Map[String, List[Tweet]])
 <!-- Author Nikita Baranov -->
 
-@main("Home") {
+@main("TweetSearch") {
 <div class="container">
 	<form action="@routes.ApplicationController.index()" method="POST">
 		<div class="input-group mt-3 mb-3">
@@ -23,16 +23,11 @@
 	<button class="btn btn-outline-primary" type="button"
 		data-toggle="collapse" data-target="#collapse-@word"
 		aria-expanded="true" aria-controls="collapse-@word">@word</button>
-	<div class="collapse @if(tweetsForWord.size < 2){
-	show}
-	"
-		id="collapse-@word">
+		<div class="collapse @if(tweetsForWord.size < 2) {show}" id="collapse-@word">
 		<ul class="list-unstyled">
 			@for(tweet <- tweets){
-			<li
-				class="media bg-light border border-primary rounded p-2 mt-2 mb-2 mr-5 ml-5">
-				<img class="mr-3" src="@tweet.getUser.getProfile_image_url"
-				alt="Generic placeholder image">
+				<li class="media bg-light border border-primary rounded p-2 mt-2 mb-2 mr-5 ml-5">
+					<img class="mr-3" src="@tweet.getUser.getProfile_image_url" alt="Generic placeholder image">
 				<div class="media-body">
 					<div class="row ">
 						<div class="col align-self-center">
