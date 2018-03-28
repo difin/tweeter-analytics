@@ -14,11 +14,17 @@ import services.TenTweetsForKeywordService;
 
 import actors.TwitterSearchActorProtocol.*;
 
+/**
+ * Retrieves tweets using TenTweetsForKeywordService 
+ * replying to calling websocket.
+ * 
+ */
+
 public class TwitterSearchActor extends AbstractActor {
 	
 	private ArrayList<String> keyWords = new ArrayList<>();
 	private final ActorRef out;
-	
+	public static ArrayList<TwitterSearchActor> twitterSearchActors;
 	@Inject
 	TenTweetsForKeywordService tenTweetsForKeywordService;
 	
@@ -28,7 +34,9 @@ public class TwitterSearchActor extends AbstractActor {
 	
 	public TwitterSearchActor(ActorRef out) {
 		this.out = out;
+		twitterSearchActors.add(this);
 	}
+	
 	
 	@Override
 	public Receive createReceive() {
