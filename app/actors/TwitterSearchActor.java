@@ -13,6 +13,7 @@ import play.libs.Json;
 import services.TenTweetsForKeywordService;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletionStage;
@@ -23,9 +24,7 @@ import java.util.concurrent.CompletionStage;
  *
  */
 public class TwitterSearchActor extends AbstractActor {
-
-    //public static ArrayList<TwitterSearchActor> twitterSearchActors;
-
+    public static HashSet<ActorRef> actors = new HashSet<>();
     private final LoggingAdapter logger = Logging.getLogger(getContext().system(), this);
     private final ActorRef out;
 
@@ -36,7 +35,6 @@ public class TwitterSearchActor extends AbstractActor {
     public TwitterSearchActor(ActorRef out, TenTweetsForKeywordService tenTweetsForKeywordService) {
         this.out = out;
         this.tenTweetsForKeywordService = tenTweetsForKeywordService;
-        //twitterSearchActors.add(this);
     }
 
     public static Props props(ActorRef out, TenTweetsForKeywordService tenTweetsForKeywordService) {
@@ -51,6 +49,7 @@ public class TwitterSearchActor extends AbstractActor {
                     logger.debug("keyWords = {}", keyWords.toString());
                     CompletionStage<Map<String, List<Tweet>>> reply = tenTweetsForKeywordService.getTenTweetsForKeyword(keyWords);
                     reply.thenAccept(r -> out.tell(Json.toJson(r), self()));
+                    actors.add(getContext().self());
                 })
                 .match(Search.class, newSearch -> {
                     keyWords.add(newSearch.searchKey);
