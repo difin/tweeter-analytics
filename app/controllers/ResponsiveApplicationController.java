@@ -35,11 +35,6 @@ import java.util.concurrent.CompletionStage;
 public class ResponsiveApplicationController extends Controller {
 	
 	/**
-	 * User Profile retrieval service
-	 */
-	private UserProfileService userProfileService;
-	
-	/**
 	 * Tweets search service
 	 */
 	private TenTweetsForKeywordService tenTweetsForKeywordService;
@@ -58,14 +53,12 @@ public class ResponsiveApplicationController extends Controller {
 	 */
 	@Inject
 	public ResponsiveApplicationController(
-			UserProfileService userProfileService,
 			TenTweetsForKeywordService tenTweetsForKeywordService,
 			ActorSystem actorSystem,
 			Materializer materializer,
 			WebJarsUtil webJarsUtil,
 			HttpExecutionContext ec) {
 		
-		this.userProfileService = userProfileService;
 		this.tenTweetsForKeywordService = tenTweetsForKeywordService;
         this.actorSystem = actorSystem;
         this.materializer = materializer;
@@ -82,23 +75,9 @@ public class ResponsiveApplicationController extends Controller {
 		return CompletableFuture.supplyAsync(() -> {
 			Http.Request request = request();
 			String url = routes.ResponsiveApplicationController.websocket().webSocketURL(request);
-			String profileUrl = routes.ResponsiveApplicationController.userProfile("").url();
+			String profileUrl = routes.ApplicationController.userProfile("").url();
 			return ok(responsiveTweets.render(url, profileUrl, webJarsUtil));
 		}, ec.current());
-	}
-	
-	/**
-	 * Retrieves user profile info and user's last 10 tweets 
-	 * and renders a view with this info.
-	 * 
-	 * @param userProfileId Twitter account ID
-	 * @return promise of a result with a rendered view of user profile info
-	 */
-	public CompletionStage<Result> userProfile(String userProfileId) {
-
-		return userProfileService
-				.userProfle(userProfileId)
-				.thenApplyAsync(r -> ok(userProfile.render(r)));
 	}
 	
     public WebSocket websocket() {
