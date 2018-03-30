@@ -2,11 +2,10 @@ package controllers;
 
 import actors.TwitterSearchActor;
 import actors.TwitterSearchSchedulerActor;
-import actors.TwitterSearchSchedulerActorProtocol.Refresh;
+import actors.TwitterSearchSchedulerActorProtocol.RefreshAll;
 import akka.NotUsed;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import akka.actor.Props;
 import akka.stream.Materializer;
 import akka.stream.javadsl.Flow;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -20,9 +19,7 @@ import scala.concurrent.ExecutionContext;
 import scala.concurrent.duration.Duration;
 import scala.concurrent.duration.FiniteDuration;
 import services.TenTweetsForKeywordService;
-import services.UserProfileService;
 import views.html.responsiveTweets;
-import views.html.userProfile;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -77,7 +74,7 @@ public class ResponsiveApplicationController extends Controller {
 		FiniteDuration initialDelay = Duration.create(0, TimeUnit.SECONDS);
 		FiniteDuration interval = Duration.create(2, TimeUnit.SECONDS);
 		ActorRef receiver = this.actorSystem.actorOf(TwitterSearchSchedulerActor.props(), "Scheduler");
-		Refresh message = new Refresh();
+		RefreshAll message = new RefreshAll();
 		ExecutionContext executor = actorSystem.dispatcher();
 		//ActorRef sender = self;
 		this.actorSystem.scheduler().schedule(initialDelay, interval, receiver, message, executor, ActorRef.noSender());

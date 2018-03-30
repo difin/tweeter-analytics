@@ -9,7 +9,8 @@ import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import actors.TwitterSearchSchedulerActorProtocol.Refresh;
+import actors.TwitterSearchActorProtocol.Refresh;
+import actors.TwitterSearchSchedulerActorProtocol.RefreshAll;
 import actors.TwitterSearchSchedulerActorProtocol.Register;
 
 /*
@@ -45,7 +46,7 @@ public class TwitterSearchSchedulerActor extends AbstractActor {
 	public Receive createReceive() {
 
 		return receiveBuilder()
-			.match(Refresh.class, p -> {
+			.match(RefreshAll.class, p -> {
 				for (ActorRef actorRef : twitterSearchActors) {
 					actorRef.tell(new Refresh(), getSelf());
 				}

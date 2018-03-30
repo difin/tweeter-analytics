@@ -14,8 +14,8 @@ public class TwitterSearchSchedulerActorProtocol {
 		
 	}
 	
-	public static class Refresh{
-		public Refresh() {
+	public static class RefreshAll{
+		public RefreshAll() {
 			
 		}
 	}
