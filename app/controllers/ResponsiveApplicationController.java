@@ -48,6 +48,7 @@ public class ResponsiveApplicationController extends Controller {
 	private TenTweetsForKeywordService tenTweetsForKeywordService;
 	
     private final ActorSystem actorSystem;
+    private ActorRef receiver;
     private final Materializer materializer;
 	private final WebJarsUtil webJarsUtil;
 	private HttpExecutionContext ec;
@@ -76,7 +77,8 @@ public class ResponsiveApplicationController extends Controller {
 		// Scheduler Part.
 		FiniteDuration initialDelay = Duration.create(0, TimeUnit.SECONDS);
 		FiniteDuration interval = Duration.create(2, TimeUnit.SECONDS);
-		ActorRef receiver = this.actorSystem.actorOf(TwitterSearchSchedulerActor.props(), "Scheduler");
+		//ActorRef receiver = this.actorSystem.actorOf(TwitterSearchSchedulerActor.props(), "Scheduler");
+		receiver = this.actorSystem.actorOf(TwitterSearchSchedulerActor.props(), "Scheduler");
 		Refresh message = new Refresh();
 		ExecutionContext executor = actorSystem.dispatcher();
 		//ActorRef sender = self;
@@ -107,7 +109,7 @@ public class ResponsiveApplicationController extends Controller {
             	final CompletionStage<Either<Result, Flow<JsonNode, JsonNode, ?>>> stage = 
 	            	CompletableFuture.supplyAsync(() -> {
 
-						Object flowAsObject = ActorFlow.actorRef(out -> TwitterSearchActor.props(out, tenTweetsForKeywordService), actorSystem, materializer);
+						Object flowAsObject = ActorFlow.actorRef(out -> TwitterSearchActor.props(out, receiver, tenTweetsForKeywordService), actorSystem, materializer);
 	            		
 						@SuppressWarnings("unchecked")
 						Flow<JsonNode, JsonNode, NotUsed> flow = (Flow<JsonNode, JsonNode, NotUsed>) flowAsObject;

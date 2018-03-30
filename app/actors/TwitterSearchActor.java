@@ -24,41 +24,46 @@ import java.util.concurrent.CompletionStage;
  *
  */
 public class TwitterSearchActor extends AbstractActor {
-    public static HashSet<ActorRef> actors = new HashSet<>();
+    //public static HashSet<ActorRef> actors = new HashSet<>();
     private final LoggingAdapter logger = Logging.getLogger(getContext().system(), this);
     private final ActorRef out;
+    private final ActorRef scheduler;
 
     TenTweetsForKeywordService tenTweetsForKeywordService;
 
     private ArrayList<String> keyWords = new ArrayList<>();
 
-    public TwitterSearchActor(ActorRef out, TenTweetsForKeywordService tenTweetsForKeywordService) {
+    public TwitterSearchActor(ActorRef out, ActorRef scheduler, TenTweetsForKeywordService tenTweetsForKeywordService) {
         this.out = out;
+        this.scheduler = scheduler;
         this.tenTweetsForKeywordService = tenTweetsForKeywordService;
+        logger.debug("scheduler = {}", scheduler);
+        this.scheduler.tell(new TwitterSearchSchedulerActorProtocol.Register(self()), self());
+
     }
 
-    public static Props props(ActorRef out, TenTweetsForKeywordService tenTweetsForKeywordService) {
-        return Props.create(TwitterSearchActor.class, out, tenTweetsForKeywordService);
+    public static Props props(ActorRef out, ActorRef scheduler, TenTweetsForKeywordService tenTweetsForKeywordService) {
+        return Props.create(TwitterSearchActor.class, out, scheduler, tenTweetsForKeywordService);
     }
 
     @Override
     public Receive createReceive() {
+
         return receiveBuilder()
+                .match(TwitterSearchActorProtocol.Refresh.class, newRefresh -> {
+                    //logger.debug("search actor refreshed");
+                    if (keyWords.size()>0) {
+                        CompletionStage<Map<String, List<Tweet>>> reply = tenTweetsForKeywordService.getTenTweetsForKeyword(keyWords);
+                        reply.thenAccept(r -> out.tell(Json.toJson(r), self()));
+                    }
+
+                })
                 .match(ObjectNode.class, newSearch -> {
                     keyWords.add(newSearch.findValue("searchKey").asText());
                     logger.debug("keyWords = {}", keyWords.toString());
                     CompletionStage<Map<String, List<Tweet>>> reply = tenTweetsForKeywordService.getTenTweetsForKeyword(keyWords);
                     reply.thenAccept(r -> out.tell(Json.toJson(r), self()));
-                    actors.add(getContext().self());
-                })
-                .match(Search.class, newSearch -> {
-                    keyWords.add(newSearch.searchKey);
-                    CompletionStage<Map<String, List<Tweet>>> reply = tenTweetsForKeywordService.getTenTweetsForKeyword(keyWords);
-                    reply.thenAccept(r -> out.tell(Json.toJson(r), self()));
-                })
-                .match(Refresh.class, newRefresh -> {
-                    CompletionStage<Map<String, List<Tweet>>> reply = tenTweetsForKeywordService.getTenTweetsForKeyword(keyWords);
-                    reply.thenAccept(r -> out.tell(Json.toJson(r), self()));
+
                 })
                 .build();
     }
