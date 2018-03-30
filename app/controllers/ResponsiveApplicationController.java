@@ -6,7 +6,6 @@ import actors.TwitterSearchSchedulerActorProtocol.RefreshAll;
 import akka.NotUsed;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import akka.actor.Props;
 import akka.stream.Materializer;
 import akka.stream.javadsl.Flow;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -20,9 +19,7 @@ import scala.concurrent.ExecutionContext;
 import scala.concurrent.duration.Duration;
 import scala.concurrent.duration.FiniteDuration;
 import services.TenTweetsForKeywordService;
-import services.UserProfileService;
 import views.html.responsiveTweets;
-import views.html.userProfile;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
