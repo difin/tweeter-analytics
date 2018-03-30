@@ -13,7 +13,6 @@ import play.libs.Json;
 import services.TenTweetsForKeywordService;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletionStage;
@@ -50,7 +49,7 @@ public class TwitterSearchActor extends AbstractActor {
     public Receive createReceive() {
 
         return receiveBuilder()
-                .match(TwitterSearchActorProtocol.Refresh.class, newRefresh -> {
+                .match(Refresh.class, newRefresh -> {
                     //logger.debug("search actor refreshed");
                     if (keyWords.size()>0) {
                         CompletionStage<Map<String, List<Tweet>>> reply = tenTweetsForKeywordService.getTenTweetsForKeyword(keyWords);
