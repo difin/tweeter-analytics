@@ -1,16 +1,16 @@
 package actors;
 
-import java.sql.Time;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.HashSet;
+import java.util.Set;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import actors.TwitterSearchActorProtocol.Refresh;
+import actors.TwitterSearchSchedulerActorProtocol.Refresh;
+import actors.TwitterSearchSchedulerActorProtocol.Register;
 
 /*
  * @author Mayank Acharya
@@ -19,42 +19,40 @@ import actors.TwitterSearchActorProtocol.Refresh;
 
 public class TwitterSearchSchedulerActor extends AbstractActor {
 	
-	//logging  mechanism.
+	public final Set<ActorRef> twitterSearchActors;
+	
 	private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(),this);
 	
-	//Start method.
 	@Override
 	public void preStart() throws Exception {
-		// TODO Auto-generated method stub
 		log.info("TwitterSearchSchedulerActor {}-{} started at " + LocalTime.now());
 	}
 	
-	
-	// Stop method.
 	@Override
 	public void postStop() throws Exception {
-		// TODO Auto-generated method stub
 		log.info("TwitterSearchSchedulerActor {}-{} stopped at " + LocalTime.now());
 	}
 	
-	// Props method.
 	public static Props props() {
 		return Props.create(TwitterSearchSchedulerActor.class);
 	}
 	
+	public TwitterSearchSchedulerActor() {
+		twitterSearchActors = new HashSet<>();
+	}
 	
-	// main createReceive method.
 	@Override
 	public Receive createReceive() {
-		// TODO Auto-generated method stub
-		// Trigger available in Controller will trigger this actor and calls createReceive method.
-		return receiveBuilder().matchEquals("CallFromController",p->{
-			// Logic of call static TwitterSearchActor list and fetch element one by one and pass it to refresh.
-			HashSet<ActorRef> actor_map = TwitterSearchActor.actors;
-			for (ActorRef actorRef : actor_map) {
-				actorRef.tell(new Refresh(), getSelf());
-			}
-		}).build();
-	}
 
+		return receiveBuilder()
+			.match(Refresh.class, p -> {
+				for (ActorRef actorRef : twitterSearchActors) {
+					actorRef.tell(new Refresh(), getSelf());
+				}
+			})
+			.match(Register.class, p -> {
+				twitterSearchActors.add(p.actorRef);
+			})
+			.build();
+	}
 }

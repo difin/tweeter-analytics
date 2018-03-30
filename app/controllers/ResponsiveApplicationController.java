@@ -2,6 +2,7 @@ package controllers;
 
 import actors.TwitterSearchActor;
 import actors.TwitterSearchSchedulerActor;
+import actors.TwitterSearchSchedulerActorProtocol.Refresh;
 import akka.NotUsed;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
@@ -73,10 +74,10 @@ public class ResponsiveApplicationController extends Controller {
 		this.ec = ec;
 		
 		// Scheduler Part.
-		FiniteDuration initialDelay = Duration.create(5, TimeUnit.SECONDS);
-		FiniteDuration interval = Duration.create(10, TimeUnit.SECONDS);
+		FiniteDuration initialDelay = Duration.create(0, TimeUnit.SECONDS);
+		FiniteDuration interval = Duration.create(2, TimeUnit.SECONDS);
 		ActorRef receiver = this.actorSystem.actorOf(TwitterSearchSchedulerActor.props(), "Scheduler");
-		String message = "CallFromController";
+		Refresh message = new Refresh();
 		ExecutionContext executor = actorSystem.dispatcher();
 		//ActorRef sender = self;
 		this.actorSystem.scheduler().schedule(initialDelay, interval, receiver, message, executor, ActorRef.noSender());
