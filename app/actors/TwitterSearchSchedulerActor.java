@@ -3,11 +3,14 @@ package actors;
 import java.sql.Time;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.HashSet;
 
 import akka.actor.AbstractActor;
+import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
+import actors.TwitterSearchActorProtocol.Refresh;
 
 /*
  * @author Mayank Acharya
@@ -47,6 +50,10 @@ public class TwitterSearchSchedulerActor extends AbstractActor {
 		// Trigger available in Controller will trigger this actor and calls createReceive method.
 		return receiveBuilder().matchEquals("CallFromController",p->{
 			// Logic of call static TwitterSearchActor list and fetch element one by one and pass it to refresh.
+			HashSet<ActorRef> actor_map = TwitterSearchActor.actors;
+			for (ActorRef actorRef : actor_map) {
+				actorRef.tell(new Refresh(), getSelf());
+			}
 		}).build();
 	}
 
