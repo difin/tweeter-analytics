@@ -52,47 +52,62 @@
                     });
                     // console.log('WebSocket Opened on @url');
                 };
+
                 connection.onerror = function (error) {
                     console.log('WebSocket Error ', error);
                 };
+
                 connection.onmessage = function (event) {
                     var keyPhraseAndTweets = JSON.parse(event.data);
-                    var toAppend = '';
-                    console.log(Object.keys(keyPhraseAndTweets).length);
+                    //console.log(Object.keys(keyPhraseAndTweets).length);
+
                     var show = "show";
                     if (Object.keys(keyPhraseAndTweets).length > 1) {
                         show = "";
                     }
                     for (var keyPhrase in keyPhraseAndTweets) {
-                        toAppend = "<hr>";
-                        toAppend += "<button class='btn btn-outline-primary' type='button' data-toggle='collapse' data-target='#collapse-" + keyPhrase + "' aria-expanded='true' aria-controls='collapse-" + keyPhrase + "'>" + keyPhrase + "</button>";
-                        toAppend += "<div class='collapse " + show + "' id='collapse-" + keyPhrase + "'>";
-                        toAppend += "<ul class='list-unstyled'>";
-                        for (var el in keyPhraseAndTweets[keyPhrase]) {
+                        var keyPhraseId = keyPhrase.split(' ').join('-');
+                        //console.log("keyPhraseId="+keyPhraseId);
+                        toAppend ='';
+                        if (document.getElementById(keyPhraseId) == null) {
+                            console.log("getElementById(keyPhraseId) == null");
+                            var toAppend = "<hr>";
+                            toAppend += "<button class='btn btn-outline-primary' type='button' data-toggle='collapse' data-target='#collapse-" + keyPhraseId + "' aria-expanded='true' aria-controls='collapse-" + keyPhraseId + "'>" + keyPhrase + "</button>";
+                            toAppend += "<div class='collapse " + show + "' id='collapse-" + keyPhraseId + "'>";
+                                toAppend += "<ul id='" + keyPhraseId + "' class='list-unstyled'>";
+                                    toAppend += composeTweets(keyPhraseAndTweets[keyPhrase]);
+                                toAppend += "</ul>";
+                            toAppend += "</div>";
+                            $messages.prepend($(toAppend));
+                        } else {
+                            document.getElementById(keyPhraseId).innerHTML = composeTweets(keyPhraseAndTweets[keyPhrase]);
+                        }
+                    }
+                    function composeTweets(tweetsFprKeyPhrase) {
+                        toAppend ='';
+                        for (var el in tweetsFprKeyPhrase) {
+                            //console.log("getElementById(keyPhraseId) == found the element");
                             toAppend += "<li class='media bg-light border border-primary rounded p-2 mt-2 mb-2 mr-5 ml-5'>";
-                            toAppend += "<img class=\"mr-3\" src=\"" + keyPhraseAndTweets[keyPhrase][el].user.profile_image_url + "\" alt=\"Generic placeholder image\">";
-                            toAppend += "<div class=\"media-body\">";
-                            toAppend += "<div class=\"row \">";
-                            toAppend += "<div class=\"col align-self-center\">";
-                            toAppend += "<h2><a href=\"" + userProfileUrl + keyPhraseAndTweets[keyPhrase][el].user.screen_name + "\" class=\"btn btn-link\" role=\"button\">" + keyPhraseAndTweets[keyPhrase][el].user.screen_name + "</a></h2>";
-                            toAppend += "</div>";
-                            toAppend += "<div class=\"col-auto align-self-start\">";
-                            toAppend += "<small class=\"text-muted\">" + keyPhraseAndTweets[keyPhrase][el].created_at + "</small>";
-                            toAppend += "</div>";
-                            toAppend += "</div>";
-
-                            toAppend += "<div class=\"row p-2\">";
-                            toAppend += "<div class=\"col\">";
-                            toAppend += "<h5>" + keyPhraseAndTweets[keyPhrase][el].full_text + "</h5>";
-                            toAppend += "</div>";
-                            toAppend += "</div>";
-                            toAppend += "</div>";
+                                toAppend += "<img class=\"mr-3\" src=\"" + keyPhraseAndTweets[keyPhrase][el].user.profile_image_url + "\" alt=\"Generic placeholder image\">";
+                                toAppend += "<div class=\"media-body\">";
+                                    toAppend += "<div class=\"row \">";
+                                        toAppend += "<div class=\"col align-self-center\">";
+                                            toAppend += "<h2><a href=\"" + userProfileUrl + keyPhraseAndTweets[keyPhrase][el].user.screen_name + "\" class=\"btn btn-link\" role=\"button\">" + keyPhraseAndTweets[keyPhrase][el].user.screen_name + "</a></h2>";
+                                        toAppend += "</div>";
+                                        toAppend += "<div class=\"col-auto align-self-start\">";
+                                            toAppend += "<small class=\"text-muted\">" + keyPhraseAndTweets[keyPhrase][el].created_at + "</small>";
+                                        toAppend += "</div>";
+                                    toAppend += "</div>";
+                                    toAppend += "<div class=\"row p-2\">";
+                                        toAppend += "<div class=\"col\">";
+                                            toAppend += "<h5>" + keyPhraseAndTweets[keyPhrase][el].full_text + "</h5>";
+                                        toAppend += "</div>";
+                                    toAppend += "</div>";
+                                toAppend += "</div>";
                             toAppend += "</li>";
                         }
-                        toAppend += "</ul>";
-                        toAppend += "</div>";
+                        return toAppend;
                     }
-                    $messages.prepend($(toAppend));
                 }
         </script>
     }
