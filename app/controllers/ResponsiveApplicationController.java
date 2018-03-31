@@ -1,6 +1,7 @@
 package controllers;
 
 import actors.TwitterSearchActor;
+import actors.TwitterSearchActorProtocol;
 import actors.TwitterSearchSchedulerActor;
 import actors.TwitterSearchSchedulerActorProtocol.RefreshAll;
 import akka.NotUsed;
@@ -54,7 +55,6 @@ public class ResponsiveApplicationController extends Controller {
 	
 	/**
 	 * Creates a new application controller
-	 * @param userProfileService         User profile retrieval service
 	 * @param tenTweetsForKeywordService Tweets search service
 	 */
 	@Inject
@@ -93,41 +93,62 @@ public class ResponsiveApplicationController extends Controller {
 			return ok(responsiveTweets.render(url, profileUrl, webJarsUtil));
 		}, ec.current());
 	}
-	
-    public WebSocket websocket() {
-    	
-    	Logger.debug("ApplicationWSController:socket");
-    	
-        return WebSocket.Json.acceptOrResult(request -> {
+
+	public WebSocket websocket() {
+
+        Logger.debug("ApplicationWSController:socket");
+
+        return WebSocket.json(TwitterSearchActorProtocol.Search.class).acceptOrResult(request -> {
             if (sameOriginCheck(request)) {
 
-            	final CompletionStage<Either<Result, Flow<JsonNode, JsonNode, ?>>> stage = 
-	            	CompletableFuture.supplyAsync(() -> {
+                final CompletionStage<Either<Result, Flow<TwitterSearchActorProtocol.Search, Object, ?>>> stage =
+                        CompletableFuture.supplyAsync(() -> {
 
-						Object flowAsObject = ActorFlow.actorRef(out -> TwitterSearchActor.props(out, receiver, tenTweetsForKeywordService), actorSystem, materializer);
-	            		
-						@SuppressWarnings("unchecked")
-						Flow<JsonNode, JsonNode, NotUsed> flow = (Flow<JsonNode, JsonNode, NotUsed>) flowAsObject;
+                            Object flowAsObject = ActorFlow.actorRef(out -> TwitterSearchActor.props(out, receiver, tenTweetsForKeywordService), actorSystem, materializer);
 
-		            	final Either<Result, Flow<JsonNode, JsonNode, ?>> right = Either.Right(flow);
-		            	return right;
-	            	});
-            	
+                            @SuppressWarnings("unchecked")
+                            Flow<TwitterSearchActorProtocol.Search, Object, NotUsed> flow = (Flow<TwitterSearchActorProtocol.Search, Object, NotUsed>) flowAsObject;
+
+                            final Either<Result, Flow<TwitterSearchActorProtocol.Search, Object, ?>> right = Either.Right(flow);
+                            return right;
+                        });
+
                 return stage.exceptionally(this::logException);
             } else {
                 return forbiddenResult();
             }
         });
     }
+//        return WebSocket.Json.acceptOrResult(request -> {
+//            if (sameOriginCheck(request)) {
+//
+//            	final CompletionStage<Either<Result, Flow<JsonNode, JsonNode, ?>>> stage =
+//	            	CompletableFuture.supplyAsync(() -> {
+//
+//						Object flowAsObject = ActorFlow.actorRef(out -> TwitterSearchActor.props(out, receiver, tenTweetsForKeywordService), actorSystem, materializer);
+//
+//						@SuppressWarnings("unchecked")
+//						Flow<JsonNode, JsonNode, NotUsed> flow = (Flow<JsonNode, JsonNode, NotUsed>) flowAsObject;
+//
+//		            	final Either<Result, Flow<JsonNode, JsonNode, ?>> right = Either.Right(flow);
+//		            	return right;
+//	            	});
+//
+//                return stage.exceptionally(this::logException);
+//            } else {
+//                return forbiddenResult();
+//            }
+//        });
+//    }
     
-    private CompletionStage<Either<Result, Flow<JsonNode, JsonNode, ?>>> forbiddenResult() {
+    private CompletionStage<Either<Result, Flow<TwitterSearchActorProtocol.Search, Object, ?>>> forbiddenResult() {
         final Result forbidden = Results.forbidden("forbidden");
-        final Either<Result, Flow<JsonNode, JsonNode, ?>> left = Either.Left(forbidden);
+        final Either<Result, Flow<TwitterSearchActorProtocol.Search, Object, ?>> left = Either.Left(forbidden);
 
         return CompletableFuture.completedFuture(left);
     }
 
-    private Either<Result, Flow<JsonNode, JsonNode, ?>> logException(Throwable throwable) {
+    private Either<Result, Flow<TwitterSearchActorProtocol.Search, Object, ?>> logException(Throwable throwable) {
         logger.error("Cannot create websocket", throwable);
         Result result = Results.internalServerError("error");
         return Either.Left(result);

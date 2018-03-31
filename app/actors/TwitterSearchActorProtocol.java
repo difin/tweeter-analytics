@@ -1,16 +1,26 @@
 package actors;
 
+import java.io.Serializable;
+
 public class TwitterSearchActorProtocol {
-	public static class Search{
-		public final String searchKey;
-		public Search(String searchKey) {
+	public static class Search {
+
+		public String searchKey;
+
+		public Search() {
+		}
+
+		public String getSearchKey() {
+			return searchKey;
+		}
+
+		public void setSearchKey(String searchKey) {
 			this.searchKey = searchKey;
 		}
-		
 	}
+
 	public static class Refresh{
 		public Refresh() {
-			
 		}
 	}
 }

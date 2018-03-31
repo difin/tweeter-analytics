@@ -37,7 +37,11 @@
                     $searchKeyPhrase.val("");
                     // console.log('sent ', text);
                     // console.log('sent as Json ', JSON.stringify({searchKey: text}));
-                    connection.send(JSON.stringify({searchKey: text}));
+                    var search = {
+                        searchKey : ''
+                    };
+                    search.searchKey = text;
+                    connection.send(JSON.stringify(search));
                 };
 
                 connection.onopen = function () {
