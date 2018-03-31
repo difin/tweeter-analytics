@@ -81,12 +81,15 @@ public class TwitterSearchActorTest extends JUnitSuite {
 
         }};
     }
+
     @Test
     public void testActorSearch(){
         new TestKit(system) {{
-            final ObjectMapper mapper = new ObjectMapper();
-            final ObjectNode search = mapper.createObjectNode();
-            search.put("searchKey", "val1");;
+//            final ObjectMapper mapper = new ObjectMapper();
+//            final ObjectNode search = mapper.createObjectNode();
+//            search.put("searchKey", "val1");;
+            TwitterSearchActorProtocol.Search search = new TwitterSearchActorProtocol.Search();
+            search.setSearchKey("val1");
             final TestKit probe1 = new TestKit(system);
             final TestKit probe2 = new TestKit(system);
             final Props props = Props.create(TwitterSearchActor.class, probe1.getRef(), probe2.getRef(), tenTweetsForKeywordService);
@@ -97,12 +100,15 @@ public class TwitterSearchActorTest extends JUnitSuite {
             probe1.expectMsg(duration("3 second"), searchResult);
         }};
     }
+
     @Test
     public void testActorRefresh(){
         new TestKit(system) {{
-            final ObjectMapper mapper = new ObjectMapper();
-            final ObjectNode search = mapper.createObjectNode();
-            search.put("searchKey", "val1");;
+//            final ObjectMapper mapper = new ObjectMapper();
+//            final ObjectNode search = mapper.createObjectNode();
+//            search.put("searchKey", "val1");;
+            TwitterSearchActorProtocol.Search search = new TwitterSearchActorProtocol.Search();
+            search.setSearchKey("val1");
             final TestKit probe1 = new TestKit(system);
             final TestKit probe2 = new TestKit(system);
             final Props props = Props.create(TwitterSearchActor.class, probe1.getRef(), probe2.getRef(), tenTweetsForKeywordService);

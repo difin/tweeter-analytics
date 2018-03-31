@@ -26,6 +26,6 @@ public class mainTest {
 	public void render_null_null() {
 		Content html = views.html.main.render(null, null);
 		assertThat("text/html", is(equalTo(html.contentType())));
-		assertThat(html.body(), stringContainsInOrder(Arrays.asList("Home", "Profile")));
+		assertThat(html.body(), stringContainsInOrder(Arrays.asList("Search Tweets", "Search Tweets (Web Socket)", "Profile")));
 	}
 }
