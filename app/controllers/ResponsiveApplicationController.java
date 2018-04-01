@@ -9,7 +9,6 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.stream.Materializer;
 import akka.stream.javadsl.Flow;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.webjars.play.WebJarsUtil;
 import play.Logger;
 import play.libs.F.Either;
@@ -104,10 +103,12 @@ public class ResponsiveApplicationController extends Controller {
                 final CompletionStage<Either<Result, Flow<TwitterSearchActorProtocol.Search, Object, ?>>> stage =
                         CompletableFuture.supplyAsync(() -> {
 
-                            Object flowAsObject = ActorFlow.actorRef(out -> TwitterSearchActor.props(out, receiver, tenTweetsForKeywordService), actorSystem, materializer);
+                            Object flowAsObject = ActorFlow.actorRef(out -> 
+                            	TwitterSearchActor.props(out, receiver, tenTweetsForKeywordService), actorSystem, materializer);
 
                             @SuppressWarnings("unchecked")
-                            Flow<TwitterSearchActorProtocol.Search, Object, NotUsed> flow = (Flow<TwitterSearchActorProtocol.Search, Object, NotUsed>) flowAsObject;
+                            Flow<TwitterSearchActorProtocol.Search, Object, NotUsed> flow = 
+                            	(Flow<TwitterSearchActorProtocol.Search, Object, NotUsed>) flowAsObject;
 
                             final Either<Result, Flow<TwitterSearchActorProtocol.Search, Object, ?>> right = Either.Right(flow);
                             return right;
@@ -119,27 +120,6 @@ public class ResponsiveApplicationController extends Controller {
             }
         });
     }
-//        return WebSocket.Json.acceptOrResult(request -> {
-//            if (sameOriginCheck(request)) {
-//
-//            	final CompletionStage<Either<Result, Flow<JsonNode, JsonNode, ?>>> stage =
-//	            	CompletableFuture.supplyAsync(() -> {
-//
-//						Object flowAsObject = ActorFlow.actorRef(out -> TwitterSearchActor.props(out, receiver, tenTweetsForKeywordService), actorSystem, materializer);
-//
-//						@SuppressWarnings("unchecked")
-//						Flow<JsonNode, JsonNode, NotUsed> flow = (Flow<JsonNode, JsonNode, NotUsed>) flowAsObject;
-//
-//		            	final Either<Result, Flow<JsonNode, JsonNode, ?>> right = Either.Right(flow);
-//		            	return right;
-//	            	});
-//
-//                return stage.exceptionally(this::logException);
-//            } else {
-//                return forbiddenResult();
-//            }
-//        });
-//    }
     
     private CompletionStage<Either<Result, Flow<TwitterSearchActorProtocol.Search, Object, ?>>> forbiddenResult() {
         final Result forbidden = Results.forbidden("forbidden");

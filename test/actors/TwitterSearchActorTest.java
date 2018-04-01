@@ -1,24 +1,18 @@
 package actors;
 
-//import jdocs.AbstractJavaTest;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.scalatest.junit.JUnitSuite;
 import akka.testkit.javadsl.TestKit;
 import models.Tweet;
 import models.UserProfile;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
-import akka.actor.AbstractActor;
 import play.libs.Json;
-import scala.concurrent.duration.Duration;
 import services.TenTweetsForKeywordService;
 
 import java.util.ArrayList;
@@ -27,15 +21,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-import static akka.testkit.JavaTestKit.duration;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 public class TwitterSearchActorTest extends JUnitSuite {
-    static private TenTweetsForKeywordService tenTweetsForKeywordService = mock(TenTweetsForKeywordService.class);
+	
+	private static final long serialVersionUID = 1L;
+	static private TenTweetsForKeywordService tenTweetsForKeywordService = mock(TenTweetsForKeywordService.class);
     static ActorSystem system;
     static private List<Tweet> tweets;
-
 
     @BeforeClass
     public static void setup() {
@@ -72,22 +66,16 @@ public class TwitterSearchActorTest extends JUnitSuite {
     @Test
     public void testActorRegister(){
         new TestKit(system) {{
-            //final TestKit probe = new TestKit(system);
             final Props props = Props.create(TwitterSearchActor.class, getRef(), getRef(), tenTweetsForKeywordService);
-            final ActorRef tsa = system.actorOf(props);
-            expectMsgClass(duration("1 second"), actors.TwitterSearchSchedulerActorProtocol.Register.class);
-//            tsa.teell(new TwitterSearchActorProtocol.Search("test"), getRef());
-//            expectMsg(duration("1 second"), "something");
+            final ActorRef tsa = system.actorOf(props);            //final TestKit probe = new TestKit(system);
 
+            expectMsgClass(duration("1 second"), actors.TwitterSearchSchedulerActorProtocol.Register.class);
         }};
     }
 
     @Test
     public void testActorSearch(){
         new TestKit(system) {{
-//            final ObjectMapper mapper = new ObjectMapper();
-//            final ObjectNode search = mapper.createObjectNode();
-//            search.put("searchKey", "val1");;
             TwitterSearchActorProtocol.Search search = new TwitterSearchActorProtocol.Search();
             search.setSearchKey("val1");
             final TestKit probe1 = new TestKit(system);
@@ -104,9 +92,6 @@ public class TwitterSearchActorTest extends JUnitSuite {
     @Test
     public void testActorRefresh(){
         new TestKit(system) {{
-//            final ObjectMapper mapper = new ObjectMapper();
-//            final ObjectNode search = mapper.createObjectNode();
-//            search.put("searchKey", "val1");;
             TwitterSearchActorProtocol.Search search = new TwitterSearchActorProtocol.Search();
             search.setSearchKey("val1");
             final TestKit probe1 = new TestKit(system);

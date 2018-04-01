@@ -11,7 +11,6 @@ public class TwitterSearchSchedulerActorProtocol {
 		public Register(ActorRef actorRef) {
 			this.actorRef = actorRef;
 		}
-		
 	}
 	
 	public static class RefreshAll{

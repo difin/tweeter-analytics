@@ -1,7 +1,5 @@
 package actors;
 
-import java.io.Serializable;
-
 public class TwitterSearchActorProtocol {
 	public static class Search {
 

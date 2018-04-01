@@ -7,7 +7,6 @@ import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.Tweet;
 import play.libs.Json;
 import services.TenTweetsForKeywordService;
@@ -49,22 +48,12 @@ public class TwitterSearchActor extends AbstractActor {
 
         return receiveBuilder()
                 .match(Refresh.class, newRefresh -> {
-                    //logger.debug("search actor refreshed");
                     if (keyWords.size()>0) {
                         CompletionStage<Map<String, List<Tweet>>> reply = tenTweetsForKeywordService.getTenTweetsForKeyword(keyWords);
                         reply.thenAccept(r -> out.tell(Json.toJson(r), self()));
                     }
 
                 })
-//                .match(ObjectNode.class, newSearch -> {
-//                    keyWords.add(newSearch.findValue("searchKey").asText());
-//                    logger.debug("keyWords = {}", keyWords.toString());
-//                    logger.debug("ObjectNode toString = {}", newSearch.toString());
-//                    logger.debug("new Search to Json = {}", Json.toJson(new TwitterSearchActorProtocol.Search(newSearch.findValue("searchKey").asText())));
-//                    CompletionStage<Map<String, List<Tweet>>> reply = tenTweetsForKeywordService.getTenTweetsForKeyword(keyWords);
-//                    reply.thenAccept(r -> out.tell(Json.toJson(r), self()));
-//
-//                })
                 .match(Search.class, newSearch -> {
                     keyWords.add(newSearch.searchKey);
                     logger.debug("match Search.class keyWords = {}", keyWords.toString());
