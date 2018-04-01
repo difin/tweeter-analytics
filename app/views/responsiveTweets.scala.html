@@ -1,4 +1,4 @@
-@(url: String, profileUrl: String, webJarsUtil: org.webjars.play.WebJarsUtil)
+@(webJarsUtil: org.webjars.play.WebJarsUtil)
 <!-- Author Nikita Baranov -->
 
     @main("ResponsiveTweetSearch") {
@@ -26,8 +26,8 @@
                 var $messages = $("#messages"),
                         $send = $("#send"),
                         $searchKeyPhrase = $("#searchKeyPhrase"),
-                        connection = new WebSocket("@url"),
-                        userProfileUrl = "@profileUrl";
+                        connection = new WebSocket("@routes.ResponsiveApplicationController.websocket().webSocketURL()"),
+                        userProfileUrl = "@routes.ApplicationController.userProfile("").url";
                 // console.log('JS after var');
 
                 $send.prop("disabled", true);
@@ -45,7 +45,6 @@
                 };
 
                 connection.onopen = function () {
-                    // console.log('WebSocket Start to Opened on @url');
                     $send.prop("disabled", false);
                     $send.on('click', send);
                     $searchKeyPhrase.keypress(function (event) {
@@ -54,7 +53,6 @@
                             send();
                         }
                     });
-                    // console.log('WebSocket Opened on @url');
                 };
 
                 connection.onerror = function (error) {

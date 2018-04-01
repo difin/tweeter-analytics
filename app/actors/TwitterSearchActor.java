@@ -26,7 +26,7 @@ public class TwitterSearchActor extends AbstractActor {
     private final ActorRef out;
     private final ActorRef scheduler;
 
-    TenTweetsForKeywordService tenTweetsForKeywordService;
+    private TenTweetsForKeywordService tenTweetsForKeywordService;
 
     private ArrayList<String> keyWords = new ArrayList<>();
 

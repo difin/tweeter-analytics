@@ -31,69 +31,65 @@ import java.util.concurrent.TimeUnit;
 /**
  * Implements controller that handles requests for searching tweets according to keywords
  * and displaying Tweeter's user profiles.
- *  
+ *
  * @author Dmitriy Fingerman
  * @version 1.0.0
- *
  */
 @Singleton
 public class ResponsiveApplicationController extends Controller {
-	
-	/**
-	 * Tweets search service
-	 */
-	private TenTweetsForKeywordService tenTweetsForKeywordService;
-	
+
     private final ActorSystem actorSystem;
-    private ActorRef receiver;
     private final Materializer materializer;
-	private final WebJarsUtil webJarsUtil;
-	private HttpExecutionContext ec;
-    
+    private final WebJarsUtil webJarsUtil;
     private final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger("controllers.ResponsiveApplicationController");
-	
-	/**
-	 * Creates a new application controller
-	 * @param tenTweetsForKeywordService Tweets search service
-	 */
-	@Inject
-	public ResponsiveApplicationController(
-			TenTweetsForKeywordService tenTweetsForKeywordService,
-			ActorSystem actorSystem,
-			Materializer materializer,
-			WebJarsUtil webJarsUtil,
-			HttpExecutionContext ec) {
-		
-		this.tenTweetsForKeywordService = tenTweetsForKeywordService;
+    /**
+     * Tweets search service
+     */
+    private TenTweetsForKeywordService tenTweetsForKeywordService;
+    private ActorRef receiver;
+    private HttpExecutionContext ec;
+
+    /**
+     * Creates a new application controller
+     *
+     * @param tenTweetsForKeywordService Tweets search service
+     */
+    @Inject
+    public ResponsiveApplicationController(
+            TenTweetsForKeywordService tenTweetsForKeywordService,
+            ActorSystem actorSystem,
+            Materializer materializer,
+            WebJarsUtil webJarsUtil,
+            HttpExecutionContext ec) {
+
+        this.tenTweetsForKeywordService = tenTweetsForKeywordService;
         this.actorSystem = actorSystem;
         this.materializer = materializer;
-		this.webJarsUtil = webJarsUtil;
-		this.ec = ec;
-		
-		// Scheduler Part.
-		FiniteDuration initialDelay = Duration.create(0, TimeUnit.SECONDS);
-		FiniteDuration interval = Duration.create(2, TimeUnit.SECONDS);
-		receiver = this.actorSystem.actorOf(TwitterSearchSchedulerActor.props(), "Scheduler");
-		RefreshAll message = new RefreshAll();
-		ExecutionContext executor = actorSystem.dispatcher();
-		this.actorSystem.scheduler().schedule(initialDelay, interval, receiver, message, executor, ActorRef.noSender());
-	}
+        this.webJarsUtil = webJarsUtil;
+        this.ec = ec;
 
-	/**
-	 * Renders home page
-	 * @return promise of a result with a rendered home page.
-	 */
-	public CompletionStage<Result> index() {
+        // Scheduler Part.
+        FiniteDuration initialDelay = Duration.create(0, TimeUnit.SECONDS);
+        FiniteDuration interval = Duration.create(2, TimeUnit.SECONDS);
+        receiver = this.actorSystem.actorOf(TwitterSearchSchedulerActor.props(), "Scheduler");
+        RefreshAll message = new RefreshAll();
+        ExecutionContext executor = actorSystem.dispatcher();
+        this.actorSystem.scheduler().schedule(initialDelay, interval, receiver, message, executor, ActorRef.noSender());
+    }
 
-		return CompletableFuture.supplyAsync(() -> {
-			Http.Request request = request();
-			String url = routes.ResponsiveApplicationController.websocket().webSocketURL(request);
-			String profileUrl = routes.ApplicationController.userProfile("").url();
-			return ok(responsiveTweets.render(url, profileUrl, webJarsUtil));
-		}, ec.current());
-	}
+    /**
+     * Renders home page
+     *
+     * @return promise of a result with a rendered home page.
+     */
+    public CompletionStage<Result> index() {
 
-	public WebSocket websocket() {
+        return CompletableFuture.supplyAsync(() -> {
+            return ok(responsiveTweets.render(webJarsUtil));
+        }, ec.current());
+    }
+
+    public WebSocket websocket() {
 
         Logger.debug("ApplicationWSController:socket");
 
@@ -103,24 +99,24 @@ public class ResponsiveApplicationController extends Controller {
                 final CompletionStage<Either<Result, Flow<TwitterSearchActorProtocol.Search, Object, ?>>> stage =
                         CompletableFuture.supplyAsync(() -> {
 
-                            Object flowAsObject = ActorFlow.actorRef(out -> 
+                            Object flowAsObject = ActorFlow.actorRef(out ->
                             	TwitterSearchActor.props(out, receiver, tenTweetsForKeywordService), actorSystem, materializer);
 
                             @SuppressWarnings("unchecked")
-                            Flow<TwitterSearchActorProtocol.Search, Object, NotUsed> flow = 
+                            Flow<TwitterSearchActorProtocol.Search, Object, NotUsed> flow =
                             	(Flow<TwitterSearchActorProtocol.Search, Object, NotUsed>) flowAsObject;
 
                             final Either<Result, Flow<TwitterSearchActorProtocol.Search, Object, ?>> right = Either.Right(flow);
                             return right;
                         });
 
-                return stage.exceptionally(this::logException);
+                return stage; //.exceptionally(this::logException);
             } else {
                 return forbiddenResult();
             }
         });
     }
-    
+
     private CompletionStage<Either<Result, Flow<TwitterSearchActorProtocol.Search, Object, ?>>> forbiddenResult() {
         final Result forbidden = Results.forbidden("forbidden");
         final Either<Result, Flow<TwitterSearchActorProtocol.Search, Object, ?>> left = Either.Left(forbidden);
@@ -128,11 +124,13 @@ public class ResponsiveApplicationController extends Controller {
         return CompletableFuture.completedFuture(left);
     }
 
+/*
     private Either<Result, Flow<TwitterSearchActorProtocol.Search, Object, ?>> logException(Throwable throwable) {
         logger.error("Cannot create websocket", throwable);
         Result result = Results.internalServerError("error");
         return Either.Left(result);
     }
+*/
 
     /**
      * Checks that the WebSocket comes from the same origin.  This is necessary to protect
@@ -141,13 +139,25 @@ public class ResponsiveApplicationController extends Controller {
      * See https://tools.ietf.org/html/rfc6455#section-1.3 and
      * http://blog.dewhurstsecurity.com/2013/08/30/security-testing-html5-websockets.html
      */
+//    private boolean sameOriginCheck(Http.RequestHeader rh) {
+//        final Optional<String> origin = rh.header("Origin");
+//
+//        if (!origin.isPresent()) {
+//            logger.error("originCheck: rejecting request because no Origin header found");
+//            return false;
+//        } else if (originMatches(origin.get())) {
+//            logger.debug("originCheck: originValue = " + origin);
+//            return true;
+//        } else {
+//            logger.error("originCheck: rejecting request because Origin header value " + origin + " is not in the same origin");
+//            return false;
+//        }
+//    }
+
     private boolean sameOriginCheck(Http.RequestHeader rh) {
         final Optional<String> origin = rh.header("Origin");
 
-        if (! origin.isPresent()) {
-            logger.error("originCheck: rejecting request because no Origin header found");
-            return false;
-        } else if (originMatches(origin.get())) {
+        if (originMatches(origin.get())) {
             logger.debug("originCheck: originValue = " + origin);
             return true;
         } else {
