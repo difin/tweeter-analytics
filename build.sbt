@@ -28,6 +28,8 @@ libraryDependencies += "org.awaitility" % "awaitility" % "2.0.0" % Test
 //Mockito
 libraryDependencies += "org.mockito" % "mockito-core" % "2.10.0" % Test
 
+libraryDependencies ++= Seq("com.miguno.akka" % "akka-mock-scheduler_2.12" % "0.5.1")
+
 // Make verbose tests
 testOptions in Test := Seq(Tests.Argument(TestFrameworks.JUnit, "-a", "-v"))
 

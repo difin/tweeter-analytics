@@ -42,6 +42,7 @@ public class TwitterSearchActorTest extends JUnitSuite {
 
         UserProfile user2 = new UserProfile();
         user2.setScreen_name("some screen name 2");
+        
         Tweet tweet1 = new Tweet();
         tweet1.setFull_text("some tweet text 1");
         tweet1.setCreated_at("some creation time 1");
@@ -51,9 +52,11 @@ public class TwitterSearchActorTest extends JUnitSuite {
         tweet2.setFull_text("some tweet text 2");
         tweet2.setCreated_at("some creation time 2");
         tweet2.setUser(user2);
+        
         tweets = new ArrayList<>();
         tweets.add(tweet1);
         tweets.add(tweet2);
+        
         system = ActorSystem.create();
     }
 
@@ -67,7 +70,7 @@ public class TwitterSearchActorTest extends JUnitSuite {
     public void testActorRegister(){
         new TestKit(system) {{
             final Props props = Props.create(TwitterSearchActor.class, getRef(), getRef(), tenTweetsForKeywordService);
-            final ActorRef tsa = system.actorOf(props);            //final TestKit probe = new TestKit(system);
+            system.actorOf(props);
 
             expectMsgClass(duration("1 second"), actors.TwitterSearchSchedulerActorProtocol.Register.class);
         }};
