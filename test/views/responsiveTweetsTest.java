@@ -10,22 +10,30 @@ import java.util.Arrays;
 import org.junit.Test;
 import org.webjars.play.WebJarsUtil;
 
+import play.mvc.Http;
+import play.test.Helpers;
+import play.test.WithServer;
 import play.twirl.api.Content;
 
 import static org.mockito.Mockito.*;
+import static play.test.Helpers.fakeRequest;
 
 /**
  * Implements JUnit test cases for responsive tweets page.
  * @author Dmitriy Fingerman
  * @version 1.0.0
  */
-public class responsiveTweetsTest {
+public class responsiveTweetsTest extends WithServer {
 	
 	private final WebJarsUtil webJarsUtil = mock(WebJarsUtil.class);
 
 	@Test
 	public void whenRenderingResponsiveTweetsViewThenNavBarAndSearchFormTextArePresent() {
-		
+		String serverURL = "ws://localhost:" + this.testServer.port() + "/responsive";
+		Http.RequestBuilder request = fakeRequest("GET", serverURL);
+		Http.Context context = Helpers.httpContext(request.build());
+		Http.Context.current.set(context);
+
 		Content html = views.html.responsiveTweets.render(webJarsUtil);
 		assertThat("text/html", is(equalTo(html.contentType())));
 		assertThat(html.body(), stringContainsInOrder(Arrays.asList(
