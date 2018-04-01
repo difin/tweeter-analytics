@@ -14,6 +14,8 @@ import play.libs.ws.WSClient;
 
 /**
  * Service for retrieving a security token required for authentication when using Twitter API
+ * @author Dmitriy Fingerman
+ * @version 1.0.0
  */
 
 @Singleton
