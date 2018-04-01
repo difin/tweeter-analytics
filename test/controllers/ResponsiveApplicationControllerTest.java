@@ -113,27 +113,4 @@ public class ResponsiveApplicationControllerTest extends WithServer {
         WebSocketTestClient.LoggingListener listener = new WebSocketTestClient.LoggingListener();
         webSocketTestClient.call(serverURL, "ws://someFakeServer:19001/responsive/websocket", listener).get();
     }
-
-//    @Test
-//    public void websocket_noOrigin_error() throws InterruptedException, ExecutionException {
-//        ResponsiveApplicationController controller = new ResponsiveApplicationController(
-//                tenTweetsForKeywordService,
-//                system,
-//                materializer,
-//                webJarsUtil,
-//                ec);
-//        String serverURL = "ws://localhost:" + this.testServer.port() + "/responsive/websocket";
-//        Http.RequestBuilder request = fakeRequest("GET", serverURL);
-//        request.header("Host","localhost:19001");
-//        request.header("Upgrade","websocket");
-//        request.header("Connection","Upgrade");
-//        request.header("Sec-WebSocket-Key","9rWoPKhDAVzp2ezEyQehIQ==");
-//        request.header("Sec-WebSocket-Version","13");
-//        Http.Context context = Helpers.httpContext(request.build());
-//        Http.Context.current.set(context);
-//
-//        //Result result = controller.index().toCompletableFuture().get();
-//        play.mvc.WebSocket webSocket = controller.websocket();
-//        Http.Context.current.remove();
-//        }
 }
