@@ -26,10 +26,7 @@ public class responsiveTweetsTest {
 	@Test
 	public void whenRenderingResponsiveTweetsViewThenNavBarAndSearchFormTextArePresent() {
 		
-		String websocketUrl = "some websocket url";
-		String profileUrl = "some profile url";
-		
-		Content html = views.html.responsiveTweets.render(websocketUrl, profileUrl, webJarsUtil);
+		Content html = views.html.responsiveTweets.render(webJarsUtil);
 		assertThat("text/html", is(equalTo(html.contentType())));
 		assertThat(html.body(), stringContainsInOrder(Arrays.asList(
 				"Search Tweets", 
