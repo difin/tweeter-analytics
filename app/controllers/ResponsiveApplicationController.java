@@ -2,10 +2,7 @@ package controllers;
 
 import actors.TwitterSearchActor;
 import actors.TwitterSearchActorProtocol;
-import actors.TwitterSearchSchedulerActor;
-import actors.TwitterSearchSchedulerActorProtocol.RefreshAll;
 import akka.NotUsed;
-import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.stream.Materializer;
 import akka.stream.javadsl.Flow;
@@ -15,9 +12,7 @@ import play.libs.F.Either;
 import play.libs.concurrent.HttpExecutionContext;
 import play.libs.streams.ActorFlow;
 import play.mvc.*;
-import scala.concurrent.ExecutionContext;
-import scala.concurrent.duration.Duration;
-import scala.concurrent.duration.FiniteDuration;
+import services.PushSchedulingService;
 import services.TenTweetsForKeywordService;
 import views.html.responsiveTweets;
 
@@ -26,7 +21,6 @@ import javax.inject.Singleton;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Implements controller that handles requests for searching tweets according to keywords
@@ -46,8 +40,8 @@ public class ResponsiveApplicationController extends Controller {
      * Tweets search service
      */
     private TenTweetsForKeywordService tenTweetsForKeywordService;
-    private ActorRef receiver;
     private HttpExecutionContext ec;
+    private PushSchedulingService pushSchedulingService;
 
     /**
      * Creates a new application controller
@@ -60,21 +54,18 @@ public class ResponsiveApplicationController extends Controller {
             ActorSystem actorSystem,
             Materializer materializer,
             WebJarsUtil webJarsUtil,
-            HttpExecutionContext ec) {
+            HttpExecutionContext ec,
+            PushSchedulingService pushSchedulingService) {
 
         this.tenTweetsForKeywordService = tenTweetsForKeywordService;
         this.actorSystem = actorSystem;
         this.materializer = materializer;
         this.webJarsUtil = webJarsUtil;
         this.ec = ec;
+        this.pushSchedulingService = pushSchedulingService;
 
         // Scheduler Part.
-        FiniteDuration initialDelay = Duration.create(0, TimeUnit.SECONDS);
-        FiniteDuration interval = Duration.create(2, TimeUnit.SECONDS);
-        receiver = this.actorSystem.actorOf(TwitterSearchSchedulerActor.props(), "Scheduler");
-        RefreshAll message = new RefreshAll();
-        ExecutionContext executor = actorSystem.dispatcher();
-        this.actorSystem.scheduler().schedule(initialDelay, interval, receiver, message, executor, ActorRef.noSender());
+        pushSchedulingService.startScheduler();
     }
 
     /**
@@ -100,7 +91,10 @@ public class ResponsiveApplicationController extends Controller {
                         CompletableFuture.supplyAsync(() -> {
 
                             Object flowAsObject = ActorFlow.actorRef(out ->
-                            	TwitterSearchActor.props(out, receiver, tenTweetsForKeywordService), actorSystem, materializer);
+                            	TwitterSearchActor.props(out, 
+                            			pushSchedulingService.getSchedulerActorRef(), 
+                            			tenTweetsForKeywordService), 
+                            	actorSystem, materializer);
 
                             @SuppressWarnings("unchecked")
                             Flow<TwitterSearchActorProtocol.Search, Object, NotUsed> flow =
@@ -110,7 +104,7 @@ public class ResponsiveApplicationController extends Controller {
                             return right;
                         });
 
-                return stage; //.exceptionally(this::logException);
+                return stage;
             } else {
                 return forbiddenResult();
             }
@@ -124,14 +118,6 @@ public class ResponsiveApplicationController extends Controller {
         return CompletableFuture.completedFuture(left);
     }
 
-/*
-    private Either<Result, Flow<TwitterSearchActorProtocol.Search, Object, ?>> logException(Throwable throwable) {
-        logger.error("Cannot create websocket", throwable);
-        Result result = Results.internalServerError("error");
-        return Either.Left(result);
-    }
-*/
-
     /**
      * Checks that the WebSocket comes from the same origin.  This is necessary to protect
      * against Cross-Site WebSocket Hijacking as WebSocket does not implement Same Origin Policy.
@@ -139,21 +125,6 @@ public class ResponsiveApplicationController extends Controller {
      * See https://tools.ietf.org/html/rfc6455#section-1.3 and
      * http://blog.dewhurstsecurity.com/2013/08/30/security-testing-html5-websockets.html
      */
-//    private boolean sameOriginCheck(Http.RequestHeader rh) {
-//        final Optional<String> origin = rh.header("Origin");
-//
-//        if (!origin.isPresent()) {
-//            logger.error("originCheck: rejecting request because no Origin header found");
-//            return false;
-//        } else if (originMatches(origin.get())) {
-//            logger.debug("originCheck: originValue = " + origin);
-//            return true;
-//        } else {
-//            logger.error("originCheck: rejecting request because Origin header value " + origin + " is not in the same origin");
-//            return false;
-//        }
-//    }
-
     private boolean sameOriginCheck(Http.RequestHeader rh) {
         final Optional<String> origin = rh.header("Origin");
 

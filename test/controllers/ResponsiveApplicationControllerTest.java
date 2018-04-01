@@ -15,6 +15,7 @@ import play.shaded.ahc.org.asynchttpclient.DefaultAsyncHttpClient;
 import play.shaded.ahc.org.asynchttpclient.ws.WebSocket;
 import play.test.Helpers;
 import play.test.WithServer;
+import services.PushSchedulingService;
 import services.TenTweetsForKeywordService;
 
 import java.io.IOException;
@@ -30,6 +31,7 @@ import static play.test.Helpers.contentAsString;
 import static play.test.Helpers.fakeRequest;
 
 public class ResponsiveApplicationControllerTest extends WithServer {
+	
     private static ActorSystem system;
     private final Materializer materializer = mock(Materializer.class);
     private final WebJarsUtil webJarsUtil = mock(WebJarsUtil.class);
@@ -39,6 +41,7 @@ public class ResponsiveApplicationControllerTest extends WithServer {
      * Mock of tweet search service
      */
     private TenTweetsForKeywordService tenTweetsForKeywordService = mock(TenTweetsForKeywordService.class);
+    private PushSchedulingService pushSchedulingService = mock(PushSchedulingService.class);
     /**
      * Execution context that encapsulates inside a Fork/Join pool.
      * This is a real object and not a mock because it is used to run async operations
@@ -69,12 +72,15 @@ public class ResponsiveApplicationControllerTest extends WithServer {
      */
     @Test
     public void index_success() throws InterruptedException, ExecutionException {
+    	
         ResponsiveApplicationController controller = new ResponsiveApplicationController(
                 tenTweetsForKeywordService,
                 system,
                 materializer,
                 webJarsUtil,
-                ec);
+                ec,
+                pushSchedulingService);
+        
         String serverURL = "ws://localhost:" + this.testServer.port() + "/responsive";
         Http.RequestBuilder request = fakeRequest("GET", serverURL);
         Http.Context context = Helpers.httpContext(request.build());
