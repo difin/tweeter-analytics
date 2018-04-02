@@ -17,14 +17,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletionStage;
 
-/**
- * Retrieves tweets using TenTweetsForKeywordService
- * replying to calling websocket.
- * <p>
- * @author Tumer Horloev
- * <p>
- * @version 1.0.0
- */
+	/**
+	 * Retrieves tweets using TenTweetsForKeywordService
+	 * replying to calling websocket.
+	 * <p>
+	 * @author Tumer Horloev
+	 * <p>
+	 * @version 1.0.0
+	 */
 public class TwitterSearchActor extends AbstractActor {
     private final LoggingAdapter logger = Logging.getLogger(getContext().system(), this);
     private final ActorRef out;
@@ -65,8 +65,6 @@ public class TwitterSearchActor extends AbstractActor {
     public static Props props(ActorRef out, ActorRef scheduler, TenTweetsForKeywordService tenTweetsForKeywordService) {
         return Props.create(TwitterSearchActor.class, out, scheduler, tenTweetsForKeywordService);
     }
-
-    
 
     /**
 	 * Implementation of method of abstract actor class to define initial 
