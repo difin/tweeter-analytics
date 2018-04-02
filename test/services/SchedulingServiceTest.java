@@ -43,8 +43,8 @@ public class SchedulingServiceTest {
         new TestKit(system) {{
         	
         	final TestKit probe = new TestKit(system);
-        	SchedulingService pushSchedulingService = new SchedulingService(system);
-        	pushSchedulingService.startScheduler(virtualTime.scheduler(), probe.getRef());
+        	SchedulingService schedulingService = new SchedulingService(system);
+        	schedulingService.startScheduler(virtualTime.scheduler(), probe.getRef());
         	virtualTime.advance(Duration.create(3, TimeUnit.SECONDS));
         	
         	probe.expectMsgClass(duration("3 second"), actors.TwitterSearchSchedulerActorProtocol.RefreshAll.class);

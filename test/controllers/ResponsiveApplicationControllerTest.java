@@ -41,7 +41,7 @@ public class ResponsiveApplicationControllerTest extends WithServer {
      * Mock of tweet search service
      */
     private TenTweetsForKeywordService tenTweetsForKeywordService = mock(TenTweetsForKeywordService.class);
-    private SchedulingService pushSchedulingService = mock(SchedulingService.class);
+    private SchedulingService schedulingService = mock(SchedulingService.class);
     /**
      * Execution context that encapsulates inside a Fork/Join pool.
      * This is a real object and not a mock because it is used to run async operations
@@ -79,7 +79,7 @@ public class ResponsiveApplicationControllerTest extends WithServer {
                 materializer,
                 webJarsUtil,
                 ec,
-                pushSchedulingService);
+                schedulingService);
         
         String serverURL = "ws://localhost:" + this.testServer.port() + "/responsive";
         Http.RequestBuilder request = fakeRequest("GET", serverURL);
