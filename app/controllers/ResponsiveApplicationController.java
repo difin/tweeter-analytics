@@ -2,7 +2,9 @@ package controllers;
 
 import actors.TwitterSearchActor;
 import actors.TwitterSearchActorProtocol;
+import actors.TwitterSearchSchedulerActor;
 import akka.NotUsed;
+import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.stream.Materializer;
 import akka.stream.javadsl.Flow;
@@ -12,7 +14,7 @@ import play.libs.F.Either;
 import play.libs.concurrent.HttpExecutionContext;
 import play.libs.streams.ActorFlow;
 import play.mvc.*;
-import services.PushSchedulingService;
+import services.SchedulingService;
 import services.TenTweetsForKeywordService;
 import views.html.responsiveTweets;
 
@@ -41,7 +43,8 @@ public class ResponsiveApplicationController extends Controller {
      */
     private TenTweetsForKeywordService tenTweetsForKeywordService;
     private HttpExecutionContext ec;
-    private PushSchedulingService pushSchedulingService;
+    private SchedulingService schedulingService;
+    private ActorRef schedulerActorRef;
 
     /**
      * Creates a new application controller
@@ -55,17 +58,18 @@ public class ResponsiveApplicationController extends Controller {
             Materializer materializer,
             WebJarsUtil webJarsUtil,
             HttpExecutionContext ec,
-            PushSchedulingService pushSchedulingService) {
+            SchedulingService schedulingService) {
 
         this.tenTweetsForKeywordService = tenTweetsForKeywordService;
         this.actorSystem = actorSystem;
         this.materializer = materializer;
         this.webJarsUtil = webJarsUtil;
         this.ec = ec;
-        this.pushSchedulingService = pushSchedulingService;
+        this.schedulingService = schedulingService;
 
         // Scheduler Part.
-        pushSchedulingService.startScheduler();
+        schedulerActorRef = actorSystem.actorOf(TwitterSearchSchedulerActor.props(), "Scheduler");
+        schedulingService.startScheduler(actorSystem.scheduler(), schedulerActorRef);
     }
 
     /**
@@ -91,9 +95,7 @@ public class ResponsiveApplicationController extends Controller {
                         CompletableFuture.supplyAsync(() -> {
 
                             Object flowAsObject = ActorFlow.actorRef(out ->
-                            	TwitterSearchActor.props(out, 
-                            			pushSchedulingService.getSchedulerActorRef(), 
-                            			tenTweetsForKeywordService), 
+                            	TwitterSearchActor.props(out, schedulerActorRef, tenTweetsForKeywordService), 
                             	actorSystem, materializer);
 
                             @SuppressWarnings("unchecked")

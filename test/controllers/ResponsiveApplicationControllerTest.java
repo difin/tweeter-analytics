@@ -15,7 +15,7 @@ import play.shaded.ahc.org.asynchttpclient.DefaultAsyncHttpClient;
 import play.shaded.ahc.org.asynchttpclient.ws.WebSocket;
 import play.test.Helpers;
 import play.test.WithServer;
-import services.PushSchedulingService;
+import services.SchedulingService;
 import services.TenTweetsForKeywordService;
 
 import java.io.IOException;
@@ -41,7 +41,7 @@ public class ResponsiveApplicationControllerTest extends WithServer {
      * Mock of tweet search service
      */
     private TenTweetsForKeywordService tenTweetsForKeywordService = mock(TenTweetsForKeywordService.class);
-    private PushSchedulingService pushSchedulingService = mock(PushSchedulingService.class);
+    private SchedulingService pushSchedulingService = mock(SchedulingService.class);
     /**
      * Execution context that encapsulates inside a Fork/Join pool.
      * This is a real object and not a mock because it is used to run async operations

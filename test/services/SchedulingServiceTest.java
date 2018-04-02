@@ -19,7 +19,7 @@ import com.typesafe.config.Config;
  * @author Dmitriy Fingerman
  * @version 1.0.0
  */
-public class PushSchedulingServiceTest {
+public class SchedulingServiceTest {
 
 	static ActorSystem system;
 	
@@ -36,20 +36,18 @@ public class PushSchedulingServiceTest {
     }
     
     @Test
-    public void whenCallingStartSchedulerThenActorRefOfTheSchedulerActorIsSetSuccessfully() {
+    public void whenStartingSchedulerThenSchedulerActorStartsReceivingRefreshAllMessages() {
     	
     	VirtualTime virtualTime = new VirtualTime();
     	
         new TestKit(system) {{
         	
-        	PushSchedulingService.SchedulerHolder schedulerHolder = new PushSchedulingService.SchedulerHolder();
-        	schedulerHolder.value = virtualTime.scheduler();
-                	
-        	PushSchedulingService pushSchedulingService = new PushSchedulingService(system, schedulerHolder);
-        	pushSchedulingService.startScheduler();
+        	final TestKit probe = new TestKit(system);
+        	SchedulingService pushSchedulingService = new SchedulingService(system);
+        	pushSchedulingService.startScheduler(virtualTime.scheduler(), probe.getRef());
         	virtualTime.advance(Duration.create(3, TimeUnit.SECONDS));
         	
-        	expectMsgClass(duration("3 second"), actors.TwitterSearchSchedulerActorProtocol.RefreshAll.class);
+        	probe.expectMsgClass(duration("3 second"), actors.TwitterSearchSchedulerActorProtocol.RefreshAll.class);
         }};
     }
 }

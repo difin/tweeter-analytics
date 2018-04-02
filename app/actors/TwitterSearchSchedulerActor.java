@@ -46,9 +46,7 @@ public class TwitterSearchSchedulerActor extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(RefreshAll.class, p -> {
-                	
-                	log.info("TwitterSearchSchedulerActor {}-{} RefreshAll received at " + LocalTime.now());
-                	
+                	                	
                     for (ActorRef actorRef : twitterSearchActors) {
                         actorRef.tell(new Refresh(), getSelf());
 
