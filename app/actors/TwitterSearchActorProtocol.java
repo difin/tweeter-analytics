@@ -39,7 +39,7 @@ public class TwitterSearchActorProtocol {
 		 *<p>
 		 * @param searchKey	append searched keyword(S)
 		 */
-		
+
 		public void setSearchKey(String searchKey) {
 			this.searchKey = searchKey;
 		}
