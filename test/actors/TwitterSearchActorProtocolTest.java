@@ -1,6 +1,13 @@
 package actors;
 import org.junit.Test;
 
+ /**
+ * Tests the functionality of TwitterSearchSchedulerActorProtocol.
+ * @author Tumer Horloev 
+ * @version 1.0.0
+ *
+ */
+
 public class TwitterSearchActorProtocolTest {
     @Test
     public void testProtocol(){

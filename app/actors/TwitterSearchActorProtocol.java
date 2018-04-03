@@ -1,10 +1,11 @@
 package actors;
 
 import java.io.Serializable;
+
 	/**
 	 * TwitterSearchActorProtocol to pass messages to TwitterSearchActor
 	 * <p>
-	 * @author Tumer 
+	 * @author Tumer Horloev 
 	 * <p>
 	 * @version 1.0.0
 	 */

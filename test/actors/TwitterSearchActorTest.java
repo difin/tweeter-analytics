@@ -24,6 +24,13 @@ import java.util.concurrent.CompletableFuture;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+ /**
+ * Tests the functionality of TwitterSearchActor.
+ * @author Tumer Horloev 
+ * @version 1.0.0
+ *
+ */
+
 public class TwitterSearchActorTest extends JUnitSuite {
 	
 	private static final long serialVersionUID = 1L;
