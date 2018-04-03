@@ -16,8 +16,10 @@ libraryDependencies += filters
 libraryDependencies += "org.webjars" %% "webjars-play" % "2.6.2"
 libraryDependencies += "org.webjars" % "flot" % "0.8.3"
 libraryDependencies += "org.webjars" % "bootstrap" % "3.3.6"
+libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.5.3"
 
 // Testing Dependencies
+
 libraryDependencies += "com.typesafe.akka" %% "akka-testkit" % "2.5.11" % Test
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % "test"
 // Test Database
