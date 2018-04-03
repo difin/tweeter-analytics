@@ -5,7 +5,7 @@ import akka.actor.ActorRef;
 	/**
 	 * TwitterSearchSchedulerActorProtocol to pass messages to TwitterSearchSchedulerActor
 	 * <p>
-	 * @author Mayank Acharya
+	 * @author Dmitriy Fingerman
 	 * <p>
 	 * @version 1.0.0
 	 */

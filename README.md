@@ -47,6 +47,7 @@ Tumer Horloev     | 40019108
  * views.responsiveTweets.scala.html
  * test.views.mainTest.java
  * test.controllers.ResponsiveApplicationControllerTest.java
+ * test.Utils.WebSocketTestClient.java
  
  Mayank H. Acharya:
  
@@ -112,7 +113,7 @@ Tumer Horloev     | 40019108
    execute `sbt jacoco`.
 
  * To run the akka project:
-   execute `"runMain com.lightbend.akka.sample.Class`
+   execute `"runMain com.lightbend.akka.sample.ClassName"`
   
 ## How to Run
  * To run project, execute `sbt run`.

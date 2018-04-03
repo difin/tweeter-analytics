@@ -15,7 +15,7 @@ import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.Config;
 
 /**
- * 
+ * Tests the functionality of Scheduling Service.
  * @author Dmitriy Fingerman
  * @version 1.0.0
  */

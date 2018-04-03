@@ -30,6 +30,13 @@ import static play.mvc.Http.Status.OK;
 import static play.test.Helpers.contentAsString;
 import static play.test.Helpers.fakeRequest;
 
+ /**
+ * Tests the functionality of Responsive Application Controller.
+ * @author Nikita Baranov
+ * @version 1.0.0
+ *
+ */
+
 public class ResponsiveApplicationControllerTest extends WithServer {
 	
     private static ActorSystem system;

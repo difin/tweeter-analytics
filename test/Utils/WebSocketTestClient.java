@@ -11,6 +11,13 @@ import org.slf4j.Logger;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+/**
+* Tests the functionality of WebSocket.
+* @author Nikita Baranov
+* @version 1.0.0
+*
+*/
+
 public class WebSocketTestClient {
 
     private AsyncHttpClient client;
