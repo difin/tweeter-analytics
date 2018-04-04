@@ -64,6 +64,11 @@ public class ResponsiveApplicationControllerTest extends WithServer {
         system = ActorSystem.create();
     }
 
+    /**
+     * clear HttpContext to clear the session data
+     * @throws IOException TO handle failed I/O Exception 
+     */
+    
     @After
     public void clearHttpContext() throws IOException {
         asyncHttpClient.close();
@@ -77,6 +82,7 @@ public class ResponsiveApplicationControllerTest extends WithServer {
      * @throws InterruptedException
      * @throws ExecutionException
      */
+
     @Test
     public void index_success() throws InterruptedException, ExecutionException {
     	
@@ -100,6 +106,15 @@ public class ResponsiveApplicationControllerTest extends WithServer {
         assertThat(result.contentType().get(), is(equalTo("text/html")));
         assertThat(contentAsString(result).contains("Twitter Assignment 1 and 2"), is(equalTo(true)));
     }
+    
+    /**
+     * Test WebSocket creation using WebSocketTestClient
+     * WebSocket Test client calls the server and the result
+     * is validated using assert functionality as webSocket connection
+     * is open 
+     * <p>
+     * @throws Exception
+     */
 
     @Test
     public void websocket_success() throws Exception {
@@ -112,6 +127,11 @@ public class ResponsiveApplicationControllerTest extends WithServer {
         assertThat(true, is(equalTo(webSocket.isOpen())));
     }
 
+    /**
+     * Test WebSocket Origin check using WebSocketTestClient
+     * WebSocketTestClient does the fake sever call to check the server connection
+     */
+    
     @Test(expected = ExecutionException.class)
     public void websocket_wronOrigin_error() throws Exception {
         String serverURL = "ws://localhost:" + this.testServer.port() + "/responsive/websocket";

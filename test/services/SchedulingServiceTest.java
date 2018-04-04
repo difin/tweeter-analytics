@@ -23,18 +23,34 @@ public class SchedulingServiceTest {
 
 	static ActorSystem system;
 	
+	/**
+     * Initializes objects needed for tests before each unit test
+     */
+	
     @BeforeClass
     public static void setup() {
        	Config customConf = ConfigFactory.parseString("akka.actor.default-dispatcher { type=\"akka.testkit.CallingThreadDispatcherConfigurator\"}");
         system = ActorSystem.create("ActorSystem", ConfigFactory.load(customConf));
     }
 
+    /**
+     * Teardown function to allow the test case to do a preparation
+     * and post clean up process for each of the test method call
+     */
+    
     @AfterClass
     public static void teardown() {
         TestKit.shutdownActorSystem(system);
         system = null;
     }
     
+    /**
+	 * Tests Scheduling Service start Scheduler method
+	 * Here we set the scheduler function to the virtual time
+	 * by advancing the duration
+	 * Scheduler Virtual time result is asserted using expectMsgClass 
+	 */
+        
     @Test
     public void whenStartingSchedulerThenSchedulerActorStartsReceivingRefreshAllMessages() {
     	

@@ -13,17 +13,36 @@ import akka.actor.ActorRef;
 public class TwitterSearchSchedulerActorProtocolTest {
     private static final ActorRef ActorRef = null;
     
+    /**
+	 * Tests TwitterSearchSchedulerActorProtocol by checking
+	 * if the protocol is not equal to null.
+	 * we are verifying the result with the help of assert.
+	 */
+    
 	@Test
     public void testProtocol(){
     	TwitterSearchSchedulerActorProtocol protocol = new TwitterSearchSchedulerActorProtocol();
         assert(protocol != null);
     }
+	
+	/**
+	 * Tests TwitterSearchSchedulerActorProtocol Refresh method by checking
+	 * if it receives any data, it should not be equal to null.
+	 * we are verifying the result with the help of assert.
+	 */
+	
     @Test
-    public void testRefresh(){
+    public void testRefreshAll(){	
     	TwitterSearchSchedulerActorProtocol.RefreshAll refresh = new TwitterSearchSchedulerActorProtocol.RefreshAll();
         assert(refresh != null);
     }
        
+    /**
+	 * Tests TwitterSearchSchedulerActorProtocol register method
+	 * by passing actorref to the register method and validating
+	 * the result using assert.
+	 */
+    
 	@Test
     public void testRegister(){
     	TwitterSearchSchedulerActorProtocol.Register register = new TwitterSearchSchedulerActorProtocol.Register(ActorRef);

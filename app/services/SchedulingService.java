@@ -14,7 +14,7 @@ import scala.concurrent.duration.Duration;
 import scala.concurrent.duration.FiniteDuration;
 
 /**
- * 
+ * Implementing Akka scheduling service
  * @author Mayank Acharya
  * @version 1.0.0
  */
@@ -24,10 +24,23 @@ public class SchedulingService {
 	
 	private final ActorSystem actorSystem;
 	
+	/**
+	 * Creates scheduling service actor system
+	 * <p>
+	 * @param actorSystem  System actor
+     */
+	
 	@Inject
 	public SchedulingService(ActorSystem actorSystem) {
 		this.actorSystem = actorSystem;
 	}
+	
+	/**
+	 * Implementation of startScheduler method 
+	 * <p>
+	 * @param scheduler 				Scheduler object		
+	 * @param schedulerActorRef 		scheduler actor
+     */
 	
 	public void startScheduler(Scheduler scheduler, ActorRef schedulerActorRef) {
         FiniteDuration initialDelay = Duration.create(0, TimeUnit.SECONDS);

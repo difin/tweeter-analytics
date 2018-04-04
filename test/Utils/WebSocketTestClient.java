@@ -20,8 +20,16 @@ import java.util.concurrent.ExecutionException;
 
 public class WebSocketTestClient {
 
+	/**
+	 * Initializes AsynchHttpClient for the WebSocket
+	 */
+	
     private AsyncHttpClient client;
 
+    /**
+	 * Implements WebSocketTestClient with the Async Http client request
+	 */
+    
     public WebSocketTestClient(AsyncHttpClient c) {
         this.client = c;
     }

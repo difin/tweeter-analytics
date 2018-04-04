@@ -14,6 +14,8 @@ import actors.TwitterSearchSchedulerActorProtocol.RefreshAll;
 import actors.TwitterSearchSchedulerActorProtocol.Register;
 
 	/**
+	 * TwitterSearchSchedulerActor is to store reference of TwitterSearchActor
+	 * created by keyword search call in to the List.
 	 * A scheduler actor that will be executed 
 	 * every X milliseconds to periodically refresh 
 	 * twitter results based on previously 
@@ -71,6 +73,8 @@ public class TwitterSearchSchedulerActor extends AbstractActor {
    	 * receive behavior of TwitterSearchSchedulerActor
    	 * <p>
    	 * Uses RefreshAll and Register method of TwitterSearchSchedulerActorProtocol
+   	 * to retrieve TwitterSearchActor reference from the list one by one
+   	 * and call each of them to retrieve result and display on UI again.
    	 * <p>
      */
 

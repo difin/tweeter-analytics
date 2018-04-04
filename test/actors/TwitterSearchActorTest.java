@@ -38,6 +38,10 @@ public class TwitterSearchActorTest extends JUnitSuite {
     static ActorSystem system;
     static private List<Tweet> tweets;
 
+    /**
+	 * Initializes objects needed for tests before each unit test
+	 */
+    
     @BeforeClass
     public static void setup() {
         Map<String, List<Tweet>> searchResultMap = new HashMap<>();
@@ -67,11 +71,21 @@ public class TwitterSearchActorTest extends JUnitSuite {
         system = ActorSystem.create();
     }
 
+    /**
+     * Teardown function to allow the test case to do a preparation
+     * and post clean up process for each of the test method call
+     */
+    
     @AfterClass
     public static void teardown() {
         TestKit.shutdownActorSystem(system);
         system = null;
     }
+    
+    /**
+	 * Tests TwitterSearchActor by registering the keywords
+	 * and asserting the results using expectMsgClass of TestKit.
+	 */
 
     @Test
     public void testActorRegister(){
@@ -83,6 +97,11 @@ public class TwitterSearchActorTest extends JUnitSuite {
         }};
     }
 
+    /**
+	 * Tests TwitterSearchActor by searching the test values(keywords for Twitter API)
+	 * and asserting the results using JsonNode functionality.
+	 */
+    
     @Test
     public void testActorSearch(){
         new TestKit(system) {{
@@ -99,6 +118,14 @@ public class TwitterSearchActorTest extends JUnitSuite {
         }};
     }
 
+    /**
+	 * Tests TwitterSearchActorProtocol functionality by
+	 * searching the test values(keywords for Twitter API) and then
+	 * fetching the list of last ten tweets using refresh
+	 * the actor should retrieve 10 tweets for all previous keywords
+	 * we are asserting the results using JsonNode and expectMsg functionality.
+	 */
+        
     @Test
     public void testActorRefresh(){
         new TestKit(system) {{

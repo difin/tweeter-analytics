@@ -11,8 +11,9 @@ It dynamically refreshes to show any incoming tweets by using Stream live update
 
      Name      | Student ID
 ----------------- | ---------
+
 Deepika Dembla    | 40036900    
-Dmitry Fingerman  | 26436579    
+Dmitriy Fingerman | 26436579    
 Nikita Baranov    | 40012854    
 Mayank H. Acharya | 40036106    
 Tumer Horloev     | 40019108   
@@ -27,7 +28,7 @@ Tumer Horloev     | 40019108
  * Javadoc
  * README
  
- Dmitry Fingerman:
+ Dmitriy Fingerman:
  
  * conf.routes
  * controllers.ResponsiveApplicationController.java
