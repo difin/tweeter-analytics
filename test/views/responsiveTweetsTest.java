@@ -25,8 +25,18 @@ import static play.test.Helpers.fakeRequest;
  */
 public class responsiveTweetsTest extends WithServer {
 	
+	/**
+	 * Mock of WebJars
+	 */
+	
 	private final WebJarsUtil webJarsUtil = mock(WebJarsUtil.class);
 
+	/**
+	 * Checks the rendering of the Responsive tweets
+	 * views, navigation bar and then
+	 * checks the search tweets are present.
+	 */
+	
 	@Test
 	public void whenRenderingResponsiveTweetsViewThenNavBarAndSearchFormTextArePresent() {
 		String serverURL = "ws://localhost:" + this.testServer.port() + "/responsive";
