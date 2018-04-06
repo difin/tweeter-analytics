@@ -14,7 +14,9 @@ import scala.concurrent.duration.Duration;
 import scala.concurrent.duration.FiniteDuration;
 
 /**
- * Implementing Akka scheduling service
+ * Implementing scheduling service which is responsible for
+ * retrieving tweets from all the previous searched
+ * keywords at X millisecond of time
  * @author Mayank Acharya
  * @version 1.0.0
  */
