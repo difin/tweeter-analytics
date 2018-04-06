@@ -1,23 +1,14 @@
 package actors;
 
-import static org.mockito.Mockito.mock;
-
-import java.util.List;
-
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.scalatest.junit.JUnitSuite;
-
-import com.fasterxml.jackson.databind.JsonNode;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
-import akka.event.Logging.LogEvent;
-import akka.stream.impl.fusing.Log;
-import models.Tweet;
-import play.libs.Json;
-import services.TenTweetsForKeywordService;
+
 import akka.testkit.javadsl.TestKit;
 import actors.TwitterSearchSchedulerActor;
 
@@ -36,82 +27,54 @@ public class TwitterSearchSchedulerActorTest extends JUnitSuite {
 	 * ActorSystem as TestSystem 
 	 */
 	
-	ActorSystem testSystem;
+	private static ActorSystem testSystem;
 	
-	/**
-	 * Mock of tweet search service
-	 */
-	
-    static private TenTweetsForKeywordService ttfks = mock(TenTweetsForKeywordService.class);
-    
     /**
-	 * Initializes dummy ActorSystem.
+	 * Initializes objects needed for tests before each unit test
 	 */
     
-    @Before
-    public void setup_env() {
-    	testSystem = ActorSystem.create("TwitterSearchSchedulerActorTest"); // test-system.
+    @BeforeClass
+    public static void setup() {        
+    	testSystem = ActorSystem.create();
     }
     
     /**
-	 * Tests TwitterSearchSchedulerActor by registering the keywords
-	 * actorref for the testSystem captures the object and this
-	 * object is then passed to test RefreshAll method of
-	 * TwitterSearchSchedulerActorProtocol
-	 */
+     * Teardown function to allow the test case to do a preparation
+     * and post clean up process for each of the test method call
+     */
     
-    @Test
-    public void testTwitterSearchSchedulerActorRegister() {
-    	new TestKit(testSystem) {{
-    		final TestKit prob1 = new TestKit(testSystem);
-    		final TestKit prob2 = new TestKit(testSystem);
-    		// let retrieve TwitterSearchSchedulerActorProtocol's Register Object and pass it to the Register call.
-    		final Props prop = Props.create(TwitterSearchActor.class,getRef(),getRef(),ttfks);
-    		ActorRef actorRef = testSystem.actorOf(prop);
-    		TwitterSearchSchedulerActorProtocol.Register capture_object = expectMsgClass(TwitterSearchSchedulerActorProtocol.Register.class);    		
-    		// Prob to capture activity.
-    		// Captures object to our register call.
-    		ActorRef actorRef1 = testSystem.actorOf(TwitterSearchSchedulerActor.props());
-    		// Calling above actor ref and pass that captured register object.
-    		actorRef1.tell(capture_object, getRef());
-    		//prob1.expectMsgClass(duration("1 second"),TwitterSearchSchedulerActor.class);
-    		//Constants
-    		//prob1.expectMsgAnyOf(twitterSearchActor);
-    		//final List<Object> response = receiveN(2);
-    		//System.out.println("Received :" + response.toString());
-    		//System.out.println(actorRef1.getClass().toString());
-    		TwitterSearchSchedulerActorProtocol.RefreshAll refresh = new TwitterSearchSchedulerActorProtocol.RefreshAll();
-    		actorRef1.tell(refresh, prob1.getRef());
-    		//JsonNode result = Json.parse("{\"some search text\":null}");
-    		//prob1.expectMsg(duration("3 second"),result);
-    	}};
+    @AfterClass
+    public static void teardown() {
+        TestKit.shutdownActorSystem(testSystem);
+        testSystem = null;
     }
     
     /**
-	 * Tests TwitterSearchSchedulerActor RefreshAll by refreshing registered keywords
+	 * Sends Register message to scheduler actor for registering a twitter search mock actor.
+	 * Then sends RefreshAll message from a mocked scheduling mechanism to the scheduler actor.
+	 * Then expects to receive Refresh message on the registered mock twitter actor sent from the scheduler actor.
 	 */
- 
+    
     @Test
-    public void test_setup() {
+    public void testTwitterSearchSchedulerActorRegisterThenRefreshAll() {
     	new TestKit(testSystem) {{
-    		final TestKit testkit = new TestKit(testSystem);
-    		ActorRef actor_ref = testSystem.actorOf(TwitterSearchSchedulerActor.props(), "TwitterSearchSchedulerActor_ActorRef");
-        	TwitterSearchSchedulerActorProtocol.RefreshAll refresh = new TwitterSearchSchedulerActorProtocol.RefreshAll();
-        	actor_ref.tell(refresh, testkit.getRef());
+    		
+    		final TestKit searchActorMock = new TestKit(testSystem);
+    		final TestKit schedulerMechanismMock = new TestKit(testSystem);
+    		
+    		final Props prop = Props.create(TwitterSearchSchedulerActor.class);
+    		
+    		ActorRef twitterSearchSchedulerActorRef = testSystem.actorOf(prop);
+    		
+    		twitterSearchSchedulerActorRef.tell(
+    				new TwitterSearchSchedulerActorProtocol.Register(searchActorMock.getRef()), 
+    				searchActorMock.getRef());
+    		
+    		twitterSearchSchedulerActorRef.tell(
+    				new TwitterSearchSchedulerActorProtocol.RefreshAll(), 
+    				schedulerMechanismMock.getRef());
+    		
+    		searchActorMock.expectMsgClass(duration("3 second"), TwitterSearchActorProtocol.Refresh.class);
     	}};
-    	//actor_ref.tell(refresh, getSelf());
     }
-    /*
-    @Test
-    public void test_setup1() {
-    	new TestKit(testSystem) {{
-    		final TestKit tk2 = new TestKit(testSystem);
-    		ActorRef actor_ref = testSystem.actorOf(TwitterSearchSchedulerActor.props(), "TwitterSearchSchedulerActor_ActorRef");
-    		testSystem.eventStream().subscribe(getRef(), LogEvent.class);
-    		ActorRef test_actor_ref = testSystem.actorOf(TwitterSearchSchedulerActor.props(), "SampleTestActor");
-    		TwitterSearchSchedulerActorProtocol.Register sample_register_call = new TwitterSearchSchedulerActorProtocol.Register(test_actor_ref);
-    		actor_ref.tell(new Log(sample_register_call,"Some Info"), testSystem.deadLetters());
-    		expectLog(DebugLevel(),"Some Info");
-    	}};
-    }*/
 }
