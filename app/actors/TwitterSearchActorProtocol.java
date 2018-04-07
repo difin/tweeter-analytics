@@ -1,58 +1,57 @@
 package actors;
 
-import java.io.Serializable;
-
-	/**
-	 * TwitterSearchActorProtocol to pass messages to TwitterSearchActor
-	 * <p>
-	 * @author Tumer Horloev 
-	 * <p>
-	 * @version 1.0.0
-	 */
+/**
+ * Defines message protocol for a TwitterSearchActor
+ * @author Tumer Horloev
+ * @version 1.0.0
+ */
 
 public class TwitterSearchActorProtocol {
 
-	/**
-	 * TwitterSearchActorProtocol.Search for adding new search keyword
-	 * to the previously searched keyword(s). 
-	 *<p>
-	 */
-	
-	public static class Search {
+    /**
+     * A message to carry search phrase
+     * @author Tumer Horloev
+     * @version 1.0.0
+     */
+    public static class Search {
+        /**
+         * Search phrase
+         */
+        public String searchKey;
 
-		public String searchKey;
-	
-		public Search() {
-		}
+        /**
+         * Creates a message
+         */
+        public Search() {
+        }
 
-		/**
-		 * Method to get search keyword(s)
-		 *<p>
-		 * @return searchKey	searched keyword(s)
-		 */
-		
-		public String getSearchKey() {
-			return searchKey;
-		}
+        /**
+         * Retrieves the search phrase
+         * @return search phrase
+         */
+        public String getSearchKey() {
+            return searchKey;
+        }
 
-		/**
-		 * Method to append and set newly search keyword(s)
-		 *<p>
-		 * @param searchKey	append searched keyword(S)
-		 */
+        /**
+         * Sets the search phrase
+         * @param searchKey search phrase
+         */
+        public void setSearchKey(String searchKey) {
+            this.searchKey = searchKey;
+        }
+    }
 
-		public void setSearchKey(String searchKey) {
-			this.searchKey = searchKey;
-		}
-	}
-
-	/**
-	 * Refresh class  to refresh by retrieving tweets for all 
-	 * previous keywords
-	 */
-	
-	public static class Refresh{
-		public Refresh() {
-		}
-	}
+    /**
+     * A message to trigger refresh
+     * @author Tumer Horloev
+     * @version 1.0.0
+     */
+    public static class Refresh {
+        /**
+         * Creates a message
+         */
+        public Refresh() {
+        }
+    }
 }

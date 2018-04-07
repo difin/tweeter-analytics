@@ -16,75 +16,58 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletionStage;
 
-	/**
-	 * Retrieves tweets using TenTweetsForKeywordService
-	 * replying to calling websocket.
-	 * <p>
-	 * @author Tumer Horloev
-	 * <p>
-	 * @version 1.0.0
-	 */
+/**
+ * Retrieves tweets using TenTweetsForKeywordService.
+ * @author Tumer Horloev
+ * @version 1.0.0
+ */
 public class TwitterSearchActor extends AbstractActor {
     private final LoggingAdapter logger = Logging.getLogger(getContext().system(), this);
     private final ActorRef out;
     private final ActorRef scheduler;
 
     private TenTweetsForKeywordService tenTweetsForKeywordService;
-
     private ArrayList<String> keyWords = new ArrayList<>();
 
-    
     /**
-	 * Creates a new TwitterSearchActor
-	 * <p>
-	 * @param out                        Object to tell about its state
-	 * @param scheduler                  Scheduler actor
-	 * @param tenTweetsForKeywordService Tweets search service  
+     * Creates a new TwitterSearchActor
+     * @param out                        Actor to send tweets search service results to
+     * @param scheduler                  Scheduler actor
+     * @param tenTweetsForKeywordService Tweets search service
      */
-    
     public TwitterSearchActor(ActorRef out, ActorRef scheduler, TenTweetsForKeywordService tenTweetsForKeywordService) {
         this.out = out;
         this.scheduler = scheduler;
         this.tenTweetsForKeywordService = tenTweetsForKeywordService;
         logger.debug("scheduler = {}", scheduler);
         this.scheduler.tell(new TwitterSearchSchedulerActorProtocol.Register(self()), self());
-
     }
 
     /**
-	 * Configures props to create TwitterSearchActor
-	 * <p>
-	 * @param  out                        Object to tell about its state
-	 * @param  scheduler                  Scheduler actor
-	 * @param  tenTweetsForKeywordService Tweets search service  
-	 * <p>
-	 * @return Newly created props
+     * Configures props to create TwitterSearchActor
+     * @param out                        Actor to send tweets search service results to
+     * @param scheduler                  Scheduler actor
+     * @param tenTweetsForKeywordService Tweets search service
+     * @return Newly created props
      */
-    
     public static Props props(ActorRef out, ActorRef scheduler, TenTweetsForKeywordService tenTweetsForKeywordService) {
         return Props.create(TwitterSearchActor.class, out, scheduler, tenTweetsForKeywordService);
     }
 
     /**
-	 * Implementation of method of abstract actor class to define initial 
-	 * receive behavior of an actor
-	 * <p>
-	 * Uses refresh and search method of TwitterSearchActorProtocol. 
-	 * <p>
+     * Handles refresh and search messages
+     * Search message - adds a search phrase to a list the Actor would query
+     * Refresh message - triggers querying Tweets search service
      */
-    
     @Override
-    
     public Receive createReceive() {
-
         return receiveBuilder()
                 .match(Refresh.class, newRefresh -> {
                     //logger.debug("search actor refreshed");
-                    if (keyWords.size()>0) {
+                    if (keyWords.size() > 0) {
                         CompletionStage<Map<String, List<Tweet>>> reply = tenTweetsForKeywordService.getTenTweetsForKeyword(keyWords);
                         reply.thenAccept(r -> out.tell(Json.toJson(r), self()));
                     }
-
                 })
                 .match(Search.class, newSearch -> {
                     keyWords.add(newSearch.searchKey);
