@@ -1,5 +1,10 @@
 package actors;
+
 import org.junit.Test;
+
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
 
 import akka.actor.ActorRef;
 
@@ -11,7 +16,6 @@ import akka.actor.ActorRef;
  */
 
 public class TwitterSearchSchedulerActorProtocolTest {
-    private static final ActorRef ActorRef = null;
     
     /**
 	 * Tests TwitterSearchSchedulerActorProtocol by checking
@@ -22,7 +26,7 @@ public class TwitterSearchSchedulerActorProtocolTest {
 	@Test
     public void testProtocol(){
     	TwitterSearchSchedulerActorProtocol protocol = new TwitterSearchSchedulerActorProtocol();
-        assert(protocol != null);
+    	assertThat(protocol, is(notNullValue()));
     }
 	
 	/**
@@ -33,8 +37,8 @@ public class TwitterSearchSchedulerActorProtocolTest {
 	
     @Test
     public void testRefreshAll(){	
-    	TwitterSearchSchedulerActorProtocol.RefreshAll refresh = new TwitterSearchSchedulerActorProtocol.RefreshAll();
-        assert(refresh != null);
+    	TwitterSearchSchedulerActorProtocol.RefreshAll refreshAll = new TwitterSearchSchedulerActorProtocol.RefreshAll();
+    	assertThat(refreshAll, is(notNullValue()));
     }
        
     /**
@@ -45,7 +49,8 @@ public class TwitterSearchSchedulerActorProtocolTest {
     
 	@Test
     public void testRegister(){
+		ActorRef ActorRef = null;
     	TwitterSearchSchedulerActorProtocol.Register register = new TwitterSearchSchedulerActorProtocol.Register(ActorRef);
-        assert(register!= null);
+    	assertThat(register, is(notNullValue()));
     }
 }

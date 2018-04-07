@@ -1,4 +1,10 @@
 package actors;
+
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.IsNull.notNullValue;
+
 import org.junit.Test;
 
  /**
@@ -18,7 +24,7 @@ public class TwitterSearchActorProtocolTest {
     @Test
     public void testProtocol(){
         TwitterSearchActorProtocol protocol = new TwitterSearchActorProtocol();
-        assert(protocol != null);
+        assertThat(protocol, is(notNullValue()));
     }
     
     /**
@@ -30,7 +36,7 @@ public class TwitterSearchActorProtocolTest {
     @Test
     public void testRefresh(){
         TwitterSearchActorProtocol.Refresh refresh = new TwitterSearchActorProtocol.Refresh();
-        assert(refresh != null);
+        assertThat(refresh, is(notNullValue()));
     }
     
     /**
@@ -42,6 +48,6 @@ public class TwitterSearchActorProtocolTest {
     public void testSearch(){
         TwitterSearchActorProtocol.Search search = new TwitterSearchActorProtocol.Search();
         search.setSearchKey("test");
-        assert(search.getSearchKey().equals("test"));
+        assertThat(search.getSearchKey(), is(equalTo("test")));
     }
 }
