@@ -1,17 +1,16 @@
 package actors;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import org.scalatest.junit.JUnitSuite;
+import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
+import akka.actor.Props;
 import akka.testkit.javadsl.TestKit;
+import com.fasterxml.jackson.databind.JsonNode;
 import models.Tweet;
 import models.UserProfile;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import akka.actor.ActorRef;
-import akka.actor.ActorSystem;
-import akka.actor.Props;
+import org.scalatest.junit.JUnitSuite;
 import play.libs.Json;
 import services.TenTweetsForKeywordService;
 
@@ -22,38 +21,48 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
- /**
+/**
  * Tests the functionality of TwitterSearchActor.
- * @author Tumer Horloev 
- * @version 1.0.0
  *
+ * @author Tumer Horloev
+ * @version 1.0.0
  */
 
 public class TwitterSearchActorTest extends JUnitSuite {
-	
-	private static final long serialVersionUID = 1L;
-	static private TenTweetsForKeywordService tenTweetsForKeywordService = mock(TenTweetsForKeywordService.class);
+
+    /**
+     * Actors System
+     */
     static ActorSystem system;
+
+    /**
+     * Mock of tweet search service
+     */
+    static private TenTweetsForKeywordService tenTweetsForKeywordService = mock(TenTweetsForKeywordService.class);
+
+    /**
+     * A list of test Tweets
+     */
     static private List<Tweet> tweets;
 
     /**
-	 * Initializes objects needed for tests before each unit test
-	 */
-    
+     * Initializes objects needed for tests before each unit test
+     */
     @BeforeClass
     public static void setup() {
         Map<String, List<Tweet>> searchResultMap = new HashMap<>();
-        searchResultMap.put("some search text",tweets);
+        searchResultMap.put("some search text", tweets);
         when(tenTweetsForKeywordService.getTenTweetsForKeyword(any(List.class))).
-                thenReturn(CompletableFuture.supplyAsync(() ->searchResultMap));
+                thenReturn(CompletableFuture.supplyAsync(() -> searchResultMap));
         UserProfile user1 = new UserProfile();
         user1.setScreen_name("some screen name 1");
 
         UserProfile user2 = new UserProfile();
         user2.setScreen_name("some screen name 2");
-        
+
         Tweet tweet1 = new Tweet();
         tweet1.setFull_text("some tweet text 1");
         tweet1.setCreated_at("some creation time 1");
@@ -63,32 +72,28 @@ public class TwitterSearchActorTest extends JUnitSuite {
         tweet2.setFull_text("some tweet text 2");
         tweet2.setCreated_at("some creation time 2");
         tweet2.setUser(user2);
-        
+
         tweets = new ArrayList<>();
         tweets.add(tweet1);
         tweets.add(tweet2);
-        
+
         system = ActorSystem.create();
     }
 
     /**
-     * Teardown function to allow the test case to do a preparation
-     * and post clean up process for each of the test method call
+     * Teardown Actor system after all tests
      */
-    
     @AfterClass
     public static void teardown() {
         TestKit.shutdownActorSystem(system);
         system = null;
     }
-    
-    /**
-	 * Tests TwitterSearchActor by registering the keywords
-	 * and asserting the results using expectMsgClass of TestKit.
-	 */
 
+    /**
+     * Sends Register message to TwitterSearchActor
+     */
     @Test
-    public void testActorRegister(){
+    public void testActorRegister() {
         new TestKit(system) {{
             final Props props = Props.create(TwitterSearchActor.class, getRef(), getRef(), tenTweetsForKeywordService);
             system.actorOf(props);
@@ -98,12 +103,10 @@ public class TwitterSearchActorTest extends JUnitSuite {
     }
 
     /**
-	 * Tests TwitterSearchActor by searching the test values(keywords for Twitter API)
-	 * and asserting the results using JsonNode functionality.
-	 */
-    
+     * Sends Search message to TwitterSearchActor
+     */
     @Test
-    public void testActorSearch(){
+    public void testActorSearch() {
         new TestKit(system) {{
             TwitterSearchActorProtocol.Search search = new TwitterSearchActorProtocol.Search();
             search.setSearchKey("val1");
@@ -119,15 +122,10 @@ public class TwitterSearchActorTest extends JUnitSuite {
     }
 
     /**
-	 * Tests TwitterSearchActorProtocol functionality by
-	 * searching the test values(keywords for Twitter API) and then
-	 * fetching the list of last ten tweets using refresh
-	 * the actor should retrieve 10 tweets for all previous keywords
-	 * we are asserting the results using JsonNode and expectMsg functionality.
-	 */
-        
+     * Sends Refresh message to TwitterSearchActor
+     */
     @Test
-    public void testActorRefresh(){
+    public void testActorRefresh() {
         new TestKit(system) {{
             TwitterSearchActorProtocol.Search search = new TwitterSearchActorProtocol.Search();
             search.setSearchKey("val1");
@@ -141,5 +139,4 @@ public class TwitterSearchActorTest extends JUnitSuite {
             probe1.expectMsg(duration("3 second"), searchResult);
         }};
     }
-
 }
