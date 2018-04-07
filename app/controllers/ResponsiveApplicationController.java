@@ -13,13 +13,19 @@ import play.Logger;
 import play.libs.F.Either;
 import play.libs.concurrent.HttpExecutionContext;
 import play.libs.streams.ActorFlow;
-import play.mvc.*;
+import play.mvc.Controller;
+import play.mvc.Http;
+import play.mvc.Result;
+import play.mvc.Results;
+import play.mvc.WebSocket;
 import services.SchedulingService;
 import services.TenTweetsForKeywordService;
 import views.html.responsiveTweets;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
@@ -28,6 +34,7 @@ import java.util.concurrent.CompletionStage;
  * Implements responsive controller that enables opening a Websocket
  * with origin check to handles requests for searching tweets
  * according to keywords and displaying Tweeter's user profiles.
+ *
  * @author Dmitriy Fingerman
  * @version 1.0.0
  */
@@ -107,6 +114,7 @@ public class ResponsiveApplicationController extends Controller {
 
     /**
      * Renders home page
+     *
      * @return promise of a result with a rendered home page.
      */
     public CompletionStage<Result> index() {
@@ -119,6 +127,7 @@ public class ResponsiveApplicationController extends Controller {
     /**
      * Creates WebSocket
      * The request origin parameter is been verified.
+     *
      * @return a connection upgraded to a websocket
      */
     public WebSocket websocket() {
@@ -151,6 +160,7 @@ public class ResponsiveApplicationController extends Controller {
 
     /**
      * Creates forbidden result
+     *
      * @return a HTTP FORBIDDEN if origin check fails
      */
     private CompletionStage<Either<Result, Flow<TwitterSearchActorProtocol.Search, Object, ?>>> forbiddenResult() {
@@ -180,12 +190,13 @@ public class ResponsiveApplicationController extends Controller {
     }
 
     /**
-     * Checks origin to match WebSocket address
+     * Checks origin header to match WebSocket address
      *
      * @param origin http request origin field
      * @return if the origin check was successful
      */
     private boolean originMatches(String origin) {
-        return origin.contains("localhost:9000") || origin.contains("localhost:19001");
+        List<String> allowedOrigins = Arrays.asList("localhost:9000", "localhost:19001", "35.226.147.54:80");
+        return allowedOrigins.stream().anyMatch(o -> origin.contains(o));
     }
 }
