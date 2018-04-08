@@ -9,26 +9,25 @@ It dynamically refreshes to show any incoming tweets by using Stream live update
 
 ## Group Members
 
-     Name      | Student ID
------------------ | ---------
-
-Deepika Dembla    | 40036900    
-Dmitriy Fingerman | 26436579    
-Nikita Baranov    | 40012854    
-Mayank H. Acharya | 40036106    
-Tumer Horloev     | 40019108   
+|     Name        | Student ID |
+|-----------------|------------|
+|Deepika Dembla   |  40036900  |    
+|Dmitriy Fingerman|  26436579  |    
+|Mayank H. Acharya|  40036106  |    
+|Nikita Baranov   |  40012854  |    
+|Tumer Horloev    |  40019108  |   
 
 
 ## Division of Work (Assignment-2)
 
- Deepika Dembla: 
+### Deepika Dembla: 
  
  * test.TwitterSearchSchedulerActorTest.java
  * test.TwitterSearchSchedulerActorProtocolTest.java
  * Javadoc
  * README
  
- Dmitriy Fingerman:
+### Dmitriy Fingerman:
  
  * conf.routes
  * controllers.ResponsiveApplicationController.java
@@ -39,8 +38,12 @@ Tumer Horloev     | 40019108
  * test.views.responsiveTweetsTest.java
  * test.services.SchedulingServiceTest.java
  
+### Mayank H. Acharya:
  
- Nikita Baranov:
+ * actors.TwitterSearchSchedulerActor.java
+ * services.SchedulingService.java
+
+### Nikita Baranov:
  
  * conf.routes
  * views.index.scala.html
@@ -48,14 +51,10 @@ Tumer Horloev     | 40019108
  * views.responsiveTweets.scala.html
  * test.views.mainTest.java
  * test.controllers.ResponsiveApplicationControllerTest.java
+ * test.models.TweetTest.java
  * test.Utils.WebSocketTestClient.java
  
- Mayank H. Acharya:
- 
- * actors.TwitterSearchSchedulerActor.java
- * services.SchedulingService.java
- 
- Tumer Horloev:
+### Tumer Horloev:
  
  * actors.TwitterSearchActor.java
  * actors.TwitterSearchActorProtocol.java
@@ -115,7 +114,11 @@ Tumer Horloev     | 40019108
 
  * To run the akka project:
    execute `"runMain com.lightbend.akka.sample.ClassName"`
-  
+
 ## How to Run
  * To run project, execute `sbt run`.
  * After starting up, the application can be accessed using web browser at `localhost:9000`. 
+
+## How to Generate JavaDoc
+ * To generate a JavaDoc for all project packeges including tests:
+   execute `./generate_javadoc.sh`

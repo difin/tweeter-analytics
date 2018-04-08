@@ -120,7 +120,7 @@ public class ResponsiveApplicationControllerTest extends WithServer {
 
         assertThat(result.status(), is(equalTo(OK)));
         assertThat(result.contentType().get(), is(equalTo("text/html")));
-        assertThat(contentAsString(result).contains("Twitter Assignment 1 and 2"), is(equalTo(true)));
+        assertThat(contentAsString(result).contains("TweetAnalytics Assignment 1 and 2"), is(equalTo(true)));
     }
 
     /**

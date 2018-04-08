@@ -1,20 +1,17 @@
 package controllers;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import models.Tweet;
 import models.UserProfile;
 import models.UserProfileAndTweets;
-import play.data.FormFactory;
+import org.junit.Before;
+import org.junit.Test;
 import play.data.Form;
 import play.data.Form.Field;
+import play.data.FormFactory;
 import play.libs.concurrent.HttpExecutionContext;
-
+import play.mvc.Result;
 import services.TenTweetsForKeywordService;
 import services.UserProfileService;
-
-import play.mvc.Result;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,14 +22,14 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 
-import static play.mvc.Http.Status.OK;
-import static play.test.Helpers.*;
-
-import static org.mockito.Mockito.*;
-
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static play.mvc.Http.Status.OK;
+import static play.test.Helpers.contentAsString;
 
 /**
  * Tests the functionality of Application Controller.
@@ -134,7 +131,7 @@ public class ApplicationControllerTest {
 		
 		assertThat(result.status(), is(equalTo(OK)));
 		assertThat(result.contentType().get(), is(equalTo("text/html")));
-		assertThat(contentAsString(result).contains("Twitter Assignment 1"), is(equalTo(true)));
+        assertThat(contentAsString(result).contains("TweetAnalytics Assignment 1 and 2"), is(equalTo(true)));
 	}
 	
 	/**
