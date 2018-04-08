@@ -1,7 +1,5 @@
 package models;
 
-import static org.junit.Assert.assertThat;
-
 import java.util.ArrayList;
 import java.util.List;
 

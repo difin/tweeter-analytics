@@ -14,9 +14,10 @@ import scala.concurrent.duration.Duration;
 import scala.concurrent.duration.FiniteDuration;
 
 /**
- * Implementing scheduling service which is responsible for
+ * Implements scheduling service which is responsible for
  * retrieving tweets from all the previous searched
- * keywords at X millisecond of time
+ * keywords every X amount of time
+ * 
  * @author Mayank Acharya
  * @version 1.0.0
  */
@@ -24,6 +25,9 @@ import scala.concurrent.duration.FiniteDuration;
 @Singleton
 public class SchedulingService {
 	
+	/**
+	 * Akka's Actor System
+	 */
 	private final ActorSystem actorSystem;
 	
 	/**

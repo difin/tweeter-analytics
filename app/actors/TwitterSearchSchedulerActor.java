@@ -14,7 +14,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Keeps a list of Actors to trigger by schedule
+ * Actor that is notified by akka scheduling mechanism every given amount of time to 
+ * trigger refresh of Twitter search results. Keeps a list of Twitter Search Actors to trigger
+ * at refresh time.
+ * 
  * @author Mayank Acharya
  * @version 1.0.0
  */

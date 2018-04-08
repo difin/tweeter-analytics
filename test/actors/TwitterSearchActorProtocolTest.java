@@ -17,7 +17,7 @@ import static org.junit.Assert.assertThat;
 public class TwitterSearchActorProtocolTest {
 
     /**
-     * Test creation TwitterSearchActorProtocol
+     * Tests creation of TwitterSearchActorProtocol
      */
     @Test
     public void testProtocol() {
@@ -26,7 +26,7 @@ public class TwitterSearchActorProtocolTest {
     }
 
     /**
-     * Test creation of the Refresh message
+     * Tests creation of the Refresh message
      */
     @Test
     public void testRefresh() {
@@ -35,7 +35,7 @@ public class TwitterSearchActorProtocolTest {
     }
 
     /**
-     * Test creation of the Search message
+     * Tests creation of the Search message
      */
     @Test
     public void testSearch() {

@@ -17,16 +17,35 @@ import java.util.Map;
 import java.util.concurrent.CompletionStage;
 
 /**
- * Retrieves tweets using TenTweetsForKeywordService.
+ * Actor for retrieving tweets using TenTweetsForKeywordService.
  * @author Tumer Horloev
  * @version 1.0.0
  */
 public class TwitterSearchActor extends AbstractActor {
+	
+	/**
+	 * Logger
+	 */
     private final LoggingAdapter logger = Logging.getLogger(getContext().system(), this);
+    
+    /**
+     * Reference of the websocket actor
+     */
     private final ActorRef out;
+    
+    /**
+     * Reference of the scheduler actor
+     */
     private final ActorRef scheduler;
 
+    /**
+     * Service for searching tweets
+     */
     private TenTweetsForKeywordService tenTweetsForKeywordService;
+    
+    /**
+     * History of past search keywords
+     */
     private ArrayList<String> keyWords = new ArrayList<>();
 
     /**
